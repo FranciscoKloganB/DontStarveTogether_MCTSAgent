@@ -17,7 +17,7 @@ namespace FAtiMA_Server
             Type = type;
             Target = target;
             Name = name;
-            WFN = Type + "(" + Name + ")"; 
+            WFN = Type + "(" + Name + ")";
         }
 
         public static Action ToAction(ActionLibrary.IAction a, IntegratedAuthoringToolAsset IAT)
@@ -28,19 +28,13 @@ namespace FAtiMA_Server
             switch (splitted[0])
             {
                 case "Action":
-
                     return new DSTAction(splitted[0], a.Target.ToString(), splitted[1], splitted[3], splitted[5], splitted[7], splitted[9], a.Name.ToString());
                 case "Speak":
-                    var dialog = IAT.GetDialogueActions(
-                        a.Parameters[0],
-                        a.Parameters[1],
-                        a.Parameters[2],
-                        a.Parameters[3]).FirstOrDefault();
+                    var dialog = IAT.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2], a.Parameters[3]).FirstOrDefault();
                     return new SpeakAction(splitted[0], a.Target.ToString(), splitted[1], splitted[3], splitted[5], splitted[7], a.Name.ToString(), dialog.Utterance);
                 default:
                     throw new Exception("This type of action (" + splitted[0] + ") is not recognized");
             }
-
         }
 
         public override string ToString()
@@ -76,7 +70,7 @@ namespace FAtiMA_Server
             Type = type;
             WFN = Type + "(" + Action + ", " + InvObject + ", " + PosX + ", " + PosZ + ", " + Recipe + ")";
         }
-        
+
         public override string ToString()
         {
             return WFN + " = " + Target;
