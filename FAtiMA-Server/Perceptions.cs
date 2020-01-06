@@ -16,13 +16,9 @@ namespace FAtiMA_Server
         public int Hunger { get; set; }
         public int Sanity { get; set; }
         public int Health { get; set; }
-        public int Moisture { get; set; }
-        public int Temperature { get; set; }
-        public bool IsFreezing { get; set; }
-        public bool IsOverheating { get; set; }
         public bool IsBusy { get; set; }
         public int PosX { get; set; }
-        public int PosY { get; set; }
+        public readonly int PosY { get; private set; } = 0;
         public int PosZ { get; set; }
 
         [JsonConstructor]
@@ -35,17 +31,11 @@ namespace FAtiMA_Server
             Hunger = (int) hunger;
             Health = (int) health;
             Sanity = (int) sanity;
-            Moisture = (int) moisture;
-            Temperature = (int) temperature;
-            IsFreezing = isfreezing;
-            IsOverheating = isoverheating;
             IsBusy = isbusy;
             PosX = (int) posx;
-            PosY = (int) posy;
             PosZ = (int) posz;
-
         }
-        
+
         public void UpdatePerceptions(RolePlayCharacterAsset rpc)
         {
             /*
@@ -77,34 +67,6 @@ namespace FAtiMA_Server
                 rpc.Perceive(EventHelper.PropertyChange("Sanity(" + rpc.CharacterName.ToString() + ")", Sanity.ToString(), rpc.CharacterName.ToString()));
             }
 
-            bv = rpc.GetBeliefValue("IsFreezing(" + rpc.CharacterName.ToString() + ")");
-            if (bv == null || !bv.Equals(IsFreezing.ToString()))
-            {
-                Debug.WriteLine("IsFreezing: " + bv + " -> " + IsFreezing.ToString());
-                rpc.Perceive(EventHelper.PropertyChange("IsFreezing(" + rpc.CharacterName.ToString() + ")", IsFreezing.ToString(), rpc.CharacterName.ToString()));
-            }
-
-            bv = rpc.GetBeliefValue("IsOverheating(" + rpc.CharacterName.ToString() + ")");
-            if (bv == null || !bv.Equals(IsOverheating.ToString()))
-            {
-                Debug.WriteLine("IsOverheating: " + bv + " -> " + IsOverheating.ToString());
-                rpc.Perceive(EventHelper.PropertyChange("IsOverheating(" + rpc.CharacterName.ToString() + ")", IsOverheating.ToString(), rpc.CharacterName.ToString()));
-            }
-
-            bv = rpc.GetBeliefValue("Moisture(" + rpc.CharacterName.ToString() + ")");
-            if (bv == null || !bv.Equals(Moisture.ToString()))
-            {
-                Debug.WriteLine("Moisture: " + bv + " -> " + Moisture.ToString());
-                rpc.Perceive(EventHelper.PropertyChange("Moisture(" + rpc.CharacterName.ToString() + ")", Moisture.ToString(), rpc.CharacterName.ToString()));
-            }
-
-            bv = rpc.GetBeliefValue("Temperature(" + rpc.CharacterName.ToString() + ")");
-            if (bv == null || !bv.Equals(Temperature.ToString()))
-            {
-                Debug.WriteLine("Temperature: " + bv + " -> " + Temperature.ToString());
-                rpc.Perceive(EventHelper.PropertyChange("Temperature(" + rpc.CharacterName.ToString() + ")", Temperature.ToString(), rpc.CharacterName.ToString()));
-            }
-
             bv = rpc.GetBeliefValue("IsBusy(" + rpc.CharacterName.ToString() + ")");
             if (bv == null || !bv.Equals(IsBusy.ToString()))
             {
@@ -115,13 +77,6 @@ namespace FAtiMA_Server
             bv = rpc.GetBeliefValue("PosX(" + rpc.CharacterName.ToString() + ")");
             if (bv == null || !bv.Equals(PosX.ToString()))
                 rpc.Perceive(EventHelper.PropertyChange("PosX(" + rpc.CharacterName.ToString() + ")", PosX.ToString(), rpc.CharacterName.ToString()));
-
-            /*
-             * The Y-axis is always equal to zero, no need to save it in the knowledge base
-             * */
-            //bv = rpc.GetBeliefValue("PosY(" + rpc.CharacterName.ToString() + ")");
-            //if (bv == null || !bv.Equals(PosY.ToString()))
-            //    rpc.Perceive(EventHelper.PropertyChange("PosY(" + rpc.CharacterName.ToString() + ")", PosY.ToString(), rpc.CharacterName.ToString()));
 
             bv = rpc.GetBeliefValue("PosZ(" + rpc.CharacterName.ToString() + ")");
             if (bv == null || !bv.Equals(PosZ.ToString()))
@@ -208,10 +163,6 @@ namespace FAtiMA_Server
             s += "\tHunger: " + Hunger;
             s += "\tSanity: " + Sanity;
             s += "\tHealth: " + Health;
-            s += "\n\tMoisture: " + Moisture;
-            s += "\tTemperature: " + Temperature;
-            s += "\tIsFreezing: " + IsFreezing;
-            s += "\tIsOverheating: " + IsOverheating;
             s += "\tIsBusy: " + IsBusy;
             s += "\tPos: (" + PosX + ", " + PosY + ", " + PosZ + ")";
             s += "\n\tVision:\n";
@@ -233,4 +184,3 @@ namespace FAtiMA_Server
         }
     }
 }
-

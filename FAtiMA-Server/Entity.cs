@@ -51,7 +51,7 @@ namespace FAtiMA_Server
             IsDiggable = diggable;
             IsHammerable = hammerable;
             IsMineable = mineable;
-            
+
             X = (int)x;
             Y = (int)y;
             Z = (int)z;
@@ -129,14 +129,9 @@ namespace FAtiMA_Server
             if (b == null || !(b.Equals(IsMineable.ToString())))
                 rpc.Perceive(EventHelper.PropertyChange("IsMineable(" + GUID + ")", IsMineable.ToString(), rpc.CharacterName.ToString()));
 
-            //===========================================
             b = rpc.GetBeliefValue("PosX(" + GUID + ")");
             if (b == null || !(b.Equals(X.ToString())))
                 rpc.Perceive(EventHelper.PropertyChange("PosX(" + GUID + ")", X.ToString(), rpc.CharacterName.ToString()));
-
-            /*
-             * The Y-axis is always equal to zero, no need to save it in the knowledge base
-             * */
 
             b = rpc.GetBeliefValue("PosZ(" + GUID + ")");
             if (b == null || !(b.Equals(Z.ToString())))
