@@ -1,0 +1,45 @@
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\Example Character\FAtiMA-DST.iat
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\Example Character\walter.edm
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\Example Character\walter.rpc
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\FAtiMA-Server.exe.config
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\FAtiMA-Server.exe.manifest
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\FAtiMA-Server.application
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\FAtiMA-Server.exe
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\FAtiMA-Server.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\ActionLibrary.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\AutobiographicMemory.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\CommeillFaut.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\Conditions.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\EmotionalAppraisal.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\EmotionalDecisionMaking.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\GAIPS.Rage.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\GAIPS.Serialization.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\IntegratedAuthoringTool.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\KnowledgeBase.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\Newtonsoft.Json.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\RageAssetManager.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\RolePlayCharacter.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\SocialImportanceAsset.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\Utilities.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\WellFormedNames.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\MCTS.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\ActionLibrary.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\AutobiographicMemory.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\CommeillFaut.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\Conditions.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\EmotionalAppraisal.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\EmotionalDecisionMaking.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\GAIPS.Rage.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\IntegratedAuthoringTool.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\KnowledgeBase.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\Newtonsoft.Json.xml
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\RolePlayCharacter.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\SocialImportanceAsset.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\WellFormedNames.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Release\MCTS.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Release\FAtiMA-Server.csproj.CoreCompileInputs.cache
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Release\FAtiMA-Server.exe.manifest
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Release\FAtiMA-Server.application
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Release\FAtiMA-Server.exe
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Release\FAtiMA-Server.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Release\FAtiMA-Server.csprojResolveAssemblyReference.cache

@@ -1,0 +1,89 @@
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Example Character\FAtiMA-DST.iat
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Example Character\walter.edm
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Example Character\walter.rpc
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\FAtiMA-Server.exe.config
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\FAtiMA-Server.exe.manifest
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\FAtiMA-Server.application
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\FAtiMA-Server.exe
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\FAtiMA-Server.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\ActionLibrary.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\AutobiographicMemory.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\CommeillFaut.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Conditions.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\EmotionalAppraisal.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\EmotionalDecisionMaking.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\GAIPS.Rage.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\GAIPS.Serialization.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\IntegratedAuthoringTool.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\KnowledgeBase.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Newtonsoft.Json.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\RageAssetManager.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\RolePlayCharacter.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\SocialImportanceAsset.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Utilities.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\WellFormedNames.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\MCTS.dll
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Newtonsoft.Json.xml
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.csproj.CoreCompileInputs.cache
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.exe.manifest
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.application
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.exe
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\ActionLibrary.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\AutobiographicMemory.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\CommeillFaut.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Conditions.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\EmotionalAppraisal.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\EmotionalDecisionMaking.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\GAIPS.Rage.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\IntegratedAuthoringTool.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\KnowledgeBase.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\RolePlayCharacter.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\SocialImportanceAsset.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\WellFormedNames.pdb
+C:\Users\RicardoManuel\Desktop\Toolkit e DST originais\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\MCTS.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Example Character\FAtiMA-DST.iat
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Example Character\walter.edm
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Example Character\walter.rpc
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\FAtiMA-Server.exe.config
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\FAtiMA-Server.exe.manifest
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\FAtiMA-Server.application
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\FAtiMA-Server.exe
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\FAtiMA-Server.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\ActionLibrary.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\AutobiographicMemory.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\CommeillFaut.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Conditions.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\EmotionalAppraisal.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\EmotionalDecisionMaking.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\GAIPS.Rage.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\GAIPS.Serialization.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\IntegratedAuthoringTool.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\KnowledgeBase.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Newtonsoft.Json.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\RageAssetManager.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\RolePlayCharacter.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\SocialImportanceAsset.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Utilities.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\WellFormedNames.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\MCTS.dll
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\ActionLibrary.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\AutobiographicMemory.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\CommeillFaut.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Conditions.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\EmotionalAppraisal.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\EmotionalDecisionMaking.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\GAIPS.Rage.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\IntegratedAuthoringTool.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\KnowledgeBase.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\Newtonsoft.Json.xml
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\RolePlayCharacter.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\SocialImportanceAsset.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\WellFormedNames.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\bin\Debug\MCTS.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.csproj.CoreCompileInputs.cache
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.exe.manifest
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.application
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.exe
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.pdb
+C:\Ricardo\LMAC\3º Ano 2º Semestre\[Proj] Projeto\Projeto DST\FAtiMA-DST-master - hineios\FAtiMA-Server\obj\Debug\FAtiMA-Server.csprojResolveAssemblyReference.cache
