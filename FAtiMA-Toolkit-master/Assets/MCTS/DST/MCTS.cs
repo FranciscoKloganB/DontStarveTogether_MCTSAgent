@@ -8,9 +8,12 @@ namespace MCTS.DST
 
     public class MCTSAlgorithm
     {
+        private const int MAX_PLAYOUTS_PER_SEARCH = 5;
+        private const int MAX_PLAYOUT_DEPTH = 4;
+        private const int MAX_ITERATIONS_PER_FRAME = 100;
         public const float C = 1.4f;
+
         public bool InProgress { get; private set; }
-        public int MaxIterations { get; set; }
         public int MaxPlayoutDepthReached { get; private set; }
         public int MaxSelectionDepthReached { get; private set; }
         public MCTSNode BestFirstChild { get; set; }
@@ -26,14 +29,13 @@ namespace MCTS.DST
         {
             this.InProgress = false;
             this.CurrentState = currentState;
-            this.MaxIterations = 100;
             this.RandomGenerator = new System.Random();
         }
 
         public void InitializeMCTSearch()
         {
-            this.MaxPlayoutDepthReached = 4;
-            this.MaxSelectionDepthReached = 2;
+            this.MaxPlayoutDepthReached = 0;
+            this.MaxSelectionDepthReached = 0;
             this.CurrentIterations = 0;
             this.InitialNode = new MCTSNode(this.CurrentState)
             {
@@ -49,7 +51,22 @@ namespace MCTS.DST
             MCTSNode selectedNode;
             float reward;
 
-            Console.WriteLine("Running MCTS Search"); 
+            Console.WriteLine("Running MCTS Search");
+
+            while (this.CurrentIterations++ < MAX_ITERATIONS_PER_FRAME)
+            {
+                selectedNode = Selection(this.InitialNode);
+                if (selectedNode == this.InitialNode)
+                { // Initial node does not have any children.
+                    break;
+                }
+                
+                
+            }
+            
+            
+            
+            
             //TO DO
 
             return new Wander();
