@@ -1,0 +1,22 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ActionTendencies": [
+				{
+					"Action": "[action]",
+					"Target": "[target]",
+					"Layer": "Behaviour",
+					"Conditions":
+						{
+							"Set": ["IsBusy(SELF) = False", "MCTS([action], [target]) = True"]
+						},
+					"Priority": 1
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
