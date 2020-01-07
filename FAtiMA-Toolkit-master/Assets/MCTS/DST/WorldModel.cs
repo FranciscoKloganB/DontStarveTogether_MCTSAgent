@@ -17,7 +17,8 @@ namespace MCTS.DST.WorldModels
 
         public float Cycle;
         public int[] CycleInfo;
-        public List<ActionDST> AvailableActions;      
+        public List<ActionDST> AvailableActions; 
+        protected IEnumerator<ActionDST> ActionEnumerator { get; set; }      
 
         protected WorldModelDST Parent;
 
@@ -30,6 +31,7 @@ namespace MCTS.DST.WorldModels
             this.Cycle = cycle;
             this.CycleInfo = cycleInfo;
             this.AvailableActions = availableActions;
+            this.ActionEnumerator = availableActions.GetEnumerator();
             this.Parent = parent;
             this.Fuel = fuel;
             this.Fire = fire;
@@ -107,6 +109,32 @@ namespace MCTS.DST.WorldModels
                 action = new Eat("carrot");
                 this.AvailableActions.Add(action);
             }
+
+            this.ActionEnumerator = this.AvailableActions.GetEnumerator();
+        }
+
+        public virtual ActionDST GetNextAction()
+        {
+            ActionDST action = null;
+            //returns the next action that can be executed or null if no more executable actions exist
+            if (this.ActionEnumerator.MoveNext())
+            {
+                action = this.ActionEnumerator.Current;
+            }
+
+            while (action != null) // && !action.CanExecute(this))
+            {
+                if (this.ActionEnumerator.MoveNext())
+                {
+                    action = this.ActionEnumerator.Current;    
+                }
+                else
+                {
+                    action = null;
+                }
+            }
+
+            return action;
         }
 
         public List<ActionDST> GetExecutableActions()
