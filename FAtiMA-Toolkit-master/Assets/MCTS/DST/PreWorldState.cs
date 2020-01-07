@@ -25,11 +25,11 @@ namespace MCTS.DST {
         public PreWorldState(KB knowledgeBase)
         {
             this.KnowledgeBase = knowledgeBase;
-            this.Entities = new List<ObjectProperties>();
-            this.Inventory = new List<Tuple<string, int, int>>();
-            this.Equipped = new List<Pair<string, int>>();
-            this.Fuel = new List<Tuple<string, int, int>>();
-            this.Fire = new List<Tuple<string, int, int>>();
+            this.Entities = new List<ObjectProperties>(); // it is a list which stores the information of the objects that exist in the world
+            this.Inventory = new List<Tuple<string, int, int>>(); // list of 3-tuples that contain the name, the GUID and the quantity of an object in the inventory
+            this.Equipped = new List<Pair<string, int>>(); // it is a list of pairs (2-tuples) that contain the name and the GUID of each equipped object
+            this.Fuel = new List<Tuple<string, int, int>>(); // it is a list of 3-tuples that contain the name, the GUID and the quantity of the items that can be used as fuel for res
+            this.Fire = new List<Tuple<string, int, int>>(); // list of 3-tuples that contain the name and the position of the fires in the world
 
             //Getting Character Stats
 
