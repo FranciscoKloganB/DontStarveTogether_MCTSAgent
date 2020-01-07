@@ -60,17 +60,16 @@ namespace MCTS.DST
                 { // Initial node does not have any children.
                     break;
                 }
-                
-                
+
+                for (int i = 0; i < MAX_PLAYOUTS_PER_SEARCH; i++)
+                {
+                    reward = Playout(selectedNode.State);
+                    Backpropagate(selectedNode, reward);
+                }
             }
             
-            
-            
-            
-            //TO DO
-
-            return new Wander();
-            
+            this.InProgress = false;
+            return BestFinalAction(this.InitialNode);
         }
 
         protected MCTSNode Selection(MCTSNode nodeToDoSelection)
