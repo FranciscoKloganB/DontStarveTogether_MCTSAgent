@@ -95,12 +95,14 @@ namespace MCTS.DST
 
         protected MCTSNode Expand(MCTSNode parent, ActionDST action)
         {
-            
-            
-            
-            //TO DO
-            
-            return new MCTSNode(new WorldModelDST());
+            WorldModelDST futureWorld = parent.State.GenerateChildWorldModel();
+            action.ApplyActionEffects(futureWorld);
+            MCTSNode child = new MCTSNode(futureWorld)
+            {
+                Parent = parent,
+            };
+            parent.ChildNodes.Add(child);
+            return child;
         }
 
         protected float Playout(WorldModelDST initialPlayoutState)
