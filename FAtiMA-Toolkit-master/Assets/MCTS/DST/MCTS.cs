@@ -83,12 +83,21 @@ namespace MCTS.DST
                     return Expand(currentNode, nextAction);
                 }
 
-
-            return new MCTSNode(new WorldModelDST());
+                MCTSNode newNode = BestUCTChild(currentNode);
+                if (newNode == null)
+                {
+                    return currentNode;
+                }
+                currentNode = newNode;
+            }
+            return currentNode;
         }
 
         protected MCTSNode Expand(MCTSNode parent, ActionDST action)
         {
+            
+            
+            
             //TO DO
             
             return new MCTSNode(new WorldModelDST());
