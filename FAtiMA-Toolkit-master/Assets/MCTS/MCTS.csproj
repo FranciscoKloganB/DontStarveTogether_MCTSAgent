@@ -32,6 +32,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DST\Actions\ActionDST.cs" />
+    <Compile Include="DST\Actions\Construct.cs" />
+    <Compile Include="DST\Actions\Equip.cs" />
+    <Compile Include="DST\Actions\HoldPosition.cs" />
+    <Compile Include="DST\Actions\Unequip.cs" />
+    <Compile Include="DST\Actions\PickUp.cs" />
+    <Compile Include="DST\Actions\Cook.cs" />
+    <Compile Include="DST\Actions\Fight.cs" />
+    <Compile Include="DST\Actions\AddFuel.cs" />
     <Compile Include="DST\Actions\NextAction.cs" />
     <Compile Include="DST\Character.cs" />
     <Compile Include="DST\Actions\Eat.cs" />
