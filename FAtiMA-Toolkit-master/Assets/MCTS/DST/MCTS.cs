@@ -123,7 +123,7 @@ namespace MCTS.DST
                 futureWorld = futureWorld.GenerateChildWorldModel();
                 randomChosenAction.ApplyActionEffects(futureWorld);
             }
-            return PlayoutHeuristic(futureWorld);
+            return WorldStateHeuristic(futureWorld);
         }
 
         protected virtual void Backpropagate(MCTSNode node, float reward)
@@ -178,6 +178,14 @@ namespace MCTS.DST
             return bestNode.Action;
         }
 
-    
+        protected float WorldStateHeuristic(WorldModelDST state)
+        {
+            if (state.Walter.HP == 0)
+            {
+                return 0.0f;
+            }
+            // TODO - Find better heuristic.
+            return 1.0f;
+        }
     }
 }
