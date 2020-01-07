@@ -108,11 +108,22 @@ namespace MCTS.DST
 
         protected float Playout(WorldModelDST initialPlayoutState)
         {
-
-            //TO DO
-
-
-            return 0.0f;
+            WorldModelDST futureWorld = initialPlayoutState;
+            ActionDST randomChosenAction;
+            CurrentDepth = 0;
+            while (this.CurrentDepth++ < MAX_PLAYOUT_DEPTH)
+            {
+                List<ActionDST> availableActions = futureWorld.GetExecutableActions();
+                int len = availableActions.Count;
+                if (len == 0) 
+                {
+                    break;
+                }
+                randomChosenAction = availableActions[RandomGenerator.Next(len)];
+                futureWorld = futureWorld.GenerateChildWorldModel();
+                randomChosenAction.ApplyActionEffects(futureWorld);
+            }
+            return WorldStateHeuristic(futureWorld);
         }
 
         protected virtual void Backpropagate(MCTSNode node, float reward)
@@ -167,6 +178,14 @@ namespace MCTS.DST
             return bestNode.Action;
         }
 
-    
+        protected float WorldStateHeuristic(WorldModelDST state)
+        {
+            if (state.Walter.HP == 0)
+            {
+                return 0.0f;
+            }
+            // TODO - Find better heuristic.
+            return 1.0f;
+        }
     }
 }
