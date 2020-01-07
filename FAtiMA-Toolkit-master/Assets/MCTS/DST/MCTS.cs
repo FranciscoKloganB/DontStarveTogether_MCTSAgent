@@ -58,6 +58,7 @@ namespace MCTS.DST
                 selectedNode = Selection(this.InitialNode);
                 if (selectedNode == this.InitialNode)
                 { // Initial node does not have any children.
+                    Console.WriteLine("Initial node does not have any children.");
                     break;
                 }
 
@@ -110,8 +111,8 @@ namespace MCTS.DST
         {
             WorldModelDST futureWorld = initialPlayoutState;
             ActionDST randomChosenAction;
-            CurrentDepth = 0;
-            while (this.CurrentDepth++ < MAX_PLAYOUT_DEPTH)
+            CurrentDepth = -1;
+            while (++this.CurrentDepth < MAX_PLAYOUT_DEPTH)
             {
                 List<ActionDST> availableActions = futureWorld.GetExecutableActions();
                 int len = availableActions.Count;
@@ -142,9 +143,8 @@ namespace MCTS.DST
             float bestUCT = float.MinValue;
             MCTSNode bestNode = null;
 
-            int i = 0;
-
-            while (i < node.ChildNodes.Count)
+            int i = -1;
+            while (++i < node.ChildNodes.Count)
             {
                 UCTValue = (float)((node.ChildNodes[i].Q / node.ChildNodes[i].N) + 1.4f * Math.Sqrt(Math.Log(node.N) / node.ChildNodes[i].N));
                 if (UCTValue > bestUCT)
@@ -152,7 +152,6 @@ namespace MCTS.DST
                     bestUCT = UCTValue;
                     bestNode = node.ChildNodes[i];
                 }
-                i++;
             }
             return bestNode;
         }
@@ -163,9 +162,8 @@ namespace MCTS.DST
             float bestAverageQ = float.MinValue;
             MCTSNode bestNode = null;
 
-            int i = 0;
-
-            while (i < node.ChildNodes.Count)
+            int i = -1;
+            while (++i < node.ChildNodes.Count)
             {
                 averageQ = node.ChildNodes[i].Q / node.ChildNodes[i].N;
                 if (averageQ > bestAverageQ)
@@ -173,7 +171,6 @@ namespace MCTS.DST
                     bestAverageQ = averageQ;
                     bestNode = node.ChildNodes[i];
                 }
-                i++;
             }
             return bestNode.Action;
         }
