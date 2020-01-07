@@ -25,16 +25,16 @@ namespace MCTS.DST.WorldModels
         public WorldModelDST(Character character, List<Pair<Pair<string, int>, Pair<int, int>>> worldObjects, List<Pair<string, int>> possessedItems, List<string> equippedItems, float cycle, int[] cycleInfo, List<ActionDST> availableActions, WorldModelDST parent, List<Pair<string, int>> fuel, List<Tuple<string, int, int>> fire)
         {
             this.Walter = character;
-            this.WorldObjects = worldObjects;
-            this.PossessedItems = possessedItems;
-            this.EquippedItems = equippedItems;
-            this.Cycle = cycle;
-            this.CycleInfo = cycleInfo;
-            this.AvailableActions = availableActions;
+            this.WorldObjects = worldObjects; // stores in the name, quantity and the position of world objects
+            this.PossessedItems = possessedItems; // stores the name and quantity of the items in the inventory
+            this.EquippedItems = equippedItems; // stores the name of equiped items
+            this.Cycle = cycle; // represents the stage of the day
+            this.CycleInfo = cycleInfo; // stores the amount of time each phase of the day lasts. The phases are day, dusk and night
+            this.AvailableActions = availableActions; // list of actions that the character can do in the current state. It is created based on the PreWorldState information and it is updated when an action is done
             this.ActionEnumerator = availableActions.GetEnumerator();
-            this.Parent = parent;
-            this.Fuel = fuel;
-            this.Fire = fire;
+            this.Parent = parent; // World Model which originates the current one by means of ActionApplyEffect
+            this.Fuel = fuel; // it is a list of 3-tuples that contain the name, the GUID and the quantity of the items that can be used as fuel for res
+            this.Fire = fire; // list of 3-tuples that contain the name and the position of the fires in the world
         }
 
         public WorldModelDST(PreWorldState preWorldState)
