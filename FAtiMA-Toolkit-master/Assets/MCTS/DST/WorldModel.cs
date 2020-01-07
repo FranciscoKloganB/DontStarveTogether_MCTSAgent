@@ -593,5 +593,10 @@ namespace MCTS.DST.WorldModels
         {
             this.Walter.DecreaseHP(n);
         }
+
+        public bool IsTerminal()
+        {
+            return this.Walter.HP == 0;
+        }
     }
 }
