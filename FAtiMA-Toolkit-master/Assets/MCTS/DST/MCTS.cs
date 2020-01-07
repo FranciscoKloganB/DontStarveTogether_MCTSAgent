@@ -8,6 +8,7 @@ namespace MCTS.DST
 
     public class MCTSAlgorithm
     {
+        private const int MAX_SELECTION_DEPTH = 2;
         private const int MAX_PLAYOUTS_PER_SEARCH = 5;
         private const int MAX_PLAYOUT_DEPTH = 4;
         private const int MAX_ITERATIONS_PER_FRAME = 100;
@@ -75,21 +76,42 @@ namespace MCTS.DST
 
         protected MCTSNode Selection(MCTSNode nodeToDoSelection)
         {
+            Console.WriteLine(nodeToDoSelection.State.GetExecutableActions().Count);
             MCTSNode currentNode = nodeToDoSelection;
-            while (!currentNode.State.IsTerminal())
+            int currentDepth = -1;
+            while (++currentDepth < MAX_SELECTION_DEPTH) // !currentNode.State.IsTerminal())
             {
-                ActionDST nextAction = currentNode.State.GetNextAction();
-                if (nextAction != null)
+                List<ActionDST> executableActions = nodeToDoSelection.State.GetExecutableActions();
+                int len = executableActions.Count;
+                if (len == nodeToDoSelection.ChildNodes.Count)
                 {
-                    return Expand(currentNode, nextAction);
+                    nodeToDoSelection = BestUCTChild(nodeToDoSelection);
                 }
+                else
+                {
+                    List<string> executedActions = new List<string>();
+                    for (int i = 0; i < nodeToDoSelection.ChildNodes.Count; i++)
+                    {
+                        MCTSNode childNode = nodeToDoSelection.ChildNodes[i];
+                        executedActions.Add(childNode.Action.Name);
+                    }
 
-                MCTSNode newNode = BestUCTChild(currentNode);
-                if (newNode == null)
-                {
-                    return currentNode;
+                    List<ActionDST> availableActions = new List<ActionDST>();
+                    for (int i = 0; i < executableActions.Count; i++)
+                    {
+                        ActionDST action = executableActions[i];
+                        if (!executedActions.Contains(action.Name))
+                        {
+                            availableActions.Add(action);
+                        }
+                    }
+
+                    if (availableActions.Count != 0)
+                    {
+                        int randomActionIndex = this.RandomGenerator.Next(availableActions.Count);
+                        currentNode = Expand(nodeToDoSelection, availableActions[randomActionIndex]);
+                    }
                 }
-                currentNode = newNode;
             }
             return currentNode;
         }
