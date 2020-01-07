@@ -8,6 +8,7 @@ namespace MCTS.DST
 
     public class MCTSAlgorithm
     {
+        private const int MAX_SELECTION_DEPTH = 2;
         private const int MAX_PLAYOUTS_PER_SEARCH = 5;
         private const int MAX_PLAYOUT_DEPTH = 4;
         private const int MAX_ITERATIONS_PER_FRAME = 100;
@@ -62,6 +63,7 @@ namespace MCTS.DST
                 selectedNode = Selection(this.InitialNode);
                 if (selectedNode == this.InitialNode)
                 { // Initial node does not have any children.
+                    Console.WriteLine("Initial node does not have any children.");
                     break;
                 }
 
@@ -78,21 +80,42 @@ namespace MCTS.DST
 
         protected MCTSNode Selection(MCTSNode nodeToDoSelection)
         {
+            Console.WriteLine(nodeToDoSelection.State.GetExecutableActions().Count);
             MCTSNode currentNode = nodeToDoSelection;
-            while (!currentNode.State.IsTerminal())
+            int currentDepth = -1;
+            while (++currentDepth < MAX_SELECTION_DEPTH) // !currentNode.State.IsTerminal())
             {
-                ActionDST nextAction = currentNode.State.GetNextAction();
-                if (nextAction != null)
+                List<ActionDST> executableActions = nodeToDoSelection.State.GetExecutableActions();
+                int len = executableActions.Count;
+                if (len == nodeToDoSelection.ChildNodes.Count)
                 {
-                    return Expand(currentNode, nextAction);
+                    nodeToDoSelection = BestUCTChild(nodeToDoSelection);
                 }
+                else
+                {
+                    List<string> executedActions = new List<string>();
+                    for (int i = 0; i < nodeToDoSelection.ChildNodes.Count; i++)
+                    {
+                        MCTSNode childNode = nodeToDoSelection.ChildNodes[i];
+                        executedActions.Add(childNode.Action.Name);
+                    }
 
-                MCTSNode newNode = BestUCTChild(currentNode);
-                if (newNode == null)
-                {
-                    return currentNode;
+                    List<ActionDST> availableActions = new List<ActionDST>();
+                    for (int i = 0; i < executableActions.Count; i++)
+                    {
+                        ActionDST action = executableActions[i];
+                        if (!executedActions.Contains(action.Name))
+                        {
+                            availableActions.Add(action);
+                        }
+                    }
+
+                    if (availableActions.Count != 0)
+                    {
+                        int randomActionIndex = this.RandomGenerator.Next(availableActions.Count);
+                        currentNode = Expand(nodeToDoSelection, availableActions[randomActionIndex]);
+                    }
                 }
-                currentNode = newNode;
             }
             return currentNode;
         }
@@ -114,8 +137,8 @@ namespace MCTS.DST
         {
             WorldModelDST futureWorld = initialPlayoutState;
             ActionDST randomChosenAction;
-            CurrentDepth = 0;
-            while (this.CurrentDepth++ < MAX_PLAYOUT_DEPTH)
+            CurrentDepth = -1;
+            while (++this.CurrentDepth < MAX_PLAYOUT_DEPTH)
             {
                 List<ActionDST> availableActions = futureWorld.GetExecutableActions();
                 int len = availableActions.Count;
@@ -146,9 +169,8 @@ namespace MCTS.DST
             float bestUCT = float.MinValue;
             MCTSNode bestNode = null;
 
-            int i = 0;
-
-            while (i < node.ChildNodes.Count)
+            int i = -1;
+            while (++i < node.ChildNodes.Count)
             {
                 UCTValue = (float)((node.ChildNodes[i].Q / node.ChildNodes[i].N) + 1.4f * Math.Sqrt(Math.Log(node.N) / node.ChildNodes[i].N));
                 if (UCTValue > bestUCT)
@@ -156,7 +178,6 @@ namespace MCTS.DST
                     bestUCT = UCTValue;
                     bestNode = node.ChildNodes[i];
                 }
-                i++;
             }
             return bestNode;
         }
@@ -167,9 +188,8 @@ namespace MCTS.DST
             float bestAverageQ = float.MinValue;
             MCTSNode bestNode = null;
 
-            int i = 0;
-
-            while (i < node.ChildNodes.Count)
+            int i = -1;
+            while (++i < node.ChildNodes.Count)
             {
                 averageQ = node.ChildNodes[i].Q / node.ChildNodes[i].N;
                 if (averageQ > bestAverageQ)
@@ -177,7 +197,6 @@ namespace MCTS.DST
                     bestAverageQ = averageQ;
                     bestNode = node.ChildNodes[i];
                 }
-                i++;
             }
             return bestNode.Action;
         }
