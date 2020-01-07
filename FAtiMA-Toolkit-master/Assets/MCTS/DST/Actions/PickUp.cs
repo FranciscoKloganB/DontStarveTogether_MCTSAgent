@@ -21,7 +21,6 @@ namespace MCTS.DST.Actions
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            // base.ApplyActionEffects(worldState);
             worldState.Cycle += this.Duration;
             worldState.IncreaseHunger(1);
             worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
