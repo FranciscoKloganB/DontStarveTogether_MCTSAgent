@@ -99,6 +99,7 @@ namespace MCTS.DST
             action.ApplyActionEffects(futureWorld);
             MCTSNode child = new MCTSNode(futureWorld)
             {
+                Action = action,
                 Parent = parent,
             };
             parent.ChildNodes.Add(child);
