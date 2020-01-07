@@ -116,7 +116,12 @@ namespace MCTS.DST
 
         protected virtual void Backpropagate(MCTSNode node, float reward)
         {
-            //TO DO
+            while (node.Parent != null)
+            {
+                node.N++;
+                node.Q += reward;
+                node = node.Parent;
+            }
         }
 
         protected virtual MCTSNode BestUCTChild(MCTSNode node)
