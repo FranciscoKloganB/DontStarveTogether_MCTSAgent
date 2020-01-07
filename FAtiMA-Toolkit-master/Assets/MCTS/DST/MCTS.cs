@@ -74,8 +74,15 @@ namespace MCTS.DST
 
         protected MCTSNode Selection(MCTSNode nodeToDoSelection)
         {
+            MCTSNode currentNode = nodeToDoSelection;
+            while (!currentNode.State.IsTerminal())
+            {
+                ActionDST nextAction = currentNode.State.GetNextAction();
+                if (nextAction != null)
+                {
+                    return Expand(currentNode, nextAction);
+                }
 
-            //TO DO
 
             return new MCTSNode(new WorldModelDST());
         }
