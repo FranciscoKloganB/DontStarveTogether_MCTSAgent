@@ -222,7 +222,7 @@ namespace MCTS.DST
             {   // It's night time
                 return (float)(state.LightValueNight() * 0.9f + state.FoodValue() * 0.1f) / 10.0f;
             }
-            else if (cycleProgress >= cycleLength - duskLength)
+            else if (cycleProgress >= cycleLength - nightLength - duskLength)
             {   // It's dusk time
                 return (float)(state.LightValueDay() * 7.0f + state.FoodValue() * 3.0f) / 10.0f;
             }
