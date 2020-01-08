@@ -9,7 +9,6 @@ namespace MCTS.DST
     public class MCTSAlgorithm
     {
         private const int MAX_SELECTION_DEPTH = 2;
-        private const int MAX_PLAYOUTS_PER_SEARCH = 5;
         private const int MAX_PLAYOUT_DEPTH = 4;
         private const int MAX_ITERATIONS_PER_FRAME = 100;
         public const float C = 1.4f;
@@ -54,6 +53,7 @@ namespace MCTS.DST
 
             Console.WriteLine("Running MCTS Search");
 
+            // TODO - Consider adding multiple playouts.
             while (this.CurrentIterations++ < MAX_ITERATIONS_PER_FRAME)
             {
                 selectedNode = Selection(this.InitialNode);
@@ -62,12 +62,8 @@ namespace MCTS.DST
                     Console.WriteLine("Initial node does not have any children.");
                     break;
                 }
-
-                for (int i = 0; i < MAX_PLAYOUTS_PER_SEARCH; i++)
-                {
-                    reward = Playout(selectedNode.State);
-                    Backpropagate(selectedNode, reward);
-                }
+                reward = Playout(selectedNode.State);
+                Backpropagate(selectedNode, reward);
             }
             
             this.InProgress = false;
