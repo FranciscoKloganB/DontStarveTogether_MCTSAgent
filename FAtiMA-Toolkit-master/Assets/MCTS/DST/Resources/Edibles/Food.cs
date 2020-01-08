@@ -1,9 +1,55 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime;
 using Utilities;
 
 namespace MCTS.DST.Resources.Edibles
 {
+    public static class FoodDict
+    {
+
+        public static Dictionary<string, Food> foodBase = new Dictionary<string, Food>()
+        {
+            ["aspargus"] = Asparagus.Instance,
+            ["cooked_aspargus"] = CookedAsparagus.Instance,
+            ["berries"] = Berries.Instance,
+            ["roasted_berries"] = RoastedBerries.Instance,
+            ["roasted_birchnut"] = RoastedBirchnut.Instance,
+            ["butterfly_wings"] = ButterflyWings.Instance,
+            ["cactus_flesh"] = CactusFlesh.Instance,
+            ["cooked_cactus_flesh"] = CookedCactusFlesh.Instance,
+            ["cactus_flower"] = CactusFlower.Instance,
+            ["carrot"] = Carrot.Instance,
+            ["roasted_carrot"] = RoastedCarrot.Instance,
+            ["fish_morsel"] = FishMorsel.Instance,
+            ["cooked_fish_morsel"] = CookedFishMorsel.Instance,
+            ["frog_legs"] = FrogLegs.Instance,
+            ["cooked_frog_legs"] = CookedFrogLegs.Instance,
+            ["juicy_berries"] = JuicyBerries.Instance,
+            ["roasted_juicy_berries"] = RoastedJuicyBerries.Instance,
+            ["leafy_meat"] = LeafyMeat.Instance,
+            ["cooked_leafy_meant"] = CookedLeafyMeat.Instance,
+            ["mandrake"] = Mandrake.Instance,
+            ["cooked_mandrake"] = CookedMandrake.Instance,
+            ["meat"] = Meat.Instance,
+            ["cooked_meat"] = CookedMeat.Instance,
+            ["jerky"] = Jerky.Instance,
+            ["monster_meat"] = MonsterMeat.Instance,
+            ["cooked_monster_meat"] = CookedMonsterMeat.Instance,
+            ["morsel"] = Morsel.Instance,
+            ["cooked_morsel"] = CookedMorsel.Instance,
+            ["blue_cap"] = BlueCap.Instance,
+            ["cooked_blue_cap"] = CookedBlueCap.Instance,
+            ["green_cap"] = GreenCap.Instance,
+            ["cooked_green_cap"] = CookedGreenCap.Instance,
+            ["red_cap"] = RedCap.Instance,
+            ["cooked_red_cap"] = CookedRedCap.Instance,
+            ["petals"] = Petals.Instance,
+            ["fish"] = Fish.Instance,
+            ["fish_steak"] = FishSteak.Instance,
+            ["watermelon"] = Watermelon.Instance,
+        };
+    }
 
     public class Food
     {
