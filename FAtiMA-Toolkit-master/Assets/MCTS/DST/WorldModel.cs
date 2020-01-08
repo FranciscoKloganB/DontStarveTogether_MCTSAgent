@@ -599,13 +599,5 @@ namespace MCTS.DST.WorldModels
         {
             return this.Walter.HP == 0;
         }
-
-        public bool IsNight()
-        {
-            // (double) Convert.ToSingle(15 - state.CycleInfo[2]) <= (double) state.Cycle
-            float cycleLength = this.CycleInfo.Sum(); // Should be 16.0f according to what I counted in-game, but author uses 15.0f in his code. I use Sum() which cannot be wrong.
-            float nightLength = this.CycleInfo[2];
-            return cycleLength - nightLength <= this.Cycle;
-        }
     }
 }

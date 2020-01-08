@@ -2,6 +2,7 @@
 using MCTS.DST.Actions;
 using MCTS.DST.WorldModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MCTS.DST
 {
@@ -208,10 +209,23 @@ namespace MCTS.DST
                 return 0.0f;
             }
 
-            float HNight = (float)(state.LightValueNight() * 0.9f + state.FoodValue() * 0.1f) / 10.0f;
-            float HDay = (float)(state.LightValueDay() * 7.0f + state.FoodValue() * 3.0f) / 10.0f;
+            float cycleProgress = state.Cycle;
+            float duskLength = state.CycleInfo[1];
+            float nightLength = state.CycleInfo[2];
+            float cycleLength = state.CycleInfo.Sum();
 
-            return state.IsNight() ? HNight : HDay;
+            if (cycleProgress >= cycleLength - nightLength)
+            {   // It's night time
+                return (float)(state.LightValueNight() * 0.9f + state.FoodValue() * 0.1f) / 10.0f;
+            }
+            else if (cycleProgress >= cycleLength - duskLength)
+            {   // It's dusk time
+                return (float)(state.LightValueDay() * 7.0f + state.FoodValue() * 3.0f) / 10.0f;
+            }
+            else
+            {   // It's day time
+                return (float)(state.LightValueDay() * 2.0f + state.FoodValue() * 8.0f) / 10.0f;
+            }
         }
     }
 }
