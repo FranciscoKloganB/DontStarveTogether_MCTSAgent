@@ -151,7 +151,7 @@ namespace MCTS.DST
 
         protected virtual void Backpropagate(MCTSNode node, float reward)
         {
-            while (node.Parent != null)
+            while (node != null)
             {
                 node.N++;
                 node.Q += reward;
