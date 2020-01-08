@@ -19,7 +19,6 @@ namespace MCTS.DST.WorldModels
         public float Cycle;
         public int[] CycleInfo;
         public List<ActionDST> AvailableActions; 
-        protected IEnumerator<ActionDST> ActionEnumerator { get; set; }      
 
         protected WorldModelDST Parent;
 
@@ -32,7 +31,6 @@ namespace MCTS.DST.WorldModels
             this.Cycle = cycle; // represents the stage of the day
             this.CycleInfo = cycleInfo; // stores the amount of time each phase of the day lasts. The phases are day, dusk and night
             this.AvailableActions = availableActions; // list of actions that the character can do in the current state. It is created based on the PreWorldState information and it is updated when an action is done
-            this.ActionEnumerator = availableActions.GetEnumerator();
             this.Parent = parent; // World Model which originates the current one by means of ActionApplyEffect
             this.Fuel = fuel; // it is a list of 3-tuples that contain the name, the GUID and the quantity of the items that can be used as fuel for res
             this.Fire = fire; // list of 3-tuples that contain the name and the position of the fires in the world
@@ -110,32 +108,6 @@ namespace MCTS.DST.WorldModels
                 action = new Eat("carrot");
                 this.AvailableActions.Add(action);
             }
-
-            this.ActionEnumerator = this.AvailableActions.GetEnumerator();
-        }
-
-        public virtual ActionDST GetNextAction()
-        {
-            ActionDST action = null;
-            //returns the next action that can be executed or null if no more executable actions exist
-            if (this.ActionEnumerator.MoveNext())
-            {
-                action = this.ActionEnumerator.Current;
-            }
-
-            while (action != null) // && !action.CanExecute(this))
-            {
-                if (this.ActionEnumerator.MoveNext())
-                {
-                    action = this.ActionEnumerator.Current;    
-                }
-                else
-                {
-                    action = null;
-                }
-            }
-
-            return action;
         }
 
         public List<ActionDST> GetExecutableActions()

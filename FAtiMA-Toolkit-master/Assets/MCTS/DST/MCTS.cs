@@ -10,14 +10,11 @@ namespace MCTS.DST
     public class MCTSAlgorithm
     {
         private const int MAX_SELECTION_DEPTH = 2;
-        private const int MAX_PLAYOUTS_PER_SEARCH = 5;
         private const int MAX_PLAYOUT_DEPTH = 4;
         private const int MAX_ITERATIONS_PER_FRAME = 100;
         public const float C = 1.4f;
 
         public bool InProgress { get; private set; }
-        public int MaxPlayoutDepthReached { get; private set; }
-        public int MaxSelectionDepthReached { get; private set; }
         public MCTSNode BestFirstChild { get; set; }
 
         protected int CurrentIterations { get; set; }
@@ -40,8 +37,6 @@ namespace MCTS.DST
 
         public void InitializeMCTSearch()
         {
-            this.MaxPlayoutDepthReached = 0;
-            this.MaxSelectionDepthReached = 0;
             this.CurrentIterations = 0;
             this.InitialNode = new MCTSNode(this.CurrentState)
             {
@@ -59,6 +54,7 @@ namespace MCTS.DST
 
             Console.WriteLine("Running MCTS Search");
 
+            // TODO - Consider adding multiple playouts.
             while (this.CurrentIterations++ < MAX_ITERATIONS_PER_FRAME)
             {
                 selectedNode = Selection(this.InitialNode);
@@ -67,12 +63,8 @@ namespace MCTS.DST
                     Console.WriteLine("Initial node does not have any children.");
                     break;
                 }
-
-                for (int i = 0; i < MAX_PLAYOUTS_PER_SEARCH; i++)
-                {
-                    reward = Playout(selectedNode.State);
-                    Backpropagate(selectedNode, reward);
-                }
+                reward = Playout(selectedNode.State);
+                Backpropagate(selectedNode, reward);
             }
             
             this.InProgress = false;
@@ -86,36 +78,42 @@ namespace MCTS.DST
             int currentDepth = -1;
             while (++currentDepth < MAX_SELECTION_DEPTH) // !currentNode.State.IsTerminal())
             {
-                List<ActionDST> executableActions = nodeToDoSelection.State.GetExecutableActions();
-                int len = executableActions.Count;
-                if (len == nodeToDoSelection.ChildNodes.Count)
+                List<ActionDST> allActions = currentNode.State.GetExecutableActions();
+                // If all executable actions have been used to generate child worlds, 
+                // the current node cannot be further expanded.
+                if (allActions.Count == currentNode.ChildNodes.Count)
                 {
-                    nodeToDoSelection = BestUCTChild(nodeToDoSelection);
+                    Console.WriteLine("childs = count = " + nodeToDoSelection.ChildNodes.Count);
+                    currentNode = this.BestUCTChild(nodeToDoSelection);
                 }
                 else
                 {
+                    // List of all actions that already generated child worlds.
                     List<string> executedActions = new List<string>();
-                    for (int i = 0; i < nodeToDoSelection.ChildNodes.Count; i++)
+                    for (int i = 0; i < currentNode.ChildNodes.Count; i++)
                     {
-                        MCTSNode childNode = nodeToDoSelection.ChildNodes[i];
+                        MCTSNode childNode = currentNode.ChildNodes[i];
                         executedActions.Add(childNode.Action.Name);
                     }
 
+                    // List of available actions = AllActions - ExecutedActions.
                     List<ActionDST> availableActions = new List<ActionDST>();
-                    for (int i = 0; i < executableActions.Count; i++)
+                    for (int i = 0; i < allActions.Count; i++)
                     {
-                        ActionDST action = executableActions[i];
+                        ActionDST action = allActions[i];
                         if (!executedActions.Contains(action.Name))
                         {
                             availableActions.Add(action);
                         }
                     }
 
+                    // There are still available actions to generate child worlds.
                     if (availableActions.Count != 0)
                     {
                         int randomActionIndex = this.RandomGenerator.Next(availableActions.Count);
-                        currentNode = Expand(nodeToDoSelection, availableActions[randomActionIndex]);
+                        currentNode = Expand(currentNode, availableActions[randomActionIndex]);
                     }
+                    return currentNode;
                 }
             }
             return currentNode;
@@ -156,7 +154,7 @@ namespace MCTS.DST
 
         protected virtual void Backpropagate(MCTSNode node, float reward)
         {
-            while (node.Parent != null)
+            while (node != null)
             {
                 node.N++;
                 node.Q += reward;
@@ -166,14 +164,20 @@ namespace MCTS.DST
 
         protected virtual MCTSNode BestUCTChild(MCTSNode node)
         {
+            MCTSNode bestNode = null;
+            if (node.ChildNodes.Count == 0)
+            {
+                return bestNode;
+            }
+            bestNode = node.ChildNodes[0];
+            MCTSNode child;
             float UCTValue;
             float bestUCT = float.MinValue;
-            MCTSNode bestNode = null;
-
-            int i = -1;
-            while (++i < node.ChildNodes.Count)
+            for (int i = 0; i < node.ChildNodes.Count; i++)
             {
-                UCTValue = (float)((node.ChildNodes[i].Q / node.ChildNodes[i].N) + 1.4f * Math.Sqrt(Math.Log(node.N) / node.ChildNodes[i].N));
+                child = node.ChildNodes[i];
+                UCTValue = (float) ((child.Q / child.N) + 1.4f * Math.Sqrt(Math.Log(node.N) / child.N));
+                Console.WriteLine("utcvaule = " + UCTValue);
                 if (UCTValue > bestUCT)
                 {
                     bestUCT = UCTValue;
