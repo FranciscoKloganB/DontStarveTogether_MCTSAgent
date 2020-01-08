@@ -161,14 +161,20 @@ namespace MCTS.DST
 
         protected virtual MCTSNode BestUCTChild(MCTSNode node)
         {
+            MCTSNode bestNode = null;
+            if (node.ChildNodes.Count == 0)
+            {
+                return bestNode;
+            }
+            bestNode = node.ChildNodes[0];
+            MCTSNode child;
             float UCTValue;
             float bestUCT = float.MinValue;
-            MCTSNode bestNode = null;
-
-            int i = -1;
-            while (++i < node.ChildNodes.Count)
+            for (int i = 0; i < node.ChildNodes.Count; i++)
             {
-                UCTValue = (float)((node.ChildNodes[i].Q / node.ChildNodes[i].N) + 1.4f * Math.Sqrt(Math.Log(node.N) / node.ChildNodes[i].N));
+                child = node.ChildNodes[i];
+                UCTValue = (float) ((child.Q / child.N) + 1.4f * Math.Sqrt(Math.Log(node.N) / child.N));
+                Console.WriteLine("utcvaule = " + UCTValue);
                 if (UCTValue > bestUCT)
                 {
                     bestUCT = UCTValue;
