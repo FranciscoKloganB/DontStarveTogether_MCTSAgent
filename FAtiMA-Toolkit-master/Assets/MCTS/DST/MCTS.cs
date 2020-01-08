@@ -203,12 +203,15 @@ namespace MCTS.DST
 
         protected float WorldStateHeuristic(WorldModelDST state)
         {
-            if (state.Walter.HP == 0 || state.Walter.Sanity == 0 || (state.Walter.Hunger == 0 && state.Walter.HP < 30))
+            if (state.Walter.HP <= 0 || state.Walter.Sanity <= 0 || (state.Walter.Hunger <= 0 && state.Walter.HP <= 30))
             {
                 return 0.0f;
             }
-            // TODO Complete Heuristic
-            return 1.0f;
+
+            float HNight = (float)(state.LightValueNight() * 0.9f + state.FoodValue() * 0.1f) / 10.0f;
+            float HDay = (float)(state.LightValueDay() * 7.0f + state.FoodValue() * 3.0f) / 10.0f;
+
+            return state.IsNight() ? HNight : HDay;
         }
     }
 }
