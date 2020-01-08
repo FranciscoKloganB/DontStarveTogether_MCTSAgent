@@ -25,6 +25,10 @@ namespace MCTS.DST
         public MCTSNode InitialNode { get; set; }
         protected System.Random RandomGenerator { get; set; }
 
+        private readonly int MAX_HP = 150;
+        private readonly int MAX_HUNGER = 150;
+        private readonly int MAX_SANITY = 200;
+
         public MCTSAlgorithm(WorldModelDST currentState)
         {
             this.InProgress = false;
@@ -207,12 +211,15 @@ namespace MCTS.DST
 
         protected float WorldStateHeuristic(WorldModelDST state)
         {
-            if (state.Walter.HP == 0)
+            if (state.Walter.HP <= 0 || state.Walter.Sanity <= 0 || (state.Walter.Hunger <= 0 && state.Walter.HP <= 30))
             {
                 return 0.0f;
             }
-            // TODO - Find better heuristic.
-            return 1.0f;
+
+            float HNight = (float)(state.LightValueNight() * 0.9f + state.FoodValue() * 0.1f) / 10.0f;
+            float HDay = (float)(state.LightValueDay() * 7.0f + state.FoodValue() * 3.0f) / 10.0f;
+
+            return state.IsNight() ? HNight : HDay;
         }
     }
 }
