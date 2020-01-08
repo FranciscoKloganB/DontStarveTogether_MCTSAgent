@@ -14,8 +14,6 @@ namespace MCTS.DST
         public const float C = 1.4f;
 
         public bool InProgress { get; private set; }
-        public int MaxPlayoutDepthReached { get; private set; }
-        public int MaxSelectionDepthReached { get; private set; }
         public MCTSNode BestFirstChild { get; set; }
 
         protected int CurrentIterations { get; set; }
@@ -38,8 +36,6 @@ namespace MCTS.DST
 
         public void InitializeMCTSearch()
         {
-            this.MaxPlayoutDepthReached = 0;
-            this.MaxSelectionDepthReached = 0;
             this.CurrentIterations = 0;
             this.InitialNode = new MCTSNode(this.CurrentState)
             {
