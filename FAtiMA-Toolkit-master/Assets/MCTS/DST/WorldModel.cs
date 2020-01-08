@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Utilities;
 using MCTS.DST.Actions;
 using MCTS.DST;
+using System.Linq;
 
 namespace MCTS.DST.WorldModels
 {
@@ -597,6 +598,13 @@ namespace MCTS.DST.WorldModels
         public bool IsTerminal()
         {
             return this.Walter.HP == 0;
+        }
+
+        public bool IsNight()
+        {
+            float nightLength = this.CycleInfo[2];
+            float cycleLength = this.CycleInfo.Sum(); // 16.0f, but author of the report says its 15.0f.
+            return cycleLength - nightLength <= this.Cycle;
         }
     }
 }
