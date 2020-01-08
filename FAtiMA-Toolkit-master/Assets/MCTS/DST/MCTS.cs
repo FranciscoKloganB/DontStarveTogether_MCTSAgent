@@ -77,36 +77,42 @@ namespace MCTS.DST
             int currentDepth = -1;
             while (++currentDepth < MAX_SELECTION_DEPTH) // !currentNode.State.IsTerminal())
             {
-                List<ActionDST> executableActions = nodeToDoSelection.State.GetExecutableActions();
-                int len = executableActions.Count;
-                if (len == nodeToDoSelection.ChildNodes.Count)
+                List<ActionDST> allActions = currentNode.State.GetExecutableActions();
+                // If all executable actions have been used to generate child worlds, 
+                // the current node cannot be further expanded.
+                if (allActions.Count == currentNode.ChildNodes.Count)
                 {
-                    nodeToDoSelection = BestUCTChild(nodeToDoSelection);
+                    Console.WriteLine("childs = count = " + nodeToDoSelection.ChildNodes.Count);
+                    currentNode = this.BestUCTChild(nodeToDoSelection);
                 }
                 else
                 {
+                    // List of all actions that already generated child worlds.
                     List<string> executedActions = new List<string>();
-                    for (int i = 0; i < nodeToDoSelection.ChildNodes.Count; i++)
+                    for (int i = 0; i < currentNode.ChildNodes.Count; i++)
                     {
-                        MCTSNode childNode = nodeToDoSelection.ChildNodes[i];
+                        MCTSNode childNode = currentNode.ChildNodes[i];
                         executedActions.Add(childNode.Action.Name);
                     }
 
+                    // List of available actions = AllActions - ExecutedActions.
                     List<ActionDST> availableActions = new List<ActionDST>();
-                    for (int i = 0; i < executableActions.Count; i++)
+                    for (int i = 0; i < allActions.Count; i++)
                     {
-                        ActionDST action = executableActions[i];
+                        ActionDST action = allActions[i];
                         if (!executedActions.Contains(action.Name))
                         {
                             availableActions.Add(action);
                         }
                     }
 
+                    // There are still available actions to generate child worlds.
                     if (availableActions.Count != 0)
                     {
                         int randomActionIndex = this.RandomGenerator.Next(availableActions.Count);
-                        currentNode = Expand(nodeToDoSelection, availableActions[randomActionIndex]);
+                        currentNode = Expand(currentNode, availableActions[randomActionIndex]);
                     }
+                    return currentNode;
                 }
             }
             return currentNode;
