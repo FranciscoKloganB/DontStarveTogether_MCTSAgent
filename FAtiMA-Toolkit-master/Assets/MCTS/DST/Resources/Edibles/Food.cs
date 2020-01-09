@@ -5,10 +5,15 @@ using Utilities;
 
 namespace MCTS.DST.Resources.Edibles
 {
-    public static class FoodDict
+    public sealed class FoodDict
     {
+        public static FoodDict Instance { get; } = new FoodDict();
 
-        public static Dictionary<string, Food> foodBase = new Dictionary<string, Food>()
+        private FoodDict()
+        {
+        }
+
+        public Dictionary<string, Food> foodBase = new Dictionary<string, Food>()
         {
             ["aspargus"] = Asparagus.Instance,
             ["cooked_aspargus"] = CookedAsparagus.Instance,
