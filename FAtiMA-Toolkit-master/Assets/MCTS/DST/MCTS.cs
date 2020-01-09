@@ -208,7 +208,7 @@ namespace MCTS.DST
 
         protected float WorldStateHeuristic(WorldModelDST state)
         {
-            if (state.Walter.HP <= 0 || state.Walter.Sanity <= 0 || (state.Walter.Hunger <= 0 && state.Walter.HP <= 30))
+            if (state.Walter.HP <= 0 || state.Walter.Sanity <= 0 || (state.Walter.Satiation <= 0 && state.Walter.HP <= 30))
             {
                 return 0.0f;
             }

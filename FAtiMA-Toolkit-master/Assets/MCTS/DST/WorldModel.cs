@@ -121,7 +121,7 @@ namespace MCTS.DST.WorldModels
 
         public WorldModelDST GenerateChildWorldModel()
         {
-            Character walter = new Character(this.Walter.HP, this.Walter.Hunger, this.Walter.Sanity, this.Walter.Position.Item1, this.Walter.Position.Item2);
+            Character walter = new Character(this.Walter.HP, this.Walter.Satiation, this.Walter.Sanity, this.Walter.Position.Item1, this.Walter.Position.Item2);
             List<Pair<Pair<string, int>, Pair<int, int>>> worldObjects = new List<Pair<Pair<string, int>, Pair<int, int>>>(this.WorldObjects);
             foreach (var item in this.WorldObjects)
             {
@@ -495,13 +495,13 @@ namespace MCTS.DST.WorldModels
 
             float hungerValue;
 
-            if (this.Walter.Hunger >= 100)
+            if (this.Walter.Satiation >= 100)
             {
                 hungerValue = 1;
             }
             else
             {
-                hungerValue = Convert.ToSingle(1.0 / (Math.Pow(Convert.ToDouble((Convert.ToSingle(this.Walter.Hunger) - 150.0)/50.0), 2)));
+                hungerValue = Convert.ToSingle(1.0 / (Math.Pow(Convert.ToDouble((Convert.ToSingle(this.Walter.Satiation) - 150.0)/50.0), 2)));
             }
 
             return hungerValue * 0.6f + invFoodValue * 0.4f;
@@ -547,24 +547,20 @@ namespace MCTS.DST.WorldModels
             return this.Walter.Position;
         }
 
-        public void IncreaseHunger(int n)
+        public void UpdateSatiation(float value)
         {
-            this.Walter.IncreaseHunger(n);
+            this.Walter.UpdateSatiation(value);
         }
 
-        public void IncreaseHP(int n)
+        public void UpdateHP(float value)
         {
-            this.Walter.IncreaseHP(n);
+            this.Walter.UpdateHP(value);
         }
 
-        public void DecreaseHunger(int n)
-        {
-            this.Walter.DecreaseHunger(n);
-        }
 
-        public void DecreaseHP(int n)
+        public void UpdateSanity(float value)
         {
-            this.Walter.DecreaseHP(n);
+            this.Walter.UpdateSanity(value);
         }
 
         public bool IsTerminal()

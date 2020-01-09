@@ -6,19 +6,24 @@ namespace MCTS.DST.WorldModels
 
     public class Character
     {
-        public int HP;
-        public int Hunger;
-        public int Sanity;
+        private const float MIN_ANY = 0;
+        private const float MAX_SATIATION = 150;
+        private const float MAX_HP = 150;
+        private const float MAX_SANITY = 200;
+
+        public float HP;
+        public float Satiation;
+        public float Sanity;
         public Pair<int, int> Position;
 
         public Character()
         {
         }
 
-        public Character(int hp, int hunger, int sanity, int posx, int posz)
+        public Character(float hp, float satiation, float sanity, int posx, int posz)
         {
             this.HP = hp;
-            this.Hunger = hunger;
+            this.Satiation = satiation;
             this.Sanity = sanity;
             this.Position = new Pair<int, int>(posx, posz);
         }
@@ -33,52 +38,24 @@ namespace MCTS.DST.WorldModels
             return Position.Item2;
         }
 
-        public void DecreaseHunger(int n)
+        public void UpdateSatiation(float value)
         {
-            if (this.Hunger + n > 150)
-            {
-                this.Hunger = 150;
-            }
-            else
-            {
-                this.Hunger += n;
-            }
+            this.Satiation = Clamp(this.Satiation + value, MIN_ANY, MAX_SATIATION);
         }
 
-        public void IncreaseHunger(int n)
+        public void UpdateHP(float value)
         {
-            if (this.Hunger - n < 0)
-            {
-                this.Hunger = 0;
-            }
-            else
-            {
-                this.Hunger -= n;
-            }
+            this.HP = Clamp(this.HP + value, MIN_ANY, MAX_HP);
         }
 
-        public void IncreaseHP(int n)
+        public void UpdateSanity(float value)
         {
-            if (this.Hunger + n > 150)
-            {
-                this.Hunger = 150;
-            }
-            else
-            {
-                this.Hunger += n;
-            }
+            this.Sanity = Clamp(this.Sanity + value, MIN_ANY, MAX_SANITY);
         }
 
-        public void DecreaseHP(int n)
+        private float Clamp(float value, float min, float max)
         {
-            if (this.Hunger - n < 0)
-            {
-                this.Hunger = 0;    
-            }
-            else
-            {
-                this.Hunger -= n;
-            }
+            return (value < min) ? min : (value > max) ? max : value;
         }
     } 
 }
