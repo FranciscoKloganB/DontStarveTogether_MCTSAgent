@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Utilities;
+using MCTS.DST.Resources.Edibles;
 using MCTS.DST.WorldModels;
 using MCTS.DST;
 
@@ -10,42 +11,37 @@ namespace MCTS.DST.Actions
 
     public class Eat : ActionDST
     {
-        public string Target;
-        public float Duration;
+        private Dictionary<string, Food> FoodBase { get; } = FoodDict.Instance.foodBase;
+        private static readonly float duration = 0.05f;
+        private static readonly string actionName = "Eat_";
 
-        public Eat(string target) : base("Eat_" + target)
+        private readonly string Target;
+                
+        public Eat(string target) : base(string.Concat(actionName, target))
         {
             this.Target = target;
-            this.Duration = 0.05f;
         }
-
-        //Fazer Decompose
 
         public override void ApplyActionEffects(WorldModelDST worldModel)
         {
-            worldModel.Cycle += this.Duration;
-
-            if (this.Target == "berries")
+            try
             {
-                worldModel.RemoveFromPossessedItems("berries", 1);
-                worldModel.DecreaseHunger(9);
+                Food targetFood = FoodBase[this.Target];
 
-                if (!worldModel.Possesses("berries"))
+                worldModel.Cycle += duration;
+                worldModel.RemoveFromPossessedItems(this.Target, 1);
+                worldModel.UpdateSatiation(targetFood.Satiation);
+                worldModel.UpdateHP(targetFood.HP);
+                worldModel.UpdateSanity(targetFood.Sanity);
+
+                if (!worldModel.Possesses(this.Target))
                 {
-                    worldModel.RemoveAction("Eat_berries");
+                    worldModel.RemoveAction(string.Concat(actionName, this.Target));
                 }
+            } catch (KeyNotFoundException)
+            {
+                ;
             }
-            else if (this.Target == "carrot")
-            {
-                worldModel.RemoveFromPossessedItems("carrot", 1);
-                worldModel.DecreaseHunger(13);
-                worldModel.IncreaseHP(1);
-
-                if (!worldModel.Possesses("carrot"))
-                {
-                    worldModel.RemoveAction("Eat_carrot");
-                }
-            }           
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
