@@ -25,7 +25,7 @@ namespace MCTS.DST
         protected System.Random RandomGenerator { get; set; }
 
         private readonly int MAX_HP = 150;
-        private readonly int MAX_HUNGER = 150;
+        private readonly int MAX_SATIATION = 150;
         private readonly int MAX_SANITY = 200;
 
         public MCTSAlgorithm(WorldModelDST currentState)
