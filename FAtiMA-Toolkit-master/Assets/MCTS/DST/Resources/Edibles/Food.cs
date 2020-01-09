@@ -59,13 +59,13 @@ namespace MCTS.DST.Resources.Edibles
     public class Food
     {
         public float HP { get; private set; }
-        public float Hunger { get; private set; }
+        public float Satiation { get; private set; }
         public float Sanity { get; private set; }
 
         public Food(float hp, float hunger, float sanity)
         {
             HP = hp;
-            Hunger = hunger;
+            Satiation = hunger;
             Sanity = sanity;
         }
     }
