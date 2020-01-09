@@ -27,13 +27,11 @@ namespace MCTS.DST.Actions
             try
             {
                 Food targetFood = FoodBase[this.Target];
-
                 worldModel.Cycle += duration;
                 worldModel.RemoveFromPossessedItems(this.Target, 1);
                 worldModel.UpdateSatiation(targetFood.Satiation);
                 worldModel.UpdateHP(targetFood.HP);
                 worldModel.UpdateSanity(targetFood.Sanity);
-
                 if (!worldModel.Possesses(this.Target))
                 {
                     worldModel.RemoveAction(string.Concat(actionName, this.Target));
