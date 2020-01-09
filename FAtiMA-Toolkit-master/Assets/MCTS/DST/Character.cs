@@ -6,10 +6,10 @@ namespace MCTS.DST.WorldModels
 
     public class Character
     {
-        private const float MIN_ANY = 0;
-        private const float MAX_SATIATION = 150;
-        private const float MAX_HP = 150;
-        private const float MAX_SANITY = 200;
+        private const float MIN_ANY = 0.0f;
+        private const float MAX_SATIATION = 150.0f;
+        private const float MAX_HP = 150.0f;
+        private const float MAX_SANITY = 200.0f;
 
         public float HP;
         public float Satiation;
