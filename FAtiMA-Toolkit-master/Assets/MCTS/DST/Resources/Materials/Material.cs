@@ -70,17 +70,95 @@ namespace MCTS.DST.Resources.Materials
         public static Boulder Instance { get; } = new Boulder();
     }
 
-    public sealed class Rocks : PrimitiveMaterial
+    public sealed class Tree : ComposedMaterial
     {
-        public Rocks(int quantity) : base("rocks", quantity, false) {}
+        public Tree()
+        {
+            this.ComposingItems.Add(new Log(2));
+            this.FuelItems.Add(new Log(2));
+        }
 
-        public static Rocks Instance { get; } = new Rocks(1);
+        public static Tree Instance { get; } = new Tree();
+    }
+
+    public sealed class Sapling : ComposedMaterial
+    {
+        public Sapling()
+        {
+            this.ComposingItems.Add(new Twig(1));
+            this.FuelItems.Add(new Twig(1));
+        }
+
+        public static Sapling Instance { get; } = new Sapling();
+    }
+
+    public sealed class Grass : ComposedMaterial
+    {
+        public Grass()
+        {
+            this.ComposingItems.Add(new Cutgrass(2));
+            this.FuelItems.Add(new Cutgrass(2));
+        }
+
+        public static Grass Instance { get; } = new Grass();
+    }
+
+    public sealed class BerryBush : ComposedMaterial
+    {
+        public BerryBush()
+        {
+            this.ComposingItems.Add(new Berry(2));
+        }
+
+        public static BerryBush Instance { get; } = new BerryBush();
+    }
+
+    public sealed class Rock : PrimitiveMaterial
+    {
+        public Rock(int quantity) : base("rocks", quantity, false) {}
+
+        public static Rock Instance { get; } = new Rock(1);
     }
 
     public sealed class Flint : PrimitiveMaterial
     {
         public Flint(int quantity) : base("flint", quantity, false) { }
 
-        public static Rocks Instance { get; } = new Rocks(1);
+        public static Flint Instance { get; } = new Flint(1);
+    }
+
+    public sealed class Log : PrimitiveMaterial
+    {
+        public Log(int quantity) : base("log", quantity, true) { }
+
+        public static Log Instance { get; } = new Log(1);
+    }
+
+    public sealed class Twig : PrimitiveMaterial
+    {
+        public Twig(int quantity) : base("twigs", quantity, true) { }
+
+        public static Twig Instance { get; } = new Twig(1);
+    }
+
+    public sealed class Cutgrass : PrimitiveMaterial
+    {
+        public Cutgrass(int quantity) : base("cutgrass", quantity, true) { }
+
+        public static Cutgrass Instance { get; } = new Cutgrass(1);
+    }
+
+    public sealed class Berry : PrimitiveMaterial
+    {
+        public Berry(int quantity) : base("berries", quantity, true) { }
+
+        public static Berry Instance { get; } = new Berry(1);
+    }
+
+    public sealed class Carrot : PrimitiveMaterial
+    {
+        public Carrot(int quantity) : base("carrot", quantity, true) { }
+
+        public static Carrot Instance { get; } = new Carrot(1);
     }
 }
