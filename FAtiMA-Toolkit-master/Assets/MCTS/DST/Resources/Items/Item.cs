@@ -15,17 +15,17 @@ namespace MCTS.DST.Resources.Items
 
         public Dictionary<string, Item> itemBase = new Dictionary<string, Item>()
         {
-            ["axe"] = SomeItem.Instance,
-            ["pickaxe"] = SomeItem.Instance,
-            ["campfire"] = SomeItem.Instance,
-            ["firepit"] = SomeItem.Instance,
-            ["torch"] = SomeItem.Instance,
-            ["some_item"] = SomeItem.Instance,
-            ["some_item"] = SomeItem.Instance,
-            ["some_item"] = SomeItem.Instance,
-            ["some_item"] = SomeItem.Instance,
-            ["some_item"] = SomeItem.Instance,
-            ["some_item"] = SomeItem.Instance,
+            ["axe"] = Torch.Instance,
+            ["pickaxe"] = Torch.Instance,
+            ["campfire"] = Torch.Instance,
+            ["firepit"] = Torch.Instance,
+            ["torch"] = Torch.Instance,
+            ["some_item"] = Torch.Instance,
+            ["some_item"] = Torch.Instance,
+            ["some_item"] = Torch.Instance,
+            ["some_item"] = Torch.Instance,
+            ["some_item"] = Torch.Instance,
+            ["some_item"] = Torch.Instance,
         };
     }
 
@@ -67,11 +67,27 @@ namespace MCTS.DST.Resources.Items
         }
     }
 
-    public sealed class SomeItem : Item
+    public sealed class Torch : Item
     {
-        private SomeItem(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private static Item instance;
+        public static Item Instance
+        { 
+            get
+            {
+                if (Instance == null)
+                {
+                    _ = new Dictionary<string, int>()
+                    {
+                        ["twigs"] = 2,
+                    };
+                    Instance = new Torch(_, "torch", true);
+                }
+            }
+        }
 
-        public static Item Instance { get; } = new SomeItem(new Dictionary<string, int>(), "", false);
+        private Torch(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+
+            //new Dictionary<string, int>(), "", false);
     }
 
 
