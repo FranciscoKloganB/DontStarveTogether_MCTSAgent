@@ -49,7 +49,7 @@
     <Compile Include="DST\PreWorldState.cs" />
     <Compile Include="DST\Actions\Wander.cs" />
     <Compile Include="DST\Resources\Edibles\Food.cs" />
-    <Compile Include="DST\Resources\Itemss\Buildable.cs" />
+    <Compile Include="DST\Resources\Buildables\Buildable.cs" />
     <Compile Include="DST\Resources\Materials\Material.cs" />
     <Compile Include="DST\WorldModel.cs" />
     <Compile Include="MCTSAsset.cs" />
