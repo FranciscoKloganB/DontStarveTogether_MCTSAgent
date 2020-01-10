@@ -96,12 +96,7 @@ namespace MCTS.DST.Resources.Buildables
             {
                 if (Instance == null)
                 {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["twigs"] = 1,
-                        ["flint"] = 1
-                    };
-                    instance = new Axe(_, "axe");
+                    instance = new Axe(new Dictionary<string, int>() { ["twigs"] = 1, ["flint"] = 1 }, "axe");
                 }
                 return instance;
             }
@@ -120,12 +115,7 @@ namespace MCTS.DST.Resources.Buildables
             {
                 if (Instance == null)
                 {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["twigs"] = 2,
-                        ["flint"] = 2
-                    };
-                    instance = new Pickaxe(_, "pickaxe");
+                    instance = new Pickaxe(new Dictionary<string, int>() { ["twigs"] = 2, ["flint"] = 2 }, "pickaxe");
                 }
                 return instance;
             }
@@ -144,12 +134,7 @@ namespace MCTS.DST.Resources.Buildables
             {
                 if (Instance == null)
                 {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["twigs"] = 2,
-                        ["flint"] = 2
-                    };
-                    instance = new Shovel(_, "shovel");
+                    instance = new Shovel(new Dictionary<string, int>() { ["twigs"] = 2, ["flint"] = 2 }, "shovel");
                 }
                 return instance;
             }
@@ -168,13 +153,7 @@ namespace MCTS.DST.Resources.Buildables
             {
                 if (Instance == null)
                 {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["twigs"] = 3,
-                        ["rocks"] = 3,
-                        ["cutgrass"] = 6
-                    };
-                    instance = new Hammer(_, "hammer");
+                    instance = new Hammer(new Dictionary<string, int>() { ["twigs"] = 3, ["rocks"] = 3, ["cutgrass"] = 6 }, "hammer");
                 }
                 return instance;
             }
@@ -193,12 +172,7 @@ namespace MCTS.DST.Resources.Buildables
             {
                 if (Instance == null)
                 {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["cutgrass"] = 3,
-                        ["log"] = 2
-                    };
-                    instance = new Campfire(_, "campfire");
+                    instance = new Campfire(new Dictionary<string, int>() { ["cutgrass"] = 3, ["log"] = 2 }, "campfire");
                 }
                 return instance;
             }
@@ -217,12 +191,7 @@ namespace MCTS.DST.Resources.Buildables
             {
                 if (Instance == null)
                 {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["log"] = 2,
-                        ["rocks"] = 12
-                    };
-                    instance = new FirePit(_, "firepit");
+                    instance = new FirePit(new Dictionary<string, int>() { ["log"] = 2, ["rocks"] = 12 }, "firepit");
                 }
                 return instance;
             }
@@ -241,12 +210,7 @@ namespace MCTS.DST.Resources.Buildables
             {
                 if (Instance == null)
                 {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["cutgrass"] = 2,
-                        ["twigs"] = 2
-                    };
-                    instance = new Torch(_, "torch");
+                    instance = new Torch(new Dictionary<string, int>() { ["cutgrass"] = 2, ["twigs"] = 2 }, "torch");
                 }
                 return instance;
             }
@@ -264,13 +228,8 @@ namespace MCTS.DST.Resources.Buildables
             get
             {
                 if (Instance == null)
-                {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["cutgrass"] = 3,
-                        ["nitre"] = 2
-                    };
-                    instance = new EndothermicFire(_, "endothermic_fire");
+                {                    
+                    instance = new EndothermicFire(new Dictionary<string, int>() { ["cutgrass"] = 3, ["nitre"] = 2 }, "endothermic_fire");
                 }
                 return instance;
             }
@@ -289,12 +248,7 @@ namespace MCTS.DST.Resources.Buildables
             {
                 if (Instance == null)
                 {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["twigs"] = 2,
-                        ["silk"] = 2
-                    };
-                    instance = new FishingRod(_, "fishing_rod");
+                    instance = new FishingRod(new Dictionary<string, int>() { ["twigs"] = 2, ["silk"] = 2 }, "fishing_rod");
                 }
                 return instance;
             }
@@ -313,13 +267,7 @@ namespace MCTS.DST.Resources.Buildables
             {
                 if (Instance == null)
                 {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["twigs"] = 6,
-                        ["silk"] = 2,
-                        ["pig_skin"] = 1
-                    };
-                    instance = new Umbrella(_, "umbrella");
+                    instance = new Umbrella(new Dictionary<string, int>() { ["twigs"] = 6, ["silk"] = 2, ["pig_skin"] = 1 }, "umbrella");
                 }
                 return instance;
             }
@@ -338,12 +286,7 @@ namespace MCTS.DST.Resources.Buildables
             {
                 if (Instance == null)
                 {
-                    _ = new Dictionary<string, int>()
-                    {
-                        ["twigs"] = 3,
-                        ["petals"] = 1,
-                    };
-                    instance = new WhirlyFan(_, "whirly_fan");
+                    instance = new WhirlyFan(new Dictionary<string, int>(){ ["twigs"] = 3, ["petals"] = 1}, "whirly_fan");
                 }
                 return instance;
             }
