@@ -45,14 +45,14 @@ namespace MCTS.DST.Resources.Materials
     public class ComposedMaterial : Material
     {
         // Items gathered by picking up composed materials, such as boulders or trees.
-        public List<Material> ComposingItems { get; private set; } = new List<Material>();
+        public List<PrimitiveMaterial> ComposingItems { get; private set; } = new List<PrimitiveMaterial>();
 
         // Items gathered by picking up by materials, that can burn.
-        public List<Material> FuelItems { get; private set; } = new List<Material>();
+        public List<PrimitiveMaterial> FuelItems { get; private set; } = new List<PrimitiveMaterial>();
 
         public ComposedMaterial() : base(false) { }
 
-        public ComposedMaterial(List<Material> composingItems, List<Material> fuelItems) : base(false)
+        public ComposedMaterial(List<PrimitiveMaterial> composingItems, List<PrimitiveMaterial> fuelItems) : base(false)
         {
             this.ComposingItems = composingItems;
             this.FuelItems = fuelItems;
@@ -63,10 +63,8 @@ namespace MCTS.DST.Resources.Materials
     {
         public Boulder()
         {
-            List<Material> composingItems = new List<Material>();
-            composingItems.Add(new Rocks(2));
-            composingItems.Add(new Flint(1));
-            List<Material> fuelItems = new List<Material>();
+            this.ComposingItems.Add(new Rock(2));
+            this.ComposingItems.Add(new Flint(1));
         }
 
         public static Boulder Instance { get; } = new Boulder();
