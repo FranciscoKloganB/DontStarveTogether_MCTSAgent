@@ -49,6 +49,7 @@
     <Compile Include="DST\PreWorldState.cs" />
     <Compile Include="DST\Actions\Wander.cs" />
     <Compile Include="DST\Resources\Edibles\Food.cs" />
+    <Compile Include="DST\Resources\Items\Item.cs" />
     <Compile Include="DST\WorldModel.cs" />
     <Compile Include="MCTSAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +97,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
