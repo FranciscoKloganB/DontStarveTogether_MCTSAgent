@@ -7,7 +7,7 @@ using MCTS.DST;
 namespace MCTS.DST.Actions
 {
 
-    public class ActionDST
+    public class ActionDST : ICloneable
     {
         public string Name;
         
@@ -34,6 +34,11 @@ namespace MCTS.DST.Actions
         public virtual Pair<string, int> NextActionInfo()
         {
             return new Pair<string, int>("", 0);
+        }
+
+        public ActionDST Clone()
+        {
+            return new ActionDST(string.Copy(this.Name));
         }
     }
 }
