@@ -17,7 +17,7 @@ namespace MCTS.DST.Actions
         public HoldPosition(string target) : base(ActionName + target)
         {
             this.Target = target;
-            this.Duration = 1.0f;
+            this.Duration = 0.33f;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
