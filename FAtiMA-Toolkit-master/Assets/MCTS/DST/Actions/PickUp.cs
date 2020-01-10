@@ -21,6 +21,18 @@ namespace MCTS.DST.Actions
             this.Duration = 0.33f;
         }
 
+
+        private void ExecutePrimitiveBehaviour(WorldModelDST worldState, PrimitiveMaterial targetMaterial)
+        {
+            worldState.AddToPossessedItems(targetMaterial.Name, targetMaterial.Quantity);
+            if (targetMaterial.IsFuel)
+            {
+                worldState.AddToFuel(targetMaterial.Name, targetMaterial.Quantity);
+            }
+
+            // TODO - Add Construct behavior.
+        }
+
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
             worldState.Cycle += this.Duration;
@@ -31,39 +43,22 @@ namespace MCTS.DST.Actions
             worldState.RemoveFromWorld(this.Target, 1);
             
             if (!material.IsPrimitive)
-            { // TODO - ComposedMaterial behaviour.
-
+            { // ComposedMaterial behaviour.
+                ComposedMaterial targetMaterial = (ComposedMaterial) material;
+                for (int i = 0; i < targetMaterial.ComposingItems.Count; i++)
+                {
+                    PrimitiveMaterial primitiveComponent = targetMaterial.ComposingItems[i];
+                    ExecutePrimitiveBehaviour(worldState, primitiveComponent);
+                }
             }
             else
-            { // TODO - PrimitiveMaterial behaviour.
+            { // PrimitiveMaterial behaviour.
                 PrimitiveMaterial targetMaterial = (PrimitiveMaterial) material;
-                worldState.AddToPossessedItems(targetMaterial.Name, targetMaterial.Quantity);
-                if (targetMaterial.IsFuel)
-                {
-                    worldState.AddToFuel(targetMaterial.Name, targetMaterial.Quantity);
-                }
-                
-                // TODO - Add Construct behavior.
+                ExecutePrimitiveBehaviour(worldState, targetMaterial);
             }
 
-            
+
             /*
-            if (worldState.Possesses("log", 2) && worldState.Possesses("cutgrass", 2))
-            {
-                ActionDST action = (ActionDST)new Construct("campfire");
-                worldState.AddAction(action);
-            }
-            if (!worldState.Possesses("log", 2) || !worldState.Possesses("rocks", 12))
-                return;
-            ActionDST action1 = (ActionDST)new Construct("firepit");
-            worldState.AddAction(action1);
-            */
-
-
-
-
-
-
             worldState.Cycle += this.Duration;
             worldState.UpdateSatiation(-1.0f);
             worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
@@ -223,6 +218,7 @@ namespace MCTS.DST.Actions
                 ActionDST action = (ActionDST)new Eat("berries");
                 worldState.AddAction(action);
             }
+            */
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
