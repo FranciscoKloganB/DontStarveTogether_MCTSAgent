@@ -404,6 +404,41 @@ namespace MCTS.DST.WorldModels
             this.EquippedItems.Remove(item);
         }
 
+        public bool IsNight()
+        {
+            return GetCycleStage() == 2;
+        }
+
+        public bool IsDusk()
+        {
+            return GetCycleStage() == 1;
+        }
+
+        public bool IsDay()
+        {
+            return GetCycleStage() == 0;
+        }
+
+        public short GetCycleStage()
+        {
+            float cycleProgress = Cycle;
+            float duskLength = CycleInfo[1];
+            float nightLength = CycleInfo[2];
+            float cycleLength = CycleInfo.Sum();
+
+            if (cycleProgress >= cycleLength - nightLength)
+            {   // It's night time
+                return 2;
+            }
+            else if (cycleProgress >= cycleLength - nightLength - duskLength)
+            {   // It's dusk time
+                return 1;
+            }
+            else
+            {   // It's day time
+                return 0;
+            }
+        }
       
 
         public float LightValueDay()
