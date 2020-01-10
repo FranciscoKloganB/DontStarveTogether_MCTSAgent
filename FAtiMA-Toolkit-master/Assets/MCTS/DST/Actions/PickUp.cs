@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Utilities;
 using MCTS.DST.WorldModels;
 using MCTS.DST;
+using MCTS.DST.Resources.Materials;
 
 
 namespace MCTS.DST.Actions
@@ -10,6 +11,7 @@ namespace MCTS.DST.Actions
 
     public class PickUp : ActionDST
     {
+        private Dictionary<string, Material> MaterialBase { get; } = MaterialDict.Instance.materialBase;
         public string Target;
         public float Duration;
 
@@ -19,8 +21,44 @@ namespace MCTS.DST.Actions
             this.Duration = 0.33f;
         }
 
+
+        private void ExecutePrimitiveBehaviour(WorldModelDST worldState, PrimitiveMaterial targetMaterial)
+        {
+            worldState.AddToPossessedItems(targetMaterial.Name, targetMaterial.Quantity);
+            if (targetMaterial.IsFuel)
+            {
+                worldState.AddToFuel(targetMaterial.Name, targetMaterial.Quantity);
+            }
+
+            // TODO - Add Construct behavior.
+        }
+
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
+            worldState.Cycle += this.Duration;
+            worldState.UpdateSatiation(-1.0f);
+            worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
+
+            Material material = this.MaterialBase[this.Target];
+            worldState.RemoveFromWorld(this.Target, 1);
+            
+            if (!material.IsPrimitive)
+            { // ComposedMaterial behaviour.
+                ComposedMaterial targetMaterial = (ComposedMaterial) material;
+                for (int i = 0; i < targetMaterial.ComposingItems.Count; i++)
+                {
+                    PrimitiveMaterial primitiveComponent = targetMaterial.ComposingItems[i];
+                    ExecutePrimitiveBehaviour(worldState, primitiveComponent);
+                }
+            }
+            else
+            { // PrimitiveMaterial behaviour.
+                PrimitiveMaterial targetMaterial = (PrimitiveMaterial) material;
+                ExecutePrimitiveBehaviour(worldState, targetMaterial);
+            }
+
+
+            /*
             worldState.Cycle += this.Duration;
             worldState.UpdateSatiation(-1.0f);
             worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
@@ -180,31 +218,20 @@ namespace MCTS.DST.Actions
                 ActionDST action = (ActionDST)new Eat("berries");
                 worldState.AddAction(action);
             }
+            */
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            return base.Decompose(preWorldState);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
+            return new List<Pair<string, string>>(1)
+            {
+                new Pair<string, string>("Action(PICKUP, -, -, -, -)", preWorldState.GetInventoryGUID(this.Target).ToString())
+            };
         }
 
         public override Pair<string, int> NextActionInfo()
         {
             return base.NextActionInfo();
-        }
-
-        public override string ToString()
-        {
-            return base.ToString();
         }
     }
 }
