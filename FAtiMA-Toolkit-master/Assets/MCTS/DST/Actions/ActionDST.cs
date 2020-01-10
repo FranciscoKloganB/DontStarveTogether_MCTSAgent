@@ -7,7 +7,7 @@ using MCTS.DST;
 namespace MCTS.DST.Actions
 {
 
-    public class ActionDST : ICloneable
+    public class ActionDST
     {
         public string Name;
         

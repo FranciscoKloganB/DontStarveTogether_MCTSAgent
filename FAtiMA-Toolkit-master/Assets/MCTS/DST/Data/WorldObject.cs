@@ -5,7 +5,7 @@ using Utilities;
 namespace MCTS.DST.WorldModels
 {
 
-    public class WorldObjectData : ICloneable
+    public class WorldObjectData
     {
         public string ObjectName { get; private set; }
         public int Quantity { get; set; }

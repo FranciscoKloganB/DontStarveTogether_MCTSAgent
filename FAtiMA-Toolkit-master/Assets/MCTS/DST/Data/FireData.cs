@@ -5,7 +5,7 @@ using Utilities;
 namespace MCTS.DST.WorldModels
 {
 
-    public class FireData : ICloneable
+    public class FireData
     {
         public string FireName { get; private set; }
         public int PosX { get; private set; }
