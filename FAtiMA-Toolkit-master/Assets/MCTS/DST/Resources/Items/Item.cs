@@ -70,8 +70,9 @@ namespace MCTS.DST.Resources.Items
     public sealed class Torch : Item
     {
         private static Item instance;
+
         public static Item Instance
-        { 
+        {
             get
             {
                 if (Instance == null)
@@ -80,8 +81,9 @@ namespace MCTS.DST.Resources.Items
                     {
                         ["twigs"] = 2,
                     };
-                    Instance = new Torch(_, "torch", true);
+                    instance = new Torch(_, "torch", true);
                 }
+                return instance;
             }
         }
 
