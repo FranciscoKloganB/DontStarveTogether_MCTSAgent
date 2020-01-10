@@ -22,7 +22,7 @@ namespace MCTS.DST.Actions
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
             worldState.Cycle += this.Duration;
-            worldState.IncreaseHunger(1);
+            worldState.UpdateSatiation(-1.0f);
             worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
             if (this.Target == "tree")
             {

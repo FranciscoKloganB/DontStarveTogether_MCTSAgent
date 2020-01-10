@@ -20,7 +20,7 @@ namespace MCTS.DST.Actions
         public override void ApplyActionEffects(WorldModelDST worldModel)
         {
             worldModel.Cycle += this.Duration;
-            worldModel.IncreaseHunger(1);
+            worldModel.UpdateSatiation(-1.0f);
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)

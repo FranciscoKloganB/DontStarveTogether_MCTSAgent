@@ -22,17 +22,13 @@ namespace MCTS.DST
 
         protected WorldModelDST CurrentState { get; set; }
         public MCTSNode InitialNode { get; set; }
-        protected System.Random RandomGenerator { get; set; }
-
-        private readonly int MAX_HP = 150;
-        private readonly int MAX_HUNGER = 150;
-        private readonly int MAX_SANITY = 200;
+        protected Random RandomGenerator { get; set; }
 
         public MCTSAlgorithm(WorldModelDST currentState)
         {
             this.InProgress = false;
             this.CurrentState = currentState;
-            this.RandomGenerator = new System.Random();
+            this.RandomGenerator = new Random();
         }
 
         public void InitializeMCTSearch()
@@ -208,7 +204,7 @@ namespace MCTS.DST
 
         protected float WorldStateHeuristic(WorldModelDST state)
         {
-            if (state.Walter.HP <= 0 || state.Walter.Sanity <= 0 || (state.Walter.Hunger <= 0 && state.Walter.HP <= 30))
+            if (state.Walter.HP <= 0 || state.Walter.Sanity <= 0 || (state.Walter.Satiation <= 0 && state.Walter.HP <= 30))
             {
                 return 0.0f;
             }
