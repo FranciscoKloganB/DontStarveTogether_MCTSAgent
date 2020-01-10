@@ -33,13 +33,11 @@ namespace MCTS.DST.Resources.Buildables
     {
         protected Dictionary<string, int> Materials { get; private set; }
         protected string BuildableName { get; private set; }
-        protected bool Equipable { get; private set; }
 
-        public Buildable(Dictionary<string, int> materialsQuantityDict, string name, bool equipable)
+        public Buildable(Dictionary<string, int> materialsQuantityDict, string name)
         {
             this.Materials = materialsQuantityDict;
             this.BuildableName = name;
-            this.Equipable = equipable;
         }
 
         public void Build(WorldModelDST worldState)
@@ -52,13 +50,9 @@ namespace MCTS.DST.Resources.Buildables
             worldState.AddToPossessedItems(this.BuildableName, 1);
         }
 
-        public void TryMakeUnequipable(WorldModelDST worldModel)
+        public virtual void PostProcessBuildable(WorldModelDST worldModel)
         {
-            if (Equipable && worldModel.EquippedItems.Count == 0)
-            {
-                ActionDST action = new Unequip(this.BuildableName);
-                worldModel.AddAction(action);
-            }
+            ;
         }
 
         public void TryRemoveAction(WorldModelDST worldModel, string actionName)
@@ -67,7 +61,32 @@ namespace MCTS.DST.Resources.Buildables
         }
     }
 
-    public sealed class Axe : Buildable
+    public class Item : Buildable
+    {
+        public Item(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
+
+        public override void PostProcessBuildable(WorldModelDST worldModel)
+        {
+            if (worldModel.EquippedItems.Count == 0)
+            {
+                ActionDST action = new Unequip(this.BuildableName);
+                worldModel.AddAction(action);
+            }
+        }
+    }
+
+    public class Structure : Buildable
+    {
+        public Structure(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
+
+        public override void PostProcessBuildable(WorldModelDST worldModel)
+        {
+            worldModel.AddToWorld(this.BuildableName, 1, worldModel.Walter.Position.Item1, worldModel.Walter.Position.Item2);
+            worldModel.AddToFire(this.BuildableName, worldModel.Walter.Position.Item1, worldModel.Walter.Position.Item2);
+        }
+    }
+
+    public sealed class Axe : Item
     {
         private static Buildable instance;
 
@@ -82,16 +101,16 @@ namespace MCTS.DST.Resources.Buildables
                         ["twigs"] = 1,
                         ["flint"] = 1
                     };
-                    instance = new Axe(_, "axe", true);
+                    instance = new Axe(_, "axe");
                 }
                 return instance;
             }
         }
 
-        private Axe(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private Axe(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 
-    public sealed class Pickaxe : Buildable
+    public sealed class Pickaxe : Item
     {
         private static Buildable instance;
 
@@ -106,16 +125,16 @@ namespace MCTS.DST.Resources.Buildables
                         ["twigs"] = 2,
                         ["flint"] = 2
                     };
-                    instance = new Pickaxe(_, "pickaxe", true);
+                    instance = new Pickaxe(_, "pickaxe");
                 }
                 return instance;
             }
         }
 
-        private Pickaxe(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private Pickaxe(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 
-    public sealed class Shovel : Buildable
+    public sealed class Shovel : Item
     {
         private static Buildable instance;
 
@@ -130,16 +149,16 @@ namespace MCTS.DST.Resources.Buildables
                         ["twigs"] = 2,
                         ["flint"] = 2
                     };
-                    instance = new Shovel(_, "shovel", true);
+                    instance = new Shovel(_, "shovel");
                 }
                 return instance;
             }
         }
 
-        private Shovel(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private Shovel(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 
-    public sealed class Hammer : Buildable
+    public sealed class Hammer : Item
     {
         private static Buildable instance;
 
@@ -155,16 +174,16 @@ namespace MCTS.DST.Resources.Buildables
                         ["rocks"] = 3,
                         ["cutgrass"] = 6
                     };
-                    instance = new Hammer(_, "hammer", true);
+                    instance = new Hammer(_, "hammer");
                 }
                 return instance;
             }
         }
 
-        private Hammer(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private Hammer(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 
-    public sealed class Campfire : Buildable
+    public sealed class Campfire : Structure
     {
         private static Buildable instance;
 
@@ -179,16 +198,16 @@ namespace MCTS.DST.Resources.Buildables
                         ["cutgrass"] = 3,
                         ["log"] = 2
                     };
-                    instance = new Campfire(_, "campfire", false);
+                    instance = new Campfire(_, "campfire");
                 }
                 return instance;
             }
         }
 
-        private Campfire(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private Campfire(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 
-    public sealed class FirePit : Buildable
+    public sealed class FirePit : Structure
     {
         private static Buildable instance;
 
@@ -203,16 +222,16 @@ namespace MCTS.DST.Resources.Buildables
                         ["log"] = 2,
                         ["rocks"] = 12
                     };
-                    instance = new FirePit(_, "firepit", false);
+                    instance = new FirePit(_, "firepit");
                 }
                 return instance;
             }
         }
 
-        private FirePit(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private FirePit(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 
-    public sealed class Torch : Buildable
+    public sealed class Torch : Item
     {
         private static Buildable instance;
 
@@ -227,16 +246,16 @@ namespace MCTS.DST.Resources.Buildables
                         ["cutgrass"] = 2,
                         ["twigs"] = 2
                     };
-                    instance = new Torch(_, "torch", true);
+                    instance = new Torch(_, "torch");
                 }
                 return instance;
             }
         }
 
-        private Torch(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private Torch(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 
-    public sealed class EndothermicFire : Buildable
+    public sealed class EndothermicFire : Structure
     {
         private static Buildable instance;
 
@@ -251,16 +270,16 @@ namespace MCTS.DST.Resources.Buildables
                         ["cutgrass"] = 3,
                         ["nitre"] = 2
                     };
-                    instance = new EndothermicFire(_, "endothermic_fire", false);
+                    instance = new EndothermicFire(_, "endothermic_fire");
                 }
                 return instance;
             }
         }
 
-        private EndothermicFire(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private EndothermicFire(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 
-    public sealed class FishingRod : Buildable
+    public sealed class FishingRod : Item
     {
         private static Buildable instance;
 
@@ -275,16 +294,16 @@ namespace MCTS.DST.Resources.Buildables
                         ["twigs"] = 2,
                         ["silk"] = 2
                     };
-                    instance = new FishingRod(_, "fishing_rod", true);
+                    instance = new FishingRod(_, "fishing_rod");
                 }
                 return instance;
             }
         }
 
-        private FishingRod(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private FishingRod(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 
-    public sealed class Umbrella : Buildable
+    public sealed class Umbrella : Item
     {
         private static Buildable instance;
 
@@ -300,16 +319,16 @@ namespace MCTS.DST.Resources.Buildables
                         ["silk"] = 2,
                         ["pig_skin"] = 1
                     };
-                    instance = new Umbrella(_, "umbrella", true);
+                    instance = new Umbrella(_, "umbrella");
                 }
                 return instance;
             }
         }
 
-        private Umbrella(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private Umbrella(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 
-    public sealed class WhirlyFan : Buildable
+    public sealed class WhirlyFan : Item
     {
         private static Buildable instance;
 
@@ -324,12 +343,12 @@ namespace MCTS.DST.Resources.Buildables
                         ["twigs"] = 3,
                         ["petals"] = 1,
                     };
-                    instance = new WhirlyFan(_, "whirly_fan", true);
+                    instance = new WhirlyFan(_, "whirly_fan");
                 }
                 return instance;
             }
         }
 
-        private WhirlyFan(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
+        private WhirlyFan(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 }
