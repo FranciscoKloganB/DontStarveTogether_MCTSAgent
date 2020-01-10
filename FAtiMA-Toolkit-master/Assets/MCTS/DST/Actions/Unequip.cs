@@ -33,7 +33,7 @@ namespace MCTS.DST.Actions
         {
             return new List<Pair<string, string>>(1)
             {
-                new Pair<string, string>("Action(Unequip, -, -, -, -)", preWorldState.GetInventoryGUID(this.Target).ToString())
+                new Pair<string, string>("Action(UNEQUIP, -, -, -, -)", preWorldState.GetInventoryGUID(this.Target).ToString())
             };
         }
 
