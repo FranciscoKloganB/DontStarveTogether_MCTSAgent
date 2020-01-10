@@ -24,10 +24,10 @@ namespace MCTS.DST.Actions
 
         private void ExecutePrimitiveBehaviour(WorldModelDST worldState, PrimitiveMaterial targetMaterial)
         {
-            worldState.AddToPossessedItems(targetMaterial.Name, targetMaterial.Quantity);
+            worldState.AddToPossessedItems(targetMaterial.MaterialName, targetMaterial.Quantity);
             if (targetMaterial.IsFuel)
             {
-                worldState.AddToFuel(targetMaterial.Name, targetMaterial.Quantity);
+                worldState.AddToFuel(targetMaterial.MaterialName, targetMaterial.Quantity);
             }
 
             // TODO - Add Construct behavior.

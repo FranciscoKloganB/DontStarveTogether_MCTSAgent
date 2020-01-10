@@ -29,14 +29,14 @@ namespace MCTS.DST.Resources.Materials
 
     public class PrimitiveMaterial : Material
     {
-        public string Name { get; private set; }
+        public string MaterialName { get; private set; }
         public int Quantity { get; private set; }
 
         public bool IsFuel { get; private set; }
 
         public PrimitiveMaterial(string name, int quantity, bool isFuel) : base(true)
         {
-            this.Name = name;
+            this.MaterialName = name;
             this.Quantity = quantity;
             this.IsFuel = isFuel;
         }
