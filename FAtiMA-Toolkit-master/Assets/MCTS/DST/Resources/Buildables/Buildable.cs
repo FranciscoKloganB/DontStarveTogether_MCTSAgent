@@ -32,13 +32,13 @@ namespace MCTS.DST.Resources.Buildables
     public class Buildable
     {
         protected Dictionary<string, int> Materials { get; private set; }
-        protected string ItemName { get; private set; }
+        protected string BuildableName { get; private set; }
         protected bool Equipable { get; private set; }
 
         public Buildable(Dictionary<string, int> materialsQuantityDict, string name, bool equipable)
         {
             this.Materials = materialsQuantityDict;
-            this.ItemName = name;
+            this.BuildableName = name;
             this.Equipable = equipable;
         }
 
@@ -49,14 +49,14 @@ namespace MCTS.DST.Resources.Buildables
                 var element = this.Materials.ElementAt(index);
                 worldState.RemoveFromPossessedItems(element.Key, element.Value);
             }
-            worldState.AddToPossessedItems(this.ItemName, 1);
+            worldState.AddToPossessedItems(this.BuildableName, 1);
         }
 
         public void TryMakeUnequipable(WorldModelDST worldModel)
         {
             if (Equipable && worldModel.EquippedItems.Count == 0)
             {
-                ActionDST action = new Unequip(this.ItemName);
+                ActionDST action = new Unequip(this.BuildableName);
                 worldModel.AddAction(action);
             }
         }
