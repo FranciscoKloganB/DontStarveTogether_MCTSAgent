@@ -15,17 +15,17 @@ namespace MCTS.DST.Resources.Buildables
 
         public Dictionary<string, Buildable> buildableBase = new Dictionary<string, Buildable>()
         {
-            ["axe"] = Torch.Instance,
-            ["pickaxe"] = Torch.Instance,
-            ["campfire"] = Torch.Instance,
-            ["firepit"] = Torch.Instance,
+            ["axe"] = Axe.Instance,
+            ["pickaxe"] = Pickaxe.Instance,
+            ["shovel"] = Shovel.Instance,
+            ["hammer"] = Hammer.Instance,
+            ["campfirre"] = Campfire.Instance,
+            ["firepit"] = FirePit.Instance,
             ["torch"] = Torch.Instance,
-            ["some_item"] = Torch.Instance,
-            ["some_item"] = Torch.Instance,
-            ["some_item"] = Torch.Instance,
-            ["some_item"] = Torch.Instance,
-            ["some_item"] = Torch.Instance,
-            ["some_item"] = Torch.Instance,
+            ["endothermic_fire"] = EndothermicFire.Instance,
+            ["fishing_rod"] = FishingRod.Instance,
+            ["umbrella"] = Umbrella.Instance,
+            ["whirly_fan"] = WhirlyFan.Instance,
         };
     }
 
