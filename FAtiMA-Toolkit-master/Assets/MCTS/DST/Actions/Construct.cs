@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Utilities;
 using MCTS.DST.WorldModels;
-using MCTS.DST.Resources.Items;
+using MCTS.DST.Resources.Buildables;
 using MCTS.DST;
 
 
@@ -11,7 +11,7 @@ namespace MCTS.DST.Actions
 
     public class Construct : ActionDST
     {
-        private Dictionary<string, Item> ItemBase { get; } = ItemDict.Instance.itemBase;
+        private Dictionary<string, Buildable> ItemBase { get; } = BuildablesDict.Instance.buildableBase;
         private static readonly float duration = 0.05f;
         private static readonly string actionName = "Build_";
         private readonly string Target;
@@ -25,10 +25,10 @@ namespace MCTS.DST.Actions
         {
             try
             {
-                Item targetItem = ItemBase[this.Target];
-                targetItem.ConstructItem(worldState);
-                targetItem.TryMakeUnequipable(worldState);
-                targetItem.TryRemoveAction(worldState, actionName);
+                Buildable targetBuildable = ItemBase[this.Target];
+                targetBuildable.Build(worldState);
+                targetBuildable.TryMakeUnequipable(worldState);
+                targetBuildable.TryRemoveAction(worldState, actionName);
                 worldState.Cycle += duration;
             }
             catch (KeyNotFoundException)

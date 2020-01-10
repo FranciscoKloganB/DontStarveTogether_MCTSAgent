@@ -23,7 +23,7 @@ namespace MCTS.DST.Actions
             try
             {
                 Food targetFood = FoodBase[this.Target];
-                targetFood.EatFood(worldModel);
+                targetFood.Eat(worldModel);
                 targetFood.TryRemoveAction(worldModel, actionName);
                 worldModel.Cycle += duration;
             }

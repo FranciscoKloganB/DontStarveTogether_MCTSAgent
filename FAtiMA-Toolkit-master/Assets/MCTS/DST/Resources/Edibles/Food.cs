@@ -69,7 +69,7 @@ namespace MCTS.DST.Resources.Edibles
             FoodName = name;
         }
 
-        public void EatFood(WorldModelDST worldModel)
+        public void Eat(WorldModelDST worldModel)
         {
             worldModel.RemoveFromPossessedItems(this.FoodName, 1);
             worldModel.UpdateSatiation(this.Satiation);

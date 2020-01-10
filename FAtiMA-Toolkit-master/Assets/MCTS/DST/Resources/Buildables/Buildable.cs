@@ -3,17 +3,17 @@ using MCTS.DST.WorldModels;
 using System.Collections.Generic;
 using MCTS.DST.Actions;
 
-namespace MCTS.DST.Resources.Items
+namespace MCTS.DST.Resources.Buildables
 {
-    public sealed class ItemDict
+    public sealed class BuildablesDict
     {
-        public static ItemDict Instance { get; } = new ItemDict();
+        public static BuildablesDict Instance { get; } = new BuildablesDict();
 
-        private ItemDict()
+        private BuildablesDict()
         {
         }
 
-        public Dictionary<string, Item> itemBase = new Dictionary<string, Item>()
+        public Dictionary<string, Buildable> buildableBase = new Dictionary<string, Buildable>()
         {
             ["axe"] = Torch.Instance,
             ["pickaxe"] = Torch.Instance,
@@ -29,20 +29,20 @@ namespace MCTS.DST.Resources.Items
         };
     }
 
-    public class Item
+    public class Buildable
     {
         protected Dictionary<string, int> Materials { get; private set; }
         protected string ItemName { get; private set; }
         protected bool Equipable { get; private set; }
 
-        public Item(Dictionary<string, int> materialsQuantityDict, string name, bool equipable)
+        public Buildable(Dictionary<string, int> materialsQuantityDict, string name, bool equipable)
         {
             this.Materials = materialsQuantityDict;
             this.ItemName = name;
             this.Equipable = equipable;
         }
 
-        public void ConstructItem(WorldModelDST worldState)
+        public void Build(WorldModelDST worldState)
         {
             for (int index = 0; index < this.Materials.Count; index++)
             {
@@ -67,11 +67,11 @@ namespace MCTS.DST.Resources.Items
         }
     }
 
-    public sealed class Axe : Item
+    public sealed class Axe : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
@@ -91,11 +91,11 @@ namespace MCTS.DST.Resources.Items
         private Axe(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
     }
 
-    public sealed class Pickaxe : Item
+    public sealed class Pickaxe : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
@@ -115,11 +115,11 @@ namespace MCTS.DST.Resources.Items
         private Pickaxe(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
     }
 
-    public sealed class Shovel : Item
+    public sealed class Shovel : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
@@ -139,11 +139,11 @@ namespace MCTS.DST.Resources.Items
         private Shovel(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
     }
 
-    public sealed class Hammer : Item
+    public sealed class Hammer : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
@@ -164,11 +164,11 @@ namespace MCTS.DST.Resources.Items
         private Hammer(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
     }
 
-    public sealed class Campfire : Item
+    public sealed class Campfire : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
@@ -188,11 +188,11 @@ namespace MCTS.DST.Resources.Items
         private Campfire(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
     }
 
-    public sealed class FirePit : Item
+    public sealed class FirePit : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
@@ -212,11 +212,11 @@ namespace MCTS.DST.Resources.Items
         private FirePit(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
     }
 
-    public sealed class Torch : Item
+    public sealed class Torch : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
@@ -236,11 +236,11 @@ namespace MCTS.DST.Resources.Items
         private Torch(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
     }
 
-    public sealed class EndothermicFire : Item
+    public sealed class EndothermicFire : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
@@ -260,11 +260,11 @@ namespace MCTS.DST.Resources.Items
         private EndothermicFire(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
     }
 
-    public sealed class FishingRod : Item
+    public sealed class FishingRod : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
@@ -284,11 +284,11 @@ namespace MCTS.DST.Resources.Items
         private FishingRod(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
     }
 
-    public sealed class Umbrella : Item
+    public sealed class Umbrella : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
@@ -309,11 +309,11 @@ namespace MCTS.DST.Resources.Items
         private Umbrella(Dictionary<string, int> materialsQuantityDict, string name, bool equipable) : base(materialsQuantityDict, name, equipable) { }
     }
 
-    public sealed class WhirlyFan : Item
+    public sealed class WhirlyFan : Buildable
     {
-        private static Item instance;
+        private static Buildable instance;
 
-        public static Item Instance
+        public static Buildable Instance
         {
             get
             {
