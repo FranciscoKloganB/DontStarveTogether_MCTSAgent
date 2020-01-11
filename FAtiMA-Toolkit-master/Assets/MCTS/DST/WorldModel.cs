@@ -230,6 +230,7 @@ namespace MCTS.DST.WorldModels
 
         public void RemoveFromWorld(string prefab, int quantity)
         {
+            // TODO This doesn't make sense. We are lacking PosX and PosZ and in DST you can only pick up the entire stack!
             for (int i = 0; i < this.WorldObjects.Count; i++)
             {
                 if (this.WorldObjects[i].ObjectName == prefab)
@@ -246,30 +247,22 @@ namespace MCTS.DST.WorldModels
                     {
                         this.WorldObjects[i].Quantity -= quantity;
                     }
+                    return;
                 }
-
             }
         }
 
-        public void AddToWorld(string prefab, int quantity, int posx, int posz)
+        public void AddToWorld(string prefab, int quantity, int posX, int posZ)
         {
-            Boolean r = true;
-            foreach (var tuple in this.WorldObjects)
+            for (int i = 0; i < this.WorldObjects.Count; i++)
             {
-                if (tuple.Item1.Item1 == prefab)
+                if (this.WorldObjects[i].ObjectName == prefab)
                 {
-                    tuple.Item1.Item2 += quantity;
-                    r = false;
-                    break;
+                    this.WorldObjects[i].Quantity += quantity;
+                    return;
                 }
             }
-            if (r)
-            {
-                Pair<int, int> position = new Pair<int, int>(posx, posz);
-                Pair<string, int> newitem = new Pair<string, int>(prefab, quantity);
-                Pair<Pair<string, int>, Pair<int, int>> newpair = new Pair<Pair<string, int>, Pair<int, int>>(newitem, position);
-                this.WorldObjects.Add(newpair);
-            }
+            this.WorldObjects.Add(new WorldObjectData(prefab, quantity, posX, posZ));
         }
 
         public void RemoveAction(string actionName)
