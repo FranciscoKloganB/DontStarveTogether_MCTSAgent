@@ -40,5 +40,17 @@ namespace MCTS.DST.Actions
         {
             return new ActionDST(string.Copy(this.Name));
         }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as string;
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            return this.Name.Equals(item);
+        }
     }
 }
