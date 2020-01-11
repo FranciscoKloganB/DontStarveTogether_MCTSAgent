@@ -241,7 +241,7 @@ namespace MCTS.DST.WorldModels
                     }
                     else if (this.WorldObjects[i].Quantity == quantity)
                     {
-                        this.WorldObjects.Remove(this.WorldObjects[i]);
+                        this.WorldObjects.RemoveAt(i);
                     }
                     else
                     {
@@ -266,35 +266,27 @@ namespace MCTS.DST.WorldModels
         }
 
         public void RemoveAction(string actionName)
-        {          
-            foreach(ActionDST action in this.AvailableActions)
+        {
+            for (int i = 0; i < this.AvailableActions.Count; i++)
             {
-                if(action.Name == actionName)
+                if (this.AvailableActions[i].Name.Equals(actionName))
                 {
-                    this.AvailableActions.Remove(action);
-                    break;
+                    this.AvailableActions.RemoveAt(i);
+                    return;
                 }
             }
         }
 
         public void AddAction(ActionDST action)
-        {
-            if (NowCanDo(action.Name))
+        {   // TODO: Use HASHSET instead of LIST<ACTION DST> for faster lookup. Add action if not in Hashset.
+            for (int i = 0; i < this.AvailableActions.Count; i++)
             {
-                this.AvailableActions.Add(action);
-            }
-        }
-
-        public Boolean NowCanDo(string actionName)
-        {
-            foreach (var action in this.AvailableActions)
-            {
-                if (action.Name == actionName)
+                if (this.AvailableActions[i].Name == action.Name)
                 {
-                    return true;
+                    continue;
                 }
             }
-            return false;
+            this.AvailableActions.Add(action);
         }
 
         public void AddToEquipped(string item)
