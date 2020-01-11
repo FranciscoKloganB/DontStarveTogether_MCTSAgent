@@ -25,5 +25,22 @@ namespace MCTS.DST.WorldModels
         {
             return new WorldObjectData(string.Copy(this.ObjectName), this.Quantity, this.PosX, this.PosZ);
         }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as WorldObjectData;
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            return this.ObjectName.Equals(item.ObjectName);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ObjectName.GetHashCode();
+        }
     } 
 }
