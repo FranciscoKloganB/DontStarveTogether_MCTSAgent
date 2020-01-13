@@ -4,100 +4,90 @@ using Utilities;
 using MCTS.DST.Actions;
 using MCTS.DST;
 using System.Linq;
+using MCTS.DST.Resources.Edibles;
 
 namespace MCTS.DST.WorldModels
 {
     public class WorldModelDST
     {
         public Character Walter;
-        public List<Pair<Pair<string, int>, Pair<int, int>>> WorldObjects;
-        public List<Tuple<string, int, int>> Fire;
-        public List<Pair<string, int>> PossessedItems;
-        public List<string> EquippedItems;
-        public List<Pair<string, int>> Fuel;
+        public List<ActionDST> AvailableActions;
+        public List<WorldObjectData> WorldObjects;
+        public List<FireData> Fire;
+
+        public Dictionary<string, int> Fuel;
+        public Dictionary<string, int> PossessedItems;
+        
+        public HashSet<string> EquippedItems;
 
         public float Cycle;
         public int[] CycleInfo;
-        public List<ActionDST> AvailableActions; 
 
         protected WorldModelDST Parent;
 
-        public WorldModelDST(Character character, List<Pair<Pair<string, int>, Pair<int, int>>> worldObjects, List<Pair<string, int>> possessedItems, List<string> equippedItems, float cycle, int[] cycleInfo, List<ActionDST> availableActions, WorldModelDST parent, List<Pair<string, int>> fuel, List<Tuple<string, int, int>> fire)
+        public WorldModelDST(Character character, List<WorldObjectData> worldObjects, Dictionary<string, int> possessedItems, HashSet<string> equippedItems, float cycle, int[] cycleInfo, List<ActionDST> availableActions, WorldModelDST parent, Dictionary<string, int> fuel, List<FireData> fire)
         {
             this.Walter = character;
             this.WorldObjects = worldObjects; // stores in the name, quantity and the position of world objects
-            this.PossessedItems = possessedItems; // stores the name and quantity of the items in the inventory
+            this.PossessedItems = possessedItems;
             this.EquippedItems = equippedItems; // stores the name of equiped items
             this.Cycle = cycle; // represents the stage of the day
             this.CycleInfo = cycleInfo; // stores the amount of time each phase of the day lasts. The phases are day, dusk and night
             this.AvailableActions = availableActions; // list of actions that the character can do in the current state. It is created based on the PreWorldState information and it is updated when an action is done
             this.Parent = parent; // World Model which originates the current one by means of ActionApplyEffect
-            this.Fuel = fuel; // it is a list of 3-tuples that contain the name, the GUID and the quantity of the items that can be used as fuel for res
+            this.Fuel = fuel;
             this.Fire = fire; // list of 3-tuples that contain the name and the position of the fires in the world
         }
 
         public WorldModelDST(PreWorldState preWorldState)
         {
             this.Parent = null;
-
             this.Walter = preWorldState.Walter;
             this.Cycle = preWorldState.Cycle;
             this.CycleInfo = preWorldState.CycleInfo;
 
-            //Getting Inventory from PreWorldState
-            
-            int size1 = preWorldState.Inventory.Count;            
-            this.PossessedItems = new List<Pair<string, int>>(size1);
-
-            for (int i = 0; i < size1; i++)
+            //Getting Fire Info
+            this.Fire = new List<FireData>();
+            for (int i = 0; i < preWorldState.Fire.Count; i++)
             {
-                Pair<string, int> tuple1 = new Pair<string, int>(preWorldState.Inventory[i].Item1, preWorldState.Inventory[i].Item3);
-                this.PossessedItems.Add(tuple1);               
+                var fireData = new FireData(preWorldState.Fire[i].Item1, preWorldState.Fire[i].Item2, preWorldState.Fire[i].Item3);
+                this.Fire.Add(fireData);
             }
 
             //Getting Fuel items from PreWorldState
-
-            this.Fuel = new List<Pair<string, int>>(preWorldState.Fuel.Count);
-
-            foreach (var fuelItem in preWorldState.Fuel)
+            this.Fuel = new Dictionary<string, int>();
+            for (int i = 0; i < preWorldState.Fuel.Count; i++)
             {
-                Pair<string, int> tuple1 = new Pair<string, int>(fuelItem.Item1, fuelItem.Item3);
-                this.Fuel.Add(tuple1);
+                this.Fuel[preWorldState.Fuel[i].Item1] = preWorldState.Fuel[i].Item3;
             }
 
-            //Getting Fire Info
-
-            this.Fire = preWorldState.Fire;
+            //Getting Inventory from PreWorldState  
+            this.PossessedItems = new Dictionary<string, int>();
+            for (int i = 0; i < preWorldState.Inventory.Count; i++)
+            {
+                this.PossessedItems[preWorldState.Inventory[i].Item1] = preWorldState.Inventory[i].Item3;   
+            }
 
             //Getting Equipped items from PreWorldState
-
-            int size2 = preWorldState.Equipped.Count;
-            this.EquippedItems = new List<string>(size2);
-
-            for (int i = 0; i < size2; i++)
+            this.EquippedItems = new HashSet<string>();
+            for (int i = 0; i < preWorldState.Equipped.Count; i++)
             {                
                 this.EquippedItems.Add(preWorldState.Equipped[i].Item1);
             }
 
             //Getting WorldObjects from PreWorldState's Entities
-
-            int size3 = preWorldState.Entities.Count;
-            this.WorldObjects = new List<Pair<Pair<string, int>, Pair<int, int>>>(size3);
-
-            for (int i = 0; i < size3; i++)
+            this.WorldObjects = new List<WorldObjectData>();
+            for (int i = 0; i < preWorldState.Entities.Count; i++)
             {
-                Pair<string, int> npair = new Pair<string, int>(preWorldState.Entities[i].Prefab, preWorldState.Entities[i].Quantity);
-                Pair<Pair<string, int>, Pair<int, int>> tolist = new Pair<Pair<string, int>, Pair<int, int>>(npair, preWorldState.Entities[i].Position);
-                this.WorldObjects.Add(tolist);
+                var worldObjectData = new WorldObjectData(preWorldState.Entities[i].Prefab, preWorldState.Entities[i].Quantity, preWorldState.Entities[i].Position.Item1, preWorldState.Entities[i].Position.Item2);
+                this.WorldObjects.Add(worldObjectData);
             }
 
             //Getting Available Actions
-
-            this.AvailableActions = new List<ActionDST>();
             ActionDST action = new Wander();
+            this.AvailableActions = new List<ActionDST>();
             this.AvailableActions.Add(action);
 
-           
             if (Possesses("berries"))
             {
                 action = new Eat("berries");
@@ -121,183 +111,106 @@ namespace MCTS.DST.WorldModels
 
         public WorldModelDST GenerateChildWorldModel()
         {
-            Character walter = new Character(this.Walter.HP, this.Walter.Satiation, this.Walter.Sanity, this.Walter.Position.Item1, this.Walter.Position.Item2);
-            List<Pair<Pair<string, int>, Pair<int, int>>> worldObjects = new List<Pair<Pair<string, int>, Pair<int, int>>>(this.WorldObjects);
-            foreach (var item in this.WorldObjects)
-            {
-                worldObjects.Add(item);
-            }
-
-            List<Tuple<string, int, int>> fire = new List<Tuple<string, int, int>>(this.Fire.Count);
-            foreach (var item in this.Fire)
-            {
-                fire.Add(item);
-            }
-
-            List<Pair<string, int>> possessedItems = new List<Pair<string, int>>(this.PossessedItems.Count);
-            foreach (var item in this.PossessedItems)
-            {
-                possessedItems.Add(item);
-            }
-
-            List<string> equippedItems = new List<string>(this.EquippedItems.Count);
-            foreach (var item in this.EquippedItems)
-            {
-                equippedItems.Add(item);
-            }
-
-            List<Pair<string, int>> fuel = new List<Pair<string, int>>(this.Fuel.Count);
-            foreach (var item in this.Fuel)
-            {
-                fuel.Add(item);
-            }
-
-            float cycle = this.Cycle;
-
-            int[] cycleInfo = new int[3];
-            cycleInfo[0] = this.CycleInfo[0];
-            cycleInfo[1] = this.CycleInfo[1];
-            cycleInfo[2] = this.CycleInfo[2];
-
-            List<ActionDST> availableActions = new List<ActionDST>(this.AvailableActions.Count);
-            foreach (var item in this.AvailableActions)
-            {
-                availableActions.Add(item);
-            }
-
-            return new WorldModelDST(walter, worldObjects, possessedItems, equippedItems, cycle, cycleInfo, availableActions, this, fuel, fire);
+            var cycle = this.Cycle;
+            var cycleInfo = this.CycleInfo.ToArray();
+            var walter = this.Walter.Clone();
+            var equippedItems = new HashSet<string>(this.EquippedItems);
+            var possessedItems = this.PossessedItems.ToDictionary(entry => string.Copy(entry.Key), entry => entry.Value);
+            var fuels = this.Fuel.ToDictionary(entry => string.Copy(entry.Key), entry => entry.Value);
+            var fires = this.Fire.ConvertAll(fire => fire.Clone());
+            var worldObjects = this.WorldObjects.ConvertAll(worldObject => worldObject.Clone());
+            var actions = this.AvailableActions.ConvertAll(action => action.Clone());
+            return new WorldModelDST(walter, worldObjects, possessedItems, equippedItems, cycle, cycleInfo, actions, this, fuels, fires);
         }
 
         public int FoodQuantity()
         {
-            int r = 0;
-            foreach (Pair<string, int> tuple in this.PossessedItems)
+            int quantity = 0;
+            for (int index = 0; index < this.PossessedItems.Count; index++)
             {
-                if (tuple.Item1 == "berries" || tuple.Item1 == "carrot")
+                var item = this.PossessedItems.ElementAt(index);
+                if (FoodDict.Instance.foodBase.ContainsKey(item.Key))
                 {
-                    r += tuple.Item2;
+                    quantity += item.Value;
                 }
             }
-            return r;
+            return quantity;
         }
 
-        public Boolean Possesses(string prefab)
+        public bool Possesses(string prefab)
         {
-            Boolean r = false;
-            foreach (Pair<string, int> tuple in this.PossessedItems)
+            return this.PossessedItems.ContainsKey(prefab);
+        }
+
+        public bool Possesses(string prefab, int quantity)
+        {
+            return this.PossessedItems.ContainsKey(prefab) ? this.PossessedItems[prefab] >= quantity : false;
+        }
+
+        public bool IsEquipped(string prefab)
+        {
+            return this.EquippedItems.Contains(prefab);
+        }
+
+        public bool WorldHas(string prefab)
+        {
+            for (int i = 0; i < this.WorldObjects.Count; i++)
             {
-                if (tuple.Item1 == prefab)
+                if (this.WorldObjects[i].ObjectName == prefab)
                 {
-                    r = true;
-                    break;
+                    return true;
                 }
             }
-            return r;
+            return false;
         }
 
-        public Boolean Possesses(string prefab, int quantity)
+        public void AddToFire(string prefab, int posX, int posZ)
         {
-            Boolean r = false;
-            foreach (Pair<string, int> tuple in this.PossessedItems)
-            {
-                if (tuple.Item1 == prefab && tuple.Item2 >= quantity)
-                {
-                    r = true;
-                    break;
-                }
-            }
-            return r;
-        }
-
-        public Boolean IsEquipped(string prefab)
-        {
-            Boolean r = false;
-            foreach (string str in this.EquippedItems)
-            {
-                if (str == prefab)
-                {
-                    r = true;
-                    break;
-                }
-            }
-            return r;
-        }
-
-        public Boolean WorldHas(string prefab)
-        {
-            Boolean r = false;
-            foreach (var tuple in this.WorldObjects)
-            {
-                if (tuple.Item1.Item1 == prefab)
-                {
-                    r = true;
-                    break;
-                }
-            }
-            return r;
-        }
-
-        public void AddToFire(string prefab, int posx, int posz)
-        {
-            Tuple<string, int, int> tuple = new Tuple<string, int, int>(prefab, posx, posz);
-            this.Fire.Add(tuple);
+            this.Fire.Add(new FireData(prefab, posX, posZ));
         }
 
         public void RemoveFromFuel(string prefab)
         {
-            foreach (var tuple in this.Fuel)
+            if (this.Fuel.ContainsKey(prefab))
             {
-                if (tuple.Item1 == prefab)
+                if (this.Fuel[prefab] <= 1)
                 {
-                    if (tuple.Item2 == 1)
-                    {
-                        Pair<string, int> itemtoremove = new Pair<string, int>(prefab, 1);
-                        this.Fuel.Remove(itemtoremove);
-                    }
-                    else
-                    {
-                        tuple.Item2 -= 1;
-                    }
-                    break;
+                    this.Fuel.Remove(prefab);
+                } 
+                else
+                {
+                    this.Fuel[prefab] -= 1;
                 }
             }
         }
 
         public void AddToFuel(string prefab, int quantity)
         {
-            Boolean r = true;
-            foreach (Pair<string, int> tuple in this.Fuel)
+            if (this.Fuel.ContainsKey(prefab))
             {
-                if (tuple.Item1 == prefab)
-                {
-                    tuple.Item2 += quantity;
-                    r = false;
-                    break;
-                }
+                this.Fuel[prefab] += quantity;
             }
-            if (r)
+            else
             {
-                Pair<string, int> newitem = new Pair<string, int>(prefab, quantity);
-                this.PossessedItems.Add(newitem);
+                this.Fuel[prefab] = quantity;
             }
         }
 
         public void RemoveFromPossessedItems(string prefab, int quantity)
         {
-            foreach (Pair<string, int> tuple in this.PossessedItems)
+            if (this.PossessedItems.ContainsKey(prefab))
             {
-                if (tuple.Item1 == prefab)
+                if (this.PossessedItems[prefab] < quantity)
                 {
-                    if (tuple.Item2 == quantity)
-                    {
-                        Pair<string, int> itemtoremove = new Pair<string, int>(prefab, quantity);
-                        this.PossessedItems.Remove(itemtoremove);
-                    }
-                    else
-                    {
-                        tuple.Item2 -= quantity;
-                    }
-                    break;
+                    throw new ArgumentException("Insufficient Quantity");
+                }
+                else if (this.PossessedItems[prefab] == quantity)
+                {
+                    this.PossessedItems.Remove(prefab);
+                }
+                else
+                {
+                    this.PossessedItems[prefab] -= quantity;
                 }
             }
         }
@@ -305,93 +218,75 @@ namespace MCTS.DST.WorldModels
         
         public void AddToPossessedItems(string prefab, int quantity)
         {
-            Boolean r = true;
-            foreach (Pair<string, int> tuple in this.PossessedItems)
+            if (this.PossessedItems.ContainsKey(prefab))
             {
-                if (tuple.Item1 == prefab)
-                {
-                    tuple.Item2 += quantity;
-                    r = false;
-                    break;
-                }
+                this.PossessedItems[prefab] += quantity;
             }
-            if (r)
+            else
             {
-                Pair<string, int> newitem = new Pair<string, int>(prefab, quantity);
-                this.PossessedItems.Add(newitem);
+                this.PossessedItems[prefab] = quantity;
             }
         }
 
         public void RemoveFromWorld(string prefab, int quantity)
         {
-            foreach (var tuple in this.WorldObjects)
+            // TODO This doesn't make sense. We are lacking PosX and PosZ and in DST you can only pick up the entire stack!
+            for (int i = 0; i < this.WorldObjects.Count; i++)
             {
-                if (tuple.Item1.Item1 == prefab)
+                if (this.WorldObjects[i].ObjectName == prefab)
                 {
-                    if (tuple.Item1.Item2 == quantity)
-                    {                        
-                        this.WorldObjects.Remove(tuple);
+                    if (this.WorldObjects[i].Quantity < quantity)
+                    {
+                        throw new ArgumentException("Insufficient Quantity");
+                    }
+                    else if (this.WorldObjects[i].Quantity == quantity)
+                    {
+                        this.WorldObjects.RemoveAt(i);
                     }
                     else
                     {
-                        tuple.Item1.Item2 -= quantity;
+                        this.WorldObjects[i].Quantity -= quantity;
                     }
-                    break;
+                    return;
                 }
             }
         }
 
-        public void AddToWorld(string prefab, int quantity, int posx, int posz)
+        public void AddToWorld(string prefab, int quantity, int posX, int posZ)
         {
-            Boolean r = true;
-            foreach (var tuple in this.WorldObjects)
+            for (int i = 0; i < this.WorldObjects.Count; i++)
             {
-                if (tuple.Item1.Item1 == prefab)
+                if (this.WorldObjects[i].ObjectName == prefab)
                 {
-                    tuple.Item1.Item2 += quantity;
-                    r = false;
-                    break;
+                    this.WorldObjects[i].Quantity += quantity;
+                    return;
                 }
             }
-            if (r)
-            {
-                Pair<int, int> position = new Pair<int, int>(posx, posz);
-                Pair<string, int> newitem = new Pair<string, int>(prefab, quantity);
-                Pair<Pair<string, int>, Pair<int, int>> newpair = new Pair<Pair<string, int>, Pair<int, int>>(newitem, position);
-                this.WorldObjects.Add(newpair);
-            }
+            this.WorldObjects.Add(new WorldObjectData(prefab, quantity, posX, posZ));
         }
 
         public void RemoveAction(string actionName)
-        {          
-            foreach(ActionDST action in this.AvailableActions)
+        {
+            for (int i = 0; i < this.AvailableActions.Count; i++)
             {
-                if(action.Name == actionName)
+                if (this.AvailableActions[i].Name.Equals(actionName))
                 {
-                    this.AvailableActions.Remove(action);
-                    break;
+                    this.AvailableActions.RemoveAt(i);
+                    return;
                 }
             }
         }
 
         public void AddAction(ActionDST action)
-        {
-            if (NowCanDo(action.Name))
+        {   // TODO: Use HASHSET instead of LIST<ACTION DST> for faster lookup. Add action if not in Hashset.
+            for (int i = 0; i < this.AvailableActions.Count; i++)
             {
-                this.AvailableActions.Add(action);
-            }
-        }
-
-        public Boolean NowCanDo(string actionName)
-        {
-            foreach (var action in this.AvailableActions)
-            {
-                if (action.Name == actionName)
+                if (this.AvailableActions[i].Name == action.Name)
                 {
-                    return true;
+                    continue;
                 }
             }
-            return false;
+            this.AvailableActions.Add(action);
         }
 
         public void AddToEquipped(string item)
@@ -469,9 +364,9 @@ namespace MCTS.DST.WorldModels
         {
             float maxdistance = float.MaxValue;
             float dist = float.MaxValue;
-            foreach (var fire in this.Fire)
+            for (int i = 0; i < this.Fire.Count; i++)
             {
-                dist = DistanceCalculator(fire.Item2, fire.Item3);
+                dist = DistanceCalculator(this.Fire[i].PosX, this.Fire[i].PosZ);
                 if (dist < maxdistance)
                 {
                     maxdistance = dist;
@@ -487,31 +382,6 @@ namespace MCTS.DST.WorldModels
                 return 0.0f;
             }
         }
-
-        //public float AxePickaxeValue()
-        //{
-        //    Boolean b1 = this.Possesses("axe");
-        //    Boolean b2 = this.IsEquipped("axe");
-        //    Boolean b3 = this.Possesses("pickaxe");
-        //    Boolean b4 = this.IsEquipped("pickaxe");
-
-        //    if ((b1 || b2) && (b3 || b4))
-        //    {
-        //        return 1.0f;
-        //    }
-        //    else if ((WorldHas("tree") && (b1 || b2)) || (WorldHas("boulder") && (b3 || b4)))
-        //    {
-        //        return 0.75f;
-        //    }
-        //    else if (b1 || b2 || b3 || b4)
-        //    {
-        //        return 0.4f;
-        //    }
-        //    else
-        //    {
-        //        return 0.0f;
-        //    }
-        //}
 
         public float FoodValue()
         {
@@ -557,24 +427,23 @@ namespace MCTS.DST.WorldModels
 
         public Pair<int, int> GetNextPosition(string prefab, string place)
         {
-            if (place == "fire")
+            if (place.Equals("fire"))
             {
-                foreach (var item in this.Fire)
+                for (int i = 0; i < this.Fire.Count; i++)
                 {
-                    if (item.Item1 == prefab)
+                    if (this.Fire[i].FireName.Equals(prefab))
                     {
-                        Pair<int, int> pair = new Pair<int, int>(item.Item2, item.Item3);
-                        return pair;
-                    }                   
+                        return new Pair<int, int>(this.Fire[i].PosX, this.Fire[i].PosZ);
+                    }
                 }
             }
-            else if (place == "world")
+            else if (place.Equals("world"))
             {
-                foreach (var item in this.WorldObjects)
+                for (int i = 0; i < this.Fire.Count; i++)
                 {
-                    if (item.Item1.Item1 == prefab)
+                    if (this.WorldObjects[i].ObjectName.Equals(prefab))
                     {
-                        return item.Item2;
+                        return new Pair<int, int>(this.WorldObjects[i].PosX, this.WorldObjects[i].PosZ);
                     }
                 }
             }

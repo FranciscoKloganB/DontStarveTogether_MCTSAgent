@@ -35,5 +35,27 @@ namespace MCTS.DST.Actions
         {
             return new Pair<string, int>("", 0);
         }
+
+        public ActionDST Clone()
+        {
+            return new ActionDST(string.Copy(this.Name));
+        }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as ActionDST;
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            return this.Name.Equals(item.Name);
+        }
+
+        public override int GetHashCode()
+        {
+            return 539060726 + EqualityComparer<string>.Default.GetHashCode(Name);
+        }
     }
 }

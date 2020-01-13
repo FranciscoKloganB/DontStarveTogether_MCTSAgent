@@ -45,7 +45,8 @@ namespace MCTS.DST.Resources.Buildables
             for (int index = 0; index < this.Materials.Count; index++)
             {
                 var element = this.Materials.ElementAt(index);
-                worldState.RemoveFromPossessedItems(element.Key, element.Value);
+                var material = element.Key;
+                worldState.RemoveFromPossessedItems(material, element.Value);
             }
             worldState.AddToPossessedItems(this.BuildableName, 1);
         }
@@ -55,9 +56,9 @@ namespace MCTS.DST.Resources.Buildables
             ;
         }
 
-        public void TryRemoveAction(WorldModelDST worldModel, string actionName)
+        public virtual void TryRemoveAction(WorldModelDST worldModel, string actionName)
         {
-
+            ;
         }
     }
 
