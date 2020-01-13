@@ -12,6 +12,14 @@ namespace MCTS.DST.Resources.Materials
         public Dictionary<string, Material> materialBase = new Dictionary<string, Material>()
         {
             ["boulder"] = Boulder.Instance,
+            ["boulder"] = Boulder.Instance,
+            ["boulder"] = Boulder.Instance,
+            ["boulder"] = Boulder.Instance,
+            ["boulder"] = Boulder.Instance,
+            ["boulder"] = Boulder.Instance,
+            ["boulder"] = Boulder.Instance,
+            ["boulder"] = Boulder.Instance,
+            ["boulder"] = Boulder.Instance,
         };
 
         private MaterialDict() { }
@@ -115,7 +123,13 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Rock : PrimitiveMaterial
     {
-        public Rock(int quantity) : base("rocks", quantity, false) {}
+        public Rock(int quantity) : base("rocks", quantity, false) { }
+
+        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>() { 
+            ["firepit"] = 12,
+            ["hammer"] = 3,
+            ["battle_helm"] = 2
+        };
 
         public static Rock Instance { get; } = new Rock(1);
     }
@@ -124,12 +138,26 @@ namespace MCTS.DST.Resources.Materials
     {
         public Flint(int quantity) : base("flint", quantity, false) { }
 
+        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>() { 
+            ["axe"] = 1,
+            ["pickaxe"] = 2,
+            ["battle_helm"] = 2,
+            ["battle_spear"] = 2,
+            ["compass"] = 1,
+        };
+
         public static Flint Instance { get; } = new Flint(1);
     }
 
     public sealed class Log : PrimitiveMaterial
     {
         public Log(int quantity) : base("log", quantity, true) { }
+
+        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        {
+            ["campfire"] = 2,
+            ["firepit"] = 2,
+        };
 
         public static Log Instance { get; } = new Log(1);
     }
@@ -138,12 +166,32 @@ namespace MCTS.DST.Resources.Materials
     {
         public Twig(int quantity) : base("twigs", quantity, true) { }
 
+        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        {
+            ["axe"] = 1,
+            ["pickaxe"] = 2,
+            ["hammer"] = 3,
+            ["torch"] = 2,
+            ["trap"] = 2,
+            ["grass_suit"] = 2,
+            ["battle_spear"] = 2,
+        };
+
         public static Twig Instance { get; } = new Twig(1);
     }
 
     public sealed class Cutgrass : PrimitiveMaterial
     {
         public Cutgrass(int quantity) : base("cutgrass", quantity, true) { }
+
+        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        {
+            ["campfire"] = 3,
+            ["torch"] = 2,
+            ["trap"] = 6,
+            ["hammer"] = 6,
+            ["grass_suit"] = 10,
+        };
 
         public static Cutgrass Instance { get; } = new Cutgrass(1);
     }
@@ -152,12 +200,22 @@ namespace MCTS.DST.Resources.Materials
     {
         public Berry(int quantity) : base("berries", quantity, true) { }
 
+        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        {
+            ["roasted_berries"] = 1,
+        };
+
         public static Berry Instance { get; } = new Berry(1);
     }
 
     public sealed class Carrot : PrimitiveMaterial
     {
         public Carrot(int quantity) : base("carrot", quantity, true) { }
+
+        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        {
+            ["roasted_carrot"] = 1,
+        };
 
         public static Carrot Instance { get; } = new Carrot(1);
     }
