@@ -364,9 +364,9 @@ namespace MCTS.DST.WorldModels
         {
             float maxdistance = float.MaxValue;
             float dist = float.MaxValue;
-            foreach (var fire in this.Fire)
+            for (int i = 0; i < this.Fire.Count; i++)
             {
-                dist = DistanceCalculator(fire.Item2, fire.Item3);
+                dist = DistanceCalculator(this.Fire[i].PosX, this.Fire[i].PosZ);
                 if (dist < maxdistance)
                 {
                     maxdistance = dist;
@@ -382,31 +382,6 @@ namespace MCTS.DST.WorldModels
                 return 0.0f;
             }
         }
-
-        //public float AxePickaxeValue()
-        //{
-        //    Boolean b1 = this.Possesses("axe");
-        //    Boolean b2 = this.IsEquipped("axe");
-        //    Boolean b3 = this.Possesses("pickaxe");
-        //    Boolean b4 = this.IsEquipped("pickaxe");
-
-        //    if ((b1 || b2) && (b3 || b4))
-        //    {
-        //        return 1.0f;
-        //    }
-        //    else if ((WorldHas("tree") && (b1 || b2)) || (WorldHas("boulder") && (b3 || b4)))
-        //    {
-        //        return 0.75f;
-        //    }
-        //    else if (b1 || b2 || b3 || b4)
-        //    {
-        //        return 0.4f;
-        //    }
-        //    else
-        //    {
-        //        return 0.0f;
-        //    }
-        //}
 
         public float FoodValue()
         {
@@ -452,24 +427,23 @@ namespace MCTS.DST.WorldModels
 
         public Pair<int, int> GetNextPosition(string prefab, string place)
         {
-            if (place == "fire")
+            if (place.Equals("fire"))
             {
-                foreach (var item in this.Fire)
+                for (int i = 0; i < this.Fire.Count; i++)
                 {
-                    if (item.Item1 == prefab)
+                    if (this.Fire[i].FireName.Equals(prefab))
                     {
-                        Pair<int, int> pair = new Pair<int, int>(item.Item2, item.Item3);
-                        return pair;
-                    }                   
+                        return new Pair<int, int>(this.Fire[i].PosX, this.Fire[i].PosZ);
+                    }
                 }
             }
-            else if (place == "world")
+            else if (place.Equals("world"))
             {
-                foreach (var item in this.WorldObjects)
+                for (int i = 0; i < this.Fire.Count; i++)
                 {
-                    if (item.Item1.Item1 == prefab)
+                    if (this.WorldObjects[i].ObjectName.Equals(prefab))
                     {
-                        return item.Item2;
+                        return new Pair<int, int>(this.WorldObjects[i].PosX, this.WorldObjects[i].PosZ);
                     }
                 }
             }
