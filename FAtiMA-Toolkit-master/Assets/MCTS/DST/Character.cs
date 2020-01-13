@@ -4,7 +4,7 @@ using Utilities;
 namespace MCTS.DST.WorldModels
 {
 
-    public class Character : ICloneable
+    public class Character
     {
         private const float MIN_ANY = 0.0f;
         private const float MAX_SATIATION = 150.0f;

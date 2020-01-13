@@ -74,7 +74,7 @@ namespace MCTS.DST
             int currentDepth = -1;
             while (++currentDepth < MAX_SELECTION_DEPTH) // !currentNode.State.IsTerminal())
             {
-                List<ActionDST> allActions = currentNode.State.GetExecutableActions();
+                HashSet<ActionDST> allActions = currentNode.State.GetExecutableActions();
                 // If all executable actions have been used to generate child worlds, 
                 // the current node cannot be further expanded.
                 if (allActions.Count == currentNode.ChildNodes.Count)
@@ -96,7 +96,7 @@ namespace MCTS.DST
                     List<ActionDST> availableActions = new List<ActionDST>();
                     for (int i = 0; i < allActions.Count; i++)
                     {
-                        ActionDST action = allActions[i];
+                        ActionDST action = allActions.ElementAt(i);
                         if (!executedActions.Contains(action.Name))
                         {
                             availableActions.Add(action);
@@ -135,13 +135,13 @@ namespace MCTS.DST
             CurrentDepth = -1;
             while (++this.CurrentDepth < MAX_PLAYOUT_DEPTH)
             {
-                List<ActionDST> availableActions = futureWorld.GetExecutableActions();
+                HashSet<ActionDST> availableActions = futureWorld.GetExecutableActions();
                 int len = availableActions.Count;
                 if (len == 0) 
                 {
                     break;
                 }
-                randomChosenAction = availableActions[RandomGenerator.Next(len)];
+                randomChosenAction = availableActions.ElementAt(RandomGenerator.Next(len));
                 futureWorld = futureWorld.GenerateChildWorldModel();
                 randomChosenAction.ApplyActionEffects(futureWorld);
             }

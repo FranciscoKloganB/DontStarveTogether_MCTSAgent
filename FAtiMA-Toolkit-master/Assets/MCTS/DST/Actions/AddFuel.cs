@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Utilities;
 using MCTS.DST.WorldModels;
 using MCTS.DST;
-
+using System.Linq;
 
 namespace MCTS.DST.Actions
 {
@@ -23,7 +23,12 @@ namespace MCTS.DST.Actions
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            this.Fuel = worldState.Fuel[0].Item1;
+            if (worldState.Fuel.Count == 0)
+            {
+                return; // TODO?
+            }
+
+            this.Fuel = worldState.Fuel.ElementAt(0).Key;
             worldState.Cycle += this.Duration;
             worldState.RemoveFromPossessedItems(this.Fuel, 1);
             worldState.RemoveFromFuel(this.Fuel);
