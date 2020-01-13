@@ -13,7 +13,7 @@ namespace MCTS.DST.Actions
     {
         private Dictionary<string, Buildable> BuildableBase { get; } = BuildablesDict.Instance.buildableBase;
         private static readonly float duration = 0.05f;
-        private static readonly string actionName = "Build_";
+        private static readonly string actionName = "Construct_";
         private readonly string Target;
 
         public Construct(string target) : base(string.Concat(actionName, target))
