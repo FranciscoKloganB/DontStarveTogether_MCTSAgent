@@ -12,14 +12,16 @@ namespace MCTS.DST.Resources.Materials
         public Dictionary<string, Material> materialBase = new Dictionary<string, Material>()
         {
             ["boulder"] = Boulder.Instance,
-            ["boulder"] = Boulder.Instance,
-            ["boulder"] = Boulder.Instance,
-            ["boulder"] = Boulder.Instance,
-            ["boulder"] = Boulder.Instance,
-            ["boulder"] = Boulder.Instance,
-            ["boulder"] = Boulder.Instance,
-            ["boulder"] = Boulder.Instance,
-            ["boulder"] = Boulder.Instance,
+            ["tree"] = Tree.Instance,
+            ["sapling"] = Sapling.Instance,
+            ["berry_bush"] = Grass.Instance,
+            ["rocks"] = Rock.Instance,
+            ["flint"] = Flint.Instance,
+            ["log"] = Log.Instance,
+            ["twigs"] = Twig.Instance,
+            ["cutgrass"] = Cutgrass.Instance,
+            ["berry"] = Berry.Instance,
+            ["carrot"] = Carrot.Instance,
         };
 
         private MaterialDict() { }
