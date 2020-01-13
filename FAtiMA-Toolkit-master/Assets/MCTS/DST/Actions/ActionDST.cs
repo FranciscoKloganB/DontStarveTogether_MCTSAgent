@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Utilities;
 using MCTS.DST.WorldModels;
 using MCTS.DST;
+using System.Collections;
 
 namespace MCTS.DST.Actions
 {
 
-    public class ActionDST
+    public class ActionDST : IEqualityComparer
     {
-        public string Name;
+        public string Name { get; private set; }
         
         public ActionDST(string name)
         {
@@ -55,7 +56,32 @@ namespace MCTS.DST.Actions
 
         public override int GetHashCode()
         {
-            return 539060726 + EqualityComparer<string>.Default.GetHashCode(Name);
+            return 539060726 + EqualityComparer<string>.Default.GetHashCode(this.Name);
+        }
+
+        bool IEqualityComparer.Equals(object x, object y)
+        {
+            var one = x as ActionDST;
+            var another = y as ActionDST;
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
+            return one.Name.Equals(another.Name);
+        }
+
+        int IEqualityComparer.GetHashCode(object obj)
+        {
+            var _ = obj as ActionDST;
+
+            if (_ == null)
+            {
+                return 0;
+            }
+
+            return 539060726 + EqualityComparer<string>.Default.GetHashCode(_.Name);
         }
     }
 }
