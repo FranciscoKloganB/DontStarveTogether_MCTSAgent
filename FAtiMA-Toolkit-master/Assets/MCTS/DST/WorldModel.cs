@@ -11,7 +11,7 @@ namespace MCTS.DST.WorldModels
     public class WorldModelDST
     {
         public Character Walter;
-        public List<ActionDST> AvailableActions;
+        public HashSet<ActionDST> AvailableActions;
         public List<WorldObjectData> WorldObjects;
         public List<FireData> Fire;
 
@@ -25,7 +25,7 @@ namespace MCTS.DST.WorldModels
 
         protected WorldModelDST Parent;
 
-        public WorldModelDST(Character character, List<WorldObjectData> worldObjects, Dictionary<string, int> possessedItems, HashSet<string> equippedItems, float cycle, int[] cycleInfo, List<ActionDST> availableActions, WorldModelDST parent, Dictionary<string, int> fuel, List<FireData> fire)
+        public WorldModelDST(Character character, List<WorldObjectData> worldObjects, Dictionary<string, int> possessedItems, HashSet<string> equippedItems, float cycle, int[] cycleInfo, HashSet<ActionDST> availableActions, WorldModelDST parent, Dictionary<string, int> fuel, List<FireData> fire)
         {
             this.Walter = character;
             this.WorldObjects = worldObjects; // stores in the name, quantity and the position of world objects
@@ -85,7 +85,7 @@ namespace MCTS.DST.WorldModels
 
             //Getting Available Actions
             ActionDST action = new Wander();
-            this.AvailableActions = new List<ActionDST>();
+            this.AvailableActions = new HashSet<ActionDST>();
             this.AvailableActions.Add(action);
 
             if (Possesses("berries"))
@@ -100,7 +100,7 @@ namespace MCTS.DST.WorldModels
             }
         }
 
-        public List<ActionDST> GetExecutableActions()
+        public HashSet<ActionDST> GetExecutableActions()
         {
             return this.AvailableActions;
         }
@@ -114,12 +114,12 @@ namespace MCTS.DST.WorldModels
             var cycle = this.Cycle;
             var cycleInfo = this.CycleInfo.ToArray();
             var walter = this.Walter.Clone();
+            var actions = new HashSet<ActionDST>(this.AvailableActions);
             var equippedItems = new HashSet<string>(this.EquippedItems);
             var possessedItems = this.PossessedItems.ToDictionary(entry => string.Copy(entry.Key), entry => entry.Value);
             var fuels = this.Fuel.ToDictionary(entry => string.Copy(entry.Key), entry => entry.Value);
             var fires = this.Fire.ConvertAll(fire => fire.Clone());
             var worldObjects = this.WorldObjects.ConvertAll(worldObject => worldObject.Clone());
-            var actions = this.AvailableActions.ConvertAll(action => action.Clone());
             return new WorldModelDST(walter, worldObjects, possessedItems, equippedItems, cycle, cycleInfo, actions, this, fuels, fires);
         }
 
@@ -267,25 +267,12 @@ namespace MCTS.DST.WorldModels
 
         public void RemoveAction(string actionName)
         {
-            for (int i = 0; i < this.AvailableActions.Count; i++)
-            {
-                if (this.AvailableActions[i].Name.Equals(actionName))
-                {
-                    this.AvailableActions.RemoveAt(i);
-                    return;
-                }
-            }
+            // this.AvailableActions.RemoveWhere(obj => obj.Name.Equals(actionName));
+            this.AvailableActions.Remove(new ActionDST(actionName));
         }
 
         public void AddAction(ActionDST action)
-        {   // TODO: Use HASHSET instead of LIST<ACTION DST> for faster lookup. Add action if not in Hashset.
-            for (int i = 0; i < this.AvailableActions.Count; i++)
-            {
-                if (this.AvailableActions[i].Name == action.Name)
-                {
-                    continue;
-                }
-            }
+        {   
             this.AvailableActions.Add(action);
         }
 
