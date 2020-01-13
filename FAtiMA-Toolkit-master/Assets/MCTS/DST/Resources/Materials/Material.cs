@@ -30,6 +30,7 @@ namespace MCTS.DST.Resources.Materials
     public class Material
     {
         public bool IsPrimitive;
+        public bool IsPickable { get; private set; }
 
         public Material(bool isPrimitive)
         {
