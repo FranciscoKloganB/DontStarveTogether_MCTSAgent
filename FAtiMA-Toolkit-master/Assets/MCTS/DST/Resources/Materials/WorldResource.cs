@@ -29,28 +29,29 @@ namespace MCTS.DST.Resources.Materials
 
     public class WorldResource
     {
-        public bool IsPrimitive;
+        public bool IsPrimitive { get; private set; }
+        public bool IsFuel { get; private set; }
         public bool IsPickable { get; private set; }
 
-        public WorldResource(bool isPrimitive)
+        public WorldResource(bool isPrimitive, bool isFuel, bool isPickable)
         {
             this.IsPrimitive = isPrimitive;
+            this.IsFuel = isFuel;
+            this.IsPickable = isPickable;
         }
     }
 
     public class BasicWorldResource : WorldResource
     {
-        public bool IsFuel { get; private set; }
         public int Quantity { get; private set; }
         public string MaterialName { get; private set; }
 
         public Dictionary<string, int> Recipes { get; protected set; }
 
-        public BasicWorldResource(string name, int quantity, bool isFuel) : base(true)
+        public BasicWorldResource(string name, int quantity, bool isFuel) : base(true, isFuel, true)
         {
             this.MaterialName = name;
             this.Quantity = quantity;
-            this.IsFuel = isFuel;
         }
     }
 
@@ -70,9 +71,11 @@ namespace MCTS.DST.Resources.Materials
         // Items gathered by picking up by materials, that can burn.
         public List<BasicWorldResource> FuelItems { get; private set; } = new List<BasicWorldResource>();
 
-        public CompoundWorldResource() : base(false) { }
+        public CompoundWorldResource() : base(false, false, false) { }
 
-        public CompoundWorldResource(List<BasicWorldResource> composingItems, List<BasicWorldResource> fuelItems) : base(false)
+        public CompoundWorldResource(bool isFuel) : base(false, isFuel, false) { }
+
+        public CompoundWorldResource(List<BasicWorldResource> composingItems, List<BasicWorldResource> fuelItems) : base(false, false, false)
         {
             this.ComposingItems = composingItems;
             this.FuelItems = fuelItems;
@@ -92,7 +95,7 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Tree : CompoundWorldResource
     {
-        public Tree()
+        public Tree() : base(true)
         {
             this.ComposingItems.Add(new Log(2));
             this.FuelItems.Add(new Log(2));
