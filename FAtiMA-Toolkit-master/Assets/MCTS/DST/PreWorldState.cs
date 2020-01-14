@@ -29,6 +29,14 @@ namespace MCTS.DST {
             "campfire", "firepit", "endothermic_fire",
         };
 
+        private static HashSet<string> realEntityBase_wtf = new HashSet<string>() {
+            "twigs", "sapling",
+            "log", "torch", "grass",
+            "cutgrass", "carrot", "carrot_planted",
+            "rocks", "flint", "axe",
+            "pickaxe", "campfire", "firepit"
+        };
+
         public Character Walter;
         public float Cycle;
         public int[] CycleInfo;
@@ -233,95 +241,30 @@ namespace MCTS.DST {
 
         public string RealEntityPrefab(string entity)
         {
-            if (IsTree(entity))
+            if (PreWorldState.realEntityBase_wtf.Contains(entity))
+            {
+                return entity;
+            }
+            else if (PreWorldState.treeBase.Contains(entity))
             {
                 return "tree";
             }
-            else if (IsBoulder(entity))
+            else if (PreWorldState.rockBase.Contains(entity))
             {
                 return "boulder";
             }
-            else if (entity == "sapling")
-            {
-                return "sapling";
-            }
-            else if (entity == "twigs")
-            {
-                return "twigs";
-            }
-            else if (entity == "berrybush")
+            else if (entity.Contains("berrybush"))
             {
                 return "berrybush";
             }
-            else if (entity == "berrybush2")
-            {
-                return "berrybush";
-            }
-            else if (entity == "berrybush_juicy")
-            {
-                return "berrybush";
-            }
-            else if (entity == "log")
-            {
-                return "log";
-            }
-            else if (entity == "torch")
-            {
-                return "torch";
-            }
-            else if (entity == "grass")
-            {
-                return "grass";
-            }
-            else if (entity == "cutgrass")
-            {
-                return "cutgrass";
-            }
-            else if (entity == "carrot")
-            {
-                return "carrot";
-            }
-            else if (entity == "carrot_planted")
-            {
-                return "carrot_planted";
-            }
-            else if (entity == "berries")
+            else if (entity.Contains("berries"))
             {
                 return "berries";
-            }
-            else if (entity == "berries_juicy")
-            {
-                return "berries";
-            }
-            else if (entity == "rocks")
-            {
-                return "rocks";
-            }
-            else if (entity == "flint")
-            {
-                return "flint";
-            }
-            else if (entity == "axe")
-            {
-                return "axe";
-            }
-            else if (entity == "pickaxe")
-            {
-                return "pickaxe";
-            }
-            else if (entity == "campfire")
-            {
-                return "campfire";
-            }
-            else if (entity == "firepit")
-            {
-                return "firepit";
             }
             else
             {
                 return "";
             }
-
         }
 
         public bool IsFuel(string guid)
