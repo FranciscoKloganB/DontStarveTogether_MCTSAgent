@@ -119,7 +119,7 @@ namespace MCTS.DST.WorldModels
                 {
                     this.AvailableActions.Add(new PickUp(objectName));
                 }
-                else if (materialBase.ContainsKey(objectName) && materialBase[objectName].IsPickable)
+                else if (materialBase.ContainsKey(objectName))
                 {
                     this.AvailableActions.Add(new PickUp(objectName));
                 }
