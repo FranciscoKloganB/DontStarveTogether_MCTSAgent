@@ -14,11 +14,11 @@ namespace MCTS.DST.Resources.Materials
             ["boulder"] = Boulder.Instance,
             ["tree"] = Tree.Instance,
             ["sapling"] = Sapling.Instance,
-            ["berry_bush"] = Grass.Instance,
             ["rocks"] = Rock.Instance,
             ["flint"] = Flint.Instance,
             ["log"] = Log.Instance,
             ["twigs"] = Twig.Instance,
+            ["grass"] = Grass.Instance,
             ["cutgrass"] = Cutgrass.Instance,
             ["berry"] = Berry.Instance,
             ["carrot"] = Carrot.Instance,
@@ -115,17 +115,6 @@ namespace MCTS.DST.Resources.Materials
         public static Sapling Instance { get; } = new Sapling();
     }
 
-    public sealed class Grass : CompoundWorldResource
-    {
-        public Grass()
-        {
-            this.ComposingItems.Add(new Cutgrass(2));
-            this.FuelItems.Add(new Cutgrass(2));
-        }
-
-        public static Grass Instance { get; } = new Grass();
-    }
-
     public sealed class BerryBush : CompoundWorldResource
     {
         public BerryBush()
@@ -199,6 +188,13 @@ namespace MCTS.DST.Resources.Materials
         }
 
         public static Twig Instance { get; } = new Twig(1);
+    }
+
+    public sealed class Grass : BasicWorldResource
+    {
+        public Grass(int quantity) : base("grass", quantity, true) {  }
+
+        public static Grass Instance { get; } = new Grass(1);
     }
 
     public sealed class Cutgrass : BasicWorldResource
