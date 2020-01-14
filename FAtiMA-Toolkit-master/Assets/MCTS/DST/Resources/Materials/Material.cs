@@ -40,10 +40,11 @@ namespace MCTS.DST.Resources.Materials
 
     public class PrimitiveMaterial : Material
     {
-        public string MaterialName { get; private set; }
-        public int Quantity { get; private set; }
-
         public bool IsFuel { get; private set; }
+        public int Quantity { get; private set; }
+        public string MaterialName { get; private set; }
+
+        public Dictionary<string, int> Recipes { get; private set; }
 
         public PrimitiveMaterial(string name, int quantity, bool isFuel) : base(true)
         {
