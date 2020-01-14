@@ -84,7 +84,7 @@ namespace MCTS.DST.Resources.Buildables
 
         public override void PostProcessBuildable(WorldModelDST worldModel)
         {
-            if (worldModel.EquippedItems.Count == 0)
+            if (worldModel.EquippedItems.Contains(this.BuildableName))
             {
                 ActionDST action = new Unequip(this.BuildableName);
                 worldModel.AddAction(action);
