@@ -27,6 +27,7 @@ namespace MCTS.DST.Actions
         {
             worldModel.Cycle += this.Duration;
             worldModel.UpdateSatiation(-3.0f);
+            worldModel.UpdateHP(-30.0f); // TODO Make this better.
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
