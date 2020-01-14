@@ -79,7 +79,6 @@ namespace MCTS.DST
                 // the current node cannot be further expanded.
                 if (allActions.Count == currentNode.ChildNodes.Count)
                 {
-                    Console.WriteLine("childs = count = " + nodeToDoSelection.ChildNodes.Count);
                     currentNode = this.BestUCTChild(nodeToDoSelection);
                 }
                 else
