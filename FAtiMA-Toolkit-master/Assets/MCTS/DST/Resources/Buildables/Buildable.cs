@@ -19,7 +19,7 @@ namespace MCTS.DST.Resources.Buildables
             ["pickaxe"] = Pickaxe.Instance,
             ["shovel"] = Shovel.Instance,
             ["hammer"] = Hammer.Instance,
-            ["campfirre"] = Campfire.Instance,
+            ["campfire"] = Campfire.Instance,
             ["firepit"] = FirePit.Instance,
             ["torch"] = Torch.Instance,
             ["endothermic_fire"] = EndothermicFire.Instance,
