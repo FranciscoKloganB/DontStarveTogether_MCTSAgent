@@ -6,6 +6,7 @@ using MCTS.DST;
 using System.Linq;
 using MCTS.DST.Resources.Edibles;
 using MCTS.DST.Resources.Materials;
+using MCTS.DST.Resources.NPCs;
 
 namespace MCTS.DST.WorldModels
 {
@@ -13,6 +14,7 @@ namespace MCTS.DST.WorldModels
     {
         public static Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
         public static Dictionary<string, Food> foodBase = FoodDict.Instance.foodBase;
+        public static Dictionary<string, NPC> npcBase = NPCDict.Instance.npcBase;
 
         public Dictionary<string, int> Fuel;
         public Dictionary<string, int> PossessedItems;
@@ -132,6 +134,14 @@ namespace MCTS.DST.WorldModels
                 if (foodBase.ContainsKey(possessedItem))
                 {
                     this.AvailableActions.Add(new Eat(possessedItem));
+                }
+            }
+
+            for (int i = 0; i < this.NPC.Count; i++)
+            {
+                if (npcBase.ContainsKey(this.NPC[i].NPCName))
+                {
+                    this.AvailableActions.Add(new Fight(this.NPC[i].NPCName, this.NPC[i].GUID));
                 }
             }
         }
