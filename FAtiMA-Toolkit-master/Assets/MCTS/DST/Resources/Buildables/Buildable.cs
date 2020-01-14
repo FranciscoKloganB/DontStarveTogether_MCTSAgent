@@ -66,7 +66,7 @@ namespace MCTS.DST.Resources.Buildables
                 var materialName = this.RequiredMaterials.ElementAt(i).Key;
                 var materialUses = ((BasicWorldResource)materialBase[materialName]).Recipes;
 
-                for (int j = 0; j < materialUses.Recipes.Count; j++)
+                for (int j = 0; j < materialUses.Count; j++)
                 {
                     ; // TODo
                 }
