@@ -9,7 +9,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public static MaterialDict Instance { get; } = new MaterialDict();
 
-        public Dictionary<string, Material> materialBase = new Dictionary<string, Material>()
+        public Dictionary<string, WorldResource> materialBase = new Dictionary<string, WorldResource>()
         {
             ["boulder"] = Boulder.Instance,
             ["tree"] = Tree.Instance,
@@ -27,25 +27,25 @@ namespace MCTS.DST.Resources.Materials
         private MaterialDict() { }
     }
 
-    public class Material
+    public class WorldResource
     {
         public bool IsPrimitive;
         public bool IsPickable { get; private set; }
 
-        public Material(bool isPrimitive)
+        public WorldResource(bool isPrimitive)
         {
             this.IsPrimitive = isPrimitive;
         }
     }
 
-    public class PrimitiveMaterial : Material
+    public class BasicWorldResource : WorldResource
     {
         public string MaterialName { get; private set; }
         public int Quantity { get; private set; }
 
         public bool IsFuel { get; private set; }
 
-        public PrimitiveMaterial(string name, int quantity, bool isFuel) : base(true)
+        public BasicWorldResource(string name, int quantity, bool isFuel) : base(true)
         {
             this.MaterialName = name;
             this.Quantity = quantity;
@@ -53,24 +53,32 @@ namespace MCTS.DST.Resources.Materials
         }
     }
 
-    public class ComposedMaterial : Material
+    public class Tool : BasicWorldResource
+    {
+        public Tool(string name, int quantity) : base (name, quantity, false)
+        {
+            // TODO?
+        }
+    }
+
+    public class CompoundWorldResource : WorldResource
     {
         // Items gathered by picking up composed materials, such as boulders or trees.
-        public List<PrimitiveMaterial> ComposingItems { get; private set; } = new List<PrimitiveMaterial>();
+        public List<BasicWorldResource> ComposingItems { get; private set; } = new List<BasicWorldResource>();
 
         // Items gathered by picking up by materials, that can burn.
-        public List<PrimitiveMaterial> FuelItems { get; private set; } = new List<PrimitiveMaterial>();
+        public List<BasicWorldResource> FuelItems { get; private set; } = new List<BasicWorldResource>();
 
-        public ComposedMaterial() : base(false) { }
+        public CompoundWorldResource() : base(false) { }
 
-        public ComposedMaterial(List<PrimitiveMaterial> composingItems, List<PrimitiveMaterial> fuelItems) : base(false)
+        public CompoundWorldResource(List<BasicWorldResource> composingItems, List<BasicWorldResource> fuelItems) : base(false)
         {
             this.ComposingItems = composingItems;
             this.FuelItems = fuelItems;
         }
     }
 
-    public sealed class Boulder : ComposedMaterial
+    public sealed class Boulder : CompoundWorldResource
     {
         public Boulder()
         {
@@ -81,7 +89,7 @@ namespace MCTS.DST.Resources.Materials
         public static Boulder Instance { get; } = new Boulder();
     }
 
-    public sealed class Tree : ComposedMaterial
+    public sealed class Tree : CompoundWorldResource
     {
         public Tree()
         {
@@ -92,7 +100,7 @@ namespace MCTS.DST.Resources.Materials
         public static Tree Instance { get; } = new Tree();
     }
 
-    public sealed class Sapling : ComposedMaterial
+    public sealed class Sapling : CompoundWorldResource
     {
         public Sapling()
         {
@@ -103,7 +111,7 @@ namespace MCTS.DST.Resources.Materials
         public static Sapling Instance { get; } = new Sapling();
     }
 
-    public sealed class Grass : ComposedMaterial
+    public sealed class Grass : CompoundWorldResource
     {
         public Grass()
         {
@@ -114,7 +122,7 @@ namespace MCTS.DST.Resources.Materials
         public static Grass Instance { get; } = new Grass();
     }
 
-    public sealed class BerryBush : ComposedMaterial
+    public sealed class BerryBush : CompoundWorldResource
     {
         public BerryBush()
         {
@@ -124,7 +132,7 @@ namespace MCTS.DST.Resources.Materials
         public static BerryBush Instance { get; } = new BerryBush();
     }
 
-    public sealed class Rock : PrimitiveMaterial
+    public sealed class Rock : BasicWorldResource
     {
         public Rock(int quantity) : base("rocks", quantity, false) { }
 
@@ -137,7 +145,7 @@ namespace MCTS.DST.Resources.Materials
         public static Rock Instance { get; } = new Rock(1);
     }
 
-    public sealed class Flint : PrimitiveMaterial
+    public sealed class Flint : BasicWorldResource
     {
         public Flint(int quantity) : base("flint", quantity, false) { }
 
@@ -152,7 +160,7 @@ namespace MCTS.DST.Resources.Materials
         public static Flint Instance { get; } = new Flint(1);
     }
 
-    public sealed class Log : PrimitiveMaterial
+    public sealed class Log : BasicWorldResource
     {
         public Log(int quantity) : base("log", quantity, true) { }
 
@@ -165,7 +173,7 @@ namespace MCTS.DST.Resources.Materials
         public static Log Instance { get; } = new Log(1);
     }
 
-    public sealed class Twig : PrimitiveMaterial
+    public sealed class Twig : BasicWorldResource
     {
         public Twig(int quantity) : base("twigs", quantity, true) { }
 
@@ -183,7 +191,7 @@ namespace MCTS.DST.Resources.Materials
         public static Twig Instance { get; } = new Twig(1);
     }
 
-    public sealed class Cutgrass : PrimitiveMaterial
+    public sealed class Cutgrass : BasicWorldResource
     {
         public Cutgrass(int quantity) : base("cutgrass", quantity, true) { }
 
@@ -199,7 +207,7 @@ namespace MCTS.DST.Resources.Materials
         public static Cutgrass Instance { get; } = new Cutgrass(1);
     }
 
-    public sealed class Berry : PrimitiveMaterial
+    public sealed class Berry : BasicWorldResource
     {
         public Berry(int quantity) : base("berries", quantity, true) { }
 
@@ -211,7 +219,7 @@ namespace MCTS.DST.Resources.Materials
         public static Berry Instance { get; } = new Berry(1);
     }
 
-    public sealed class Carrot : PrimitiveMaterial
+    public sealed class Carrot : BasicWorldResource
     {
         public Carrot(int quantity) : base("carrot", quantity, true) { }
 
