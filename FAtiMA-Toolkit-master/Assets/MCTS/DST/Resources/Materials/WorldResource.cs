@@ -230,4 +230,39 @@ namespace MCTS.DST.Resources.Materials
 
         public static Carrot Instance { get; } = new Carrot(1);
     }
+
+    public sealed class Torch : Tool
+    {
+        public Torch(int quantity) : base("torch", quantity) { }
+
+        public static Torch Instance { get; } = new Torch(1);
+    }
+
+    public sealed class Pickaxe : Tool
+    {
+        public Pickaxe(int quantity) : base("pickaxe", quantity) { }
+
+        public static Pickaxe Instance { get; } = new Pickaxe(1);
+    }
+
+    public sealed class Axe : Tool
+    {
+        public Axe(int quantity) : base("axe", quantity) { }
+
+        public static Axe Instance { get; } = new Axe(1);
+    }
+
+    public sealed class Campfire : Tool
+    {
+        public Campfire(int quantity) : base("campfire", quantity) { }
+
+        public static Campfire Instance { get; } = new Campfire(1);
+    }
+
+    public sealed class Hammer : Tool
+    {
+        public Hammer(int quantity) : base("hammer", quantity) { }
+
+        public static Hammer Instance { get; } = new Hammer(1);
+    }
 }
