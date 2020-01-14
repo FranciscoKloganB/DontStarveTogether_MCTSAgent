@@ -101,16 +101,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="UtilitiesDocumentation\Utilities.chm" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="GAIPS.Serialization">
       <HintPath>..\..\packages\GAIPS.Serialization.1.5.0\lib\net35\GAIPS.Serialization.dll</HintPath>
     </Reference>
+    <Reference Include="Utilities">
+      <HintPath>..\..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
+    </Reference>
   </ItemGroup>
-  <Reference Include="Utilities">
-    <HintPath>..\..\packages\Utilities.3.3.0.2\lib\net35\Utilities.dll</HintPath>
-  </Reference>
   <ItemGroup>
     <Folder Include="DST\Interfaces\" />
   </ItemGroup>
