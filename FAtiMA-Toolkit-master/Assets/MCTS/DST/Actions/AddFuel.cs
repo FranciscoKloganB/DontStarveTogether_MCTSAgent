@@ -10,15 +10,16 @@ namespace MCTS.DST.Actions
 
     public class AddFuel : ActionDST
     {
-        private string Fuel;
-        private string Target;
-        private float Duration;
         private static readonly string actionName = "AddFuel_";
+        private static readonly float Duration = 0.33f;
+
+        private readonly string Target;
+
+        private string Fuel;
 
         public AddFuel(string target) : base(actionName + target)
         {
             this.Target = target;
-            this.Duration = 0.33f;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)

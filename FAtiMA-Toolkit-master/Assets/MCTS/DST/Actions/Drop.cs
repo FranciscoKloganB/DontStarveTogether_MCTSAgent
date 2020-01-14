@@ -11,23 +11,23 @@ namespace MCTS.DST.Actions
 
     public class Drop : ActionDST
     {
-        public string Target;
-        public float Duration;
-        public Pair<int, int> Position;
         public static readonly string actionName = "Drop_";
+        private static readonly float Duration = 0.33f;
+
+        public readonly string Target;
+
+        public Pair<int, int> Position;
 
         public Drop(string target) : base(actionName + target)
         {
             this.Target = target;
-            this.Duration = 0.33f;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            worldState.Cycle += this.Duration;
+            worldState.Cycle += Duration;
             worldState.RemoveFromEquipped(this.Target);
             this.Position = new Pair<int, int>(worldState.Walter.GetPosX(), worldState.Walter.GetPosZ());
-
             // TODO - How do we get the quantity of items to drop?
             worldState.AddToWorld(this.Target, 1, this.Position.Item1, this.Position.Item2);
         }

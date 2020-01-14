@@ -11,10 +11,12 @@ namespace MCTS.DST.Actions
 
     public class Construct : ActionDST
     {
-        private Dictionary<string, Buildable> BuildableBase { get; } = BuildablesDict.Instance.buildableBase;
-        private static readonly float duration = 0.05f;
         private static readonly string actionName = "Construct_";
+        private static readonly float duration = 0.05f;
+
         private readonly string Target;
+
+        private Dictionary<string, Buildable> BuildableBase { get; } = BuildablesDict.Instance.buildableBase;
 
         public Construct(string target) : base(string.Concat(actionName, target))
         {

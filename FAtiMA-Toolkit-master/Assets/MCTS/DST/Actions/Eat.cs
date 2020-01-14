@@ -8,10 +8,12 @@ namespace MCTS.DST.Actions
 
     public class Eat : ActionDST
     {
-        private Dictionary<string, Food> FoodBase { get; } = FoodDict.Instance.foodBase;
-        private static readonly float duration = 0.05f;
         private static readonly string actionName = "Eat_";
+        private static readonly float duration = 0.05f;
+
         private readonly string Target;
+
+        private Dictionary<string, Food> FoodBase { get; } = FoodDict.Instance.foodBase;
 
         public Eat(string target) : base(string.Concat(actionName, target))
         {

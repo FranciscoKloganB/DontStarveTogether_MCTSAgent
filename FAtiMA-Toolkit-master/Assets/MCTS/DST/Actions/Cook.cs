@@ -10,6 +10,13 @@ namespace MCTS.DST.Actions
 
     public class Cook : ActionDST
     {
+        private static readonly string actionName = "Cook_";
+        private static readonly float Duration = 0.66f;
+
+        private readonly string Target;
+
+        private string Fire;
+
         public Cook(string name) : base(name)
         {
         }
