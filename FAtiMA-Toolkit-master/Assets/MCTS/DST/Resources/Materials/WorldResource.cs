@@ -71,7 +71,9 @@ namespace MCTS.DST.Resources.Materials
         // Items gathered by picking up by materials, that can burn.
         public List<BasicWorldResource> FuelItems { get; private set; } = new List<BasicWorldResource>();
 
-        public CompoundWorldResource() : base(false) { }
+        public CompoundWorldResource() : base(false, false, false) { }
+
+        public CompoundWorldResource(bool isFuel) : base(false, isFuel, false) { }
 
         public CompoundWorldResource(List<BasicWorldResource> composingItems, List<BasicWorldResource> fuelItems) : base(false, false, false)
         {
@@ -93,9 +95,8 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Tree : CompoundWorldResource
     {
-        public Tree()
+        public Tree() : base(true)
         {
-            this.IsFuel = true;
             this.ComposingItems.Add(new Log(2));
             this.FuelItems.Add(new Log(2));
         }
