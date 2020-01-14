@@ -154,11 +154,7 @@ namespace MCTS.DST {
 
                 if (IsNPC(entPrefab))
                 {
-                    string posXStr = "PosX(" + strEntGuid + ")";
-                    int posX = int.Parse(knowledgeBase.AskProperty((Name)posXStr).Value.ToString());
-                    string posZStr = "PosZ(" + strEntGuid + ")";
-                    int posZ = int.Parse(knowledgeBase.AskProperty((Name)posZStr).Value.ToString());
-                    this.NPC.Add(new NPCData(entPrefab, posX, posZ));
+                    this.NPC.Add(new NPCData(entPrefab, this.GetEntitiesGUID(entPrefab).ToString()));
                 }
 
                 if (IsFire(entPrefab))

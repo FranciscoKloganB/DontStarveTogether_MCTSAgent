@@ -29,11 +29,11 @@ namespace MCTS.DST.Actions
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            string targetGUID = preWorldState.GetEntitiesGUID(this.Target).ToString();
-            return new List<Pair<string, string>>(3)
+            // string targetGUID = preWorldState.GetEntitiesGUID(this.Target).ToString();
+            return new List<Pair<string, string>>()
             {
-                new Pair<string, string>("Action(WALKTO, -, -, -, -)", targetGUID),
-                new Pair<string, string>("Action(LOOKAT, -, -, -, -)", targetGUID),
+                //new Pair<string, string>("Action(WALKTO, -, -, -, -)", targetGUID),
+                //new Pair<string, string>("Action(LOOKAT, -, -, -, -)", targetGUID),
                 new Pair<string, string>("Action(ATTACK, -, -, -, -)", targetGUID)
             };
         }
