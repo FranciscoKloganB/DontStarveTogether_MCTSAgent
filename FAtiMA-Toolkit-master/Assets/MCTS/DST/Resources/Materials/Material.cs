@@ -128,7 +128,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Rock(int quantity) : base("rocks", quantity, false) { }
 
-        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>() { 
+        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>() { 
             ["firepit"] = 12,
             ["hammer"] = 3,
             ["battle_helm"] = 2
@@ -141,7 +141,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Flint(int quantity) : base("flint", quantity, false) { }
 
-        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>() { 
+        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>() { 
             ["axe"] = 1,
             ["pickaxe"] = 2,
             ["battle_helm"] = 2,
@@ -156,7 +156,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Log(int quantity) : base("log", quantity, true) { }
 
-        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
         {
             ["campfire"] = 2,
             ["firepit"] = 2,
@@ -169,7 +169,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Twig(int quantity) : base("twigs", quantity, true) { }
 
-        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
         {
             ["axe"] = 1,
             ["pickaxe"] = 2,
@@ -187,7 +187,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Cutgrass(int quantity) : base("cutgrass", quantity, true) { }
 
-        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
         {
             ["campfire"] = 3,
             ["torch"] = 2,
@@ -203,7 +203,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Berry(int quantity) : base("berries", quantity, true) { }
 
-        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
         {
             ["roasted_berries"] = 1,
         };
@@ -215,7 +215,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Carrot(int quantity) : base("carrot", quantity, true) { }
 
-        public static Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
         {
             ["roasted_carrot"] = 1,
         };
