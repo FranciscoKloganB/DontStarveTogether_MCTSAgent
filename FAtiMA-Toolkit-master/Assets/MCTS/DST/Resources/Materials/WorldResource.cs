@@ -46,7 +46,7 @@ namespace MCTS.DST.Resources.Materials
         public int Quantity { get; private set; }
         public string MaterialName { get; private set; }
 
-        public Dictionary<string, int> Recipes { get; private set; }
+        public Dictionary<string, int> Recipes { get; protected set; }
 
         public BasicWorldResource(string name, int quantity, bool isFuel) : base(true, isFuel, true)
         {
@@ -137,106 +137,115 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Rock : BasicWorldResource
     {
-        public Rock(int quantity) : base("rocks", quantity, false) { }
-
-        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>() { 
-            ["firepit"] = 12,
-            ["hammer"] = 3,
-            ["battle_helm"] = 2
-        };
+        public Rock(int quantity) : base("rocks", quantity, false)
+        {
+            base.Recipes = new Dictionary<string, int>()
+            {
+                ["firepit"] = 12,
+                ["hammer"] = 3,
+                ["battle_helm"] = 2
+            };
+        }
 
         public static Rock Instance { get; } = new Rock(1);
     }
 
     public sealed class Flint : BasicWorldResource
     {
-        public Flint(int quantity) : base("flint", quantity, false) { }
-
-        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>() { 
-            ["axe"] = 1,
-            ["pickaxe"] = 2,
-            ["battle_helm"] = 2,
-            ["battle_spear"] = 2,
-            ["compass"] = 1,
-        };
+        public Flint(int quantity) : base("flint", quantity, false)
+        {
+            base.Recipes = new Dictionary<string, int>()
+            {
+                ["axe"] = 1,
+                ["pickaxe"] = 2,
+                ["battle_helm"] = 2,
+                ["battle_spear"] = 2,
+                ["compass"] = 1,
+            };
+        }
 
         public static Flint Instance { get; } = new Flint(1);
     }
 
     public sealed class Log : BasicWorldResource
     {
-        public Log(int quantity) : base("log", quantity, true) { }
-
-        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        public Log(int quantity) : base("log", quantity, true)
         {
-            ["campfire"] = 2,
-            ["firepit"] = 2,
-        };
+            base.Recipes = new Dictionary<string, int>()
+            {
+                ["campfire"] = 2,
+                ["firepit"] = 2,
+            };
+        }
 
         public static Log Instance { get; } = new Log(1);
     }
 
     public sealed class Twig : BasicWorldResource
     {
-        public Twig(int quantity) : base("twigs", quantity, true) { }
-
-        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        public Twig(int quantity) : base("twigs", quantity, true)
         {
-            ["axe"] = 1,
-            ["pickaxe"] = 2,
-            ["hammer"] = 3,
-            ["torch"] = 2,
-            ["trap"] = 2,
-            ["grass_suit"] = 2,
-            ["battle_spear"] = 2,
-        };
+            base.Recipes = new Dictionary<string, int>()
+            {
+                ["axe"] = 1,
+                ["pickaxe"] = 2,
+                ["hammer"] = 3,
+                ["torch"] = 2,
+                ["trap"] = 2,
+                ["grass_suit"] = 2,
+                ["battle_spear"] = 2,
+            };
+        }
 
         public static Twig Instance { get; } = new Twig(1);
     }
 
     public sealed class Cutgrass : BasicWorldResource
     {
-        public Cutgrass(int quantity) : base("cutgrass", quantity, true) { }
-
-        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        public Cutgrass(int quantity) : base("cutgrass", quantity, true)
         {
-            ["campfire"] = 3,
-            ["torch"] = 2,
-            ["trap"] = 6,
-            ["hammer"] = 6,
-            ["grass_suit"] = 10,
-        };
+            base.Recipes = new Dictionary<string, int>()
+            {
+                ["campfire"] = 3,
+                ["torch"] = 2,
+                ["trap"] = 6,
+                ["hammer"] = 6,
+                ["grass_suit"] = 10,
+            };
+        }
 
         public static Cutgrass Instance { get; } = new Cutgrass(1);
     }
 
     public sealed class Berry : BasicWorldResource
     {
-        public Berry(int quantity) : base("berries", quantity, true) { }
-
-        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        public Berry(int quantity) : base("berries", quantity, true)
         {
-            ["roasted_berries"] = 1,
-        };
+            base.Recipes = new Dictionary<string, int>()
+            {
+                ["roasted_berries"] = 1,
+            };
+        }
 
         public static Berry Instance { get; } = new Berry(1);
     }
 
     public sealed class Carrot : BasicWorldResource
     {
-        public Carrot(int quantity) : base("carrot", quantity, true) { }
-
-        public Dictionary<string, int> Recipes { get; private set; } = new Dictionary<string, int>()
+        public Carrot(int quantity) : base("carrot", quantity, true)
         {
-            ["roasted_carrot"] = 1,
-        };
+            Recipes = new Dictionary<string, int>()
+            {
+                ["roasted_carrot"] = 1,
+            };
+        }
 
         public static Carrot Instance { get; } = new Carrot(1);
     }
 
     public sealed class Torch : Tool
     {
-        public Torch(int quantity) : base("torch", quantity) { }
+        public Torch(int quantity) : base("torch", quantity){ }
 
         public static Torch Instance { get; } = new Torch(1);
     }

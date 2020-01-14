@@ -59,14 +59,14 @@ namespace MCTS.DST.Resources.Buildables
 
         public virtual void TryRemoveAction(WorldModelDST worldModel, string actionName)
         {
-            Dictionary<string, Material> materialBase = MaterialDict.Instance.materialBase;
+            Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
 
             for (int i = 0; i < this.RequiredMaterials.Count; i++)
             {
                 var materialName = this.RequiredMaterials.ElementAt(i).Key;
-                var materialUses = ((PrimitiveMaterial)materialBase[materialName]).Recipes;
+                var materialUses = ((BasicWorldResource)materialBase[materialName]).Recipes;
 
-                for (int j = 0; j < materialUses.Recipes.Count)
+                for (int j = 0; j < materialUses.Count; j++)
                 {
                     ; // TODo
                 }
