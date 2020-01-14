@@ -27,6 +27,8 @@ namespace MCTS.DST.Actions
             worldState.AddToPossessedItems(this.Target, 1);
             ActionDST equipAction = new Equip(this.Target);
             worldState.AddAction(equipAction);
+
+            // TODO - Remove Drop action in Unequip
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)

@@ -31,6 +31,8 @@ namespace MCTS.DST.Actions
             {
                 worldState.RemoveAction(actionName + this.Target);
             }
+
+            // TODO - Add Drop action in Equip
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
