@@ -70,12 +70,10 @@ namespace MCTS.DST.Resources.Buildables
                 {
                     var craftableName = materialUses.ElementAt(j).Key;
                     var requiredQuantity = materialUses.ElementAt(j).Value;
-                    /*
-                    if (worldModel.Possesses < requiredQuantity)
+                    if (worldModel.PossessedItems[craftableName] < requiredQuantity)
                     {
                         worldModel.RemoveAction(actionName + craftableName);
                     }
-                    */
                 }
             }
         }
