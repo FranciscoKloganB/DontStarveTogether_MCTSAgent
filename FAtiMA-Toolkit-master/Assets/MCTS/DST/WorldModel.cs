@@ -14,24 +14,27 @@ namespace MCTS.DST.WorldModels
         public static Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
         public static Dictionary<string, Food> foodBase = FoodDict.Instance.foodBase;
 
-        public Character Walter;
-        public HashSet<ActionDST> AvailableActions;
-        public List<WorldObjectData> WorldObjects;
-        public List<FireData> Fire;
-
         public Dictionary<string, int> Fuel;
         public Dictionary<string, int> PossessedItems;
-        
+
+        public HashSet<ActionDST> AvailableActions;
         public HashSet<string> EquippedItems;
 
+        public List<FireData> Fire;
+        public List<NPCData> NPC;
+        public List<WorldObjectData> WorldObjects;
+
+        public Character Walter;
+                     
         public float Cycle;
         public int[] CycleInfo;
 
         protected WorldModelDST Parent;
 
-        public WorldModelDST(Character character, List<WorldObjectData> worldObjects, Dictionary<string, int> possessedItems, HashSet<string> equippedItems, float cycle, int[] cycleInfo, HashSet<ActionDST> availableActions, WorldModelDST parent, Dictionary<string, int> fuel, List<FireData> fire)
+        public WorldModelDST(Character character, List<NPCData> npc, List<WorldObjectData> worldObjects, Dictionary<string, int> possessedItems, HashSet<string> equippedItems, float cycle, int[] cycleInfo, HashSet<ActionDST> availableActions, WorldModelDST parent, Dictionary<string, int> fuel, List<FireData> fire)
         {
             this.Walter = character;
+            this.NPC = npc;
             this.WorldObjects = worldObjects; // stores in the name, quantity and the position of world objects
             this.PossessedItems = possessedItems;
             this.EquippedItems = equippedItems; // stores the name of equiped items
@@ -146,14 +149,19 @@ namespace MCTS.DST.WorldModels
         {
             var cycle = this.Cycle;
             var cycleInfo = this.CycleInfo.ToArray();
-            var walter = this.Walter.Clone();
+            var possessedItems = new Dictionary<string, int>(this.PossessedItems);
+            var fuels = new Dictionary<string, int>(this.Fuel);
+
             var actions = new HashSet<ActionDST>(this.AvailableActions);
             var equippedItems = new HashSet<string>(this.EquippedItems);
-            var possessedItems = this.PossessedItems.ToDictionary(entry => string.Copy(entry.Key), entry => entry.Value);
-            var fuels = this.Fuel.ToDictionary(entry => string.Copy(entry.Key), entry => entry.Value);
-            var fires = this.Fire.ConvertAll(fire => fire.Clone());
-            var worldObjects = this.WorldObjects.ConvertAll(worldObject => worldObject.Clone());
-            return new WorldModelDST(walter, worldObjects, possessedItems, equippedItems, cycle, cycleInfo, actions, this, fuels, fires);
+
+            var fires = new List<FireData>(this.Fire);
+            var worldObjects = new List<WorldObjectData>(this.WorldObjects);
+            var npcs = new List<NPCData>(this.NPC);
+
+            var walter = this.Walter.Clone();
+
+            return new WorldModelDST(walter, npcs, worldObjects, possessedItems, equippedItems, cycle, cycleInfo, actions, this, fuels, fires);
         }
 
         public int FoodQuantity()
