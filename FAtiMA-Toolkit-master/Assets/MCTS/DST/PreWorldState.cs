@@ -5,6 +5,7 @@ using KnowledgeBase;
 using MCTS.DST.WorldModels;
 using WellFormedNames;
 using System.Linq;
+using MCTS.DST.Resources.NPCs;
 
 namespace MCTS.DST {
 
@@ -29,7 +30,7 @@ namespace MCTS.DST {
             "campfire", "firepit", "endothermic_fire",
         };
 
-        private static HashSet<string> realEntityBase_wtf = new HashSet<string>() {
+        private static HashSet<string> realEntityBase = new HashSet<string>() {
             "twigs", "sapling",
             "log", "torch", "grass",
             "cutgrass", "carrot", "carrot_planted",
@@ -224,6 +225,11 @@ namespace MCTS.DST {
             }          
         }
 
+        public bool IsNPC(string npc)
+        {
+            return NPCDict.Instance.npcBase.ContainsKey(npc);
+        }
+
         public bool IsTree(string tree)
         {
             return PreWorldState.treeBase.Contains(tree);
@@ -241,7 +247,7 @@ namespace MCTS.DST {
 
         public string RealEntityPrefab(string entity)
         {
-            if (PreWorldState.realEntityBase_wtf.Contains(entity))
+            if (PreWorldState.realEntityBase.Contains(entity))
             {
                 return entity;
             }
