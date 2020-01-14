@@ -111,7 +111,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new Axe(new Dictionary<string, int>() { ["twigs"] = 1, ["flint"] = 1 }, "axe");
                 }
@@ -130,7 +130,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new Pickaxe(new Dictionary<string, int>() { ["twigs"] = 2, ["flint"] = 2 }, "pickaxe");
                 }
@@ -149,7 +149,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new Shovel(new Dictionary<string, int>() { ["twigs"] = 2, ["flint"] = 2 }, "shovel");
                 }
@@ -168,7 +168,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new Hammer(new Dictionary<string, int>() { ["twigs"] = 3, ["rocks"] = 3, ["cutgrass"] = 6 }, "hammer");
                 }
@@ -187,7 +187,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new Campfire(new Dictionary<string, int>() { ["cutgrass"] = 3, ["log"] = 2 }, "campfire");
                 }
@@ -206,7 +206,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new FirePit(new Dictionary<string, int>() { ["log"] = 2, ["rocks"] = 12 }, "firepit");
                 }
@@ -225,7 +225,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new Torch(new Dictionary<string, int>() { ["cutgrass"] = 2, ["twigs"] = 2 }, "torch");
                 }
@@ -244,7 +244,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {                    
                     instance = new EndothermicFire(new Dictionary<string, int>() { ["cutgrass"] = 3, ["nitre"] = 2 }, "endothermic_fire");
                 }
@@ -263,7 +263,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new FishingRod(new Dictionary<string, int>() { ["twigs"] = 2, ["silk"] = 2 }, "fishing_rod");
                 }
@@ -282,7 +282,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new Umbrella(new Dictionary<string, int>() { ["twigs"] = 6, ["silk"] = 2, ["pig_skin"] = 1 }, "umbrella");
                 }
@@ -301,7 +301,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new WhirlyFan(new Dictionary<string, int>(){ ["twigs"] = 3, ["petals"] = 1}, "whirly_fan");
                 }
