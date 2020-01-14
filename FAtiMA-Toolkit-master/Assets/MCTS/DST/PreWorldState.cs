@@ -77,8 +77,6 @@ namespace MCTS.DST {
 
             var equippeditems = knowledgeBase.AskPossibleProperties((Name)"IsEquipped([GUID])", Name.SELF_SYMBOL, subset);
 
-           
-
             foreach (var item in equippeditems)
             {
                 string strEntGuid = item.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
@@ -141,19 +139,19 @@ namespace MCTS.DST {
                 {
                     string strEntIsCollectable = "IsCollectable(" + strEntGuid + ")";
                     var isCollectable = knowledgeBase.AskProperty((Name)strEntIsCollectable);
-                    Boolean entIsCollectable = Boolean.Parse(isCollectable.Value.ToString());
+                    bool entIsCollectable = bool.Parse(isCollectable.Value.ToString());
 
                     string strEntIsPickable = "IsPickable(" + strEntGuid + ")";
                     var isPickable = knowledgeBase.AskProperty((Name)strEntIsPickable);
-                    Boolean entIsPickable = Boolean.Parse(isPickable.Value.ToString());
+                    bool entIsPickable = bool.Parse(isPickable.Value.ToString());
 
                     string strEntIsMineable = "IsMineable(" + strEntGuid + ")";
                     var isMineable = knowledgeBase.AskProperty((Name)strEntIsMineable);
-                    Boolean entIsMineable = Boolean.Parse(isMineable.Value.ToString());
+                    bool entIsMineable = bool.Parse(isMineable.Value.ToString());
 
                     string strEntIsChoppable = "IsChoppable(" + strEntGuid + ")";
                     var isChoppable = knowledgeBase.AskProperty((Name)strEntIsChoppable);
-                    Boolean entIsChoppable = Boolean.Parse(isChoppable.Value.ToString());
+                    bool entIsChoppable = bool.Parse(isChoppable.Value.ToString());
 
                     if (entIsPickable || entIsCollectable || entIsMineable || entIsChoppable)
                     {

@@ -11,17 +11,17 @@ namespace MCTS.DST{
         public int GUID;
         public int Quantity;
         public Pair<int, int> Position;
-        public Boolean IsCollectable;
-        public Boolean IsPickable;
-        public Boolean IsMineable;
-        public Boolean IsChoppable;
+        public bool IsCollectable;
+        public bool IsPickable;
+        public bool IsMineable;
+        public bool IsChoppable;
 
         public ObjectProperties()
         {
             this.GUID = 0;
         }
 
-        public ObjectProperties(string prefab, string realprefab, int guid, int quantity, int posx, int posz, Boolean isCollectable, Boolean isPickable, Boolean isMineable, Boolean isChoppable)
+        public ObjectProperties(string prefab, string realprefab, int guid, int quantity, int posx, int posz, bool isCollectable, bool isPickable, bool isMineable, bool isChoppable)
         {
             this.Prefab = prefab;
             this.RealPrefab = realprefab;
@@ -51,7 +51,7 @@ namespace MCTS.DST{
             this.Quantity += n;           
         }
 
-        protected Boolean IsCloser(int posxObject, int poszObject, int posxWalter, int poszWalter)
+        protected bool IsCloser(int posxObject, int poszObject, int posxWalter, int poszWalter)
         {
             return (Math.Pow(Convert.ToDouble(posxWalter - posxObject),2) + Math.Pow(Convert.ToDouble(poszWalter - poszObject),2)) < (Math.Pow(Convert.ToDouble(posxWalter - this.Position.Item1),2) + Math.Pow(Convert.ToDouble(poszWalter - this.Position.Item2),2));
         }
