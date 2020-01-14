@@ -96,22 +96,12 @@ namespace MCTS.DST.WorldModels
             this.AvailableActions = new HashSet<ActionDST>();
             this.AvailableActions.Add(new Wander());
 
-            Console.WriteLine("Added wander");
-            Console.WriteLine("WorldOvjects count - " + this.WorldObjects.Count);
-            Console.WriteLine("Possessed items count - " + this.PossessedItems.Count);
-
             // TODO - PickUp, Gather, AddFuel
 
             for (int i = 0; i < this.WorldObjects.Count; i++)
             {
                 string objectName = this.WorldObjects[i].ObjectName;
                 Console.WriteLine("new world object - " + objectName);
-
-                if (materialBase.ContainsKey(objectName))
-                {
-                    Console.WriteLine("object is in material base: " + objectName);
-                }
-
 
                 if (objectName.Equals("firepit") || objectName.Equals("campfire"))
                 {
@@ -140,8 +130,6 @@ namespace MCTS.DST.WorldModels
             for (int i = 0; i < this.PossessedItems.Count; i++)
             {
                 string possessedItem = this.PossessedItems.ElementAt(i).Key;
-                Console.WriteLine("new possessed item - " + possessedItem);
-
                 if (foodBase.ContainsKey(possessedItem))
                 {
                     this.AvailableActions.Add(new Eat(possessedItem));
