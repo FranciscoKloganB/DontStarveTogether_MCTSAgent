@@ -11,59 +11,30 @@ namespace MCTS.DST.Actions
 
     public class Fight : ActionDST
     {
-        private Dictionary<string, WorldResource> MaterialBase { get; } = MaterialDict.Instance.materialBase;
         public string Target;
         public float Duration;
         private static readonly string actionName = "Face_&_Attack_";
 
-        public Fight(string target) : base(ActionName + target)
+        public Fight(string target) : base(actionName + target)
         {
             this.Target = target;
-            this.Duration = 0.33f;
+            this.Duration = 1.0f;
         }
 
-
-        private void ExecuteBasicWorldResourceBehaviour(WorldModelDST worldState, BasicWorldResource targetMaterial)
+        public override void ApplyActionEffects(WorldModelDST worldModel)
         {
-            worldState.AddToPossessedItems(targetMaterial.MaterialName, targetMaterial.Quantity);
-            if (targetMaterial.IsFuel)
-            {
-                worldState.AddToFuel(targetMaterial.MaterialName, targetMaterial.Quantity);
-            }
-
-            // TODO - Add Construct behavior.
-        }
-
-        public override void ApplyActionEffects(WorldModelDST worldState)
-        {
-            worldState.Cycle += this.Duration;
-            worldState.UpdateSatiation(-1.0f);
-            worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
-
-            WorldResource material = this.MaterialBase[this.Target];
-            worldState.RemoveFromWorld(this.Target, 1);
-            
-            if (!material.IsPrimitive)
-            { // ComposedMaterial behaviour.
-                CompoundWorldResource targetMaterial = (CompoundWorldResource) material;
-                for (int i = 0; i < targetMaterial.ComposingItems.Count; i++)
-                {
-                    BasicWorldResource primitiveComponent = targetMaterial.ComposingItems[i];
-                    ExecuteBasicWorldResourceBehaviour(worldState, primitiveComponent);
-                }
-            }
-            else
-            { // PrimitiveMaterial behaviour.
-                BasicWorldResource targetMaterial = (BasicWorldResource) material;
-                ExecuteBasicWorldResourceBehaviour(worldState, targetMaterial);
-            }
+            worldModel.Cycle += this.Duration;
+            worldModel.UpdateSatiation(-3.0f);
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            return new List<Pair<string, string>>(1)
+            string targetGUID = preWorldState.GetEntitiesGUID(this.Target).ToString();
+            return new List<Pair<string, string>>(3)
             {
-                new Pair<string, string>("Action(PICKUP, -, -, -, -)", preWorldState.GetInventoryGUID(this.Target).ToString())
+                new Pair<string, string>("Action(WALKTO, -, -, -, -)", targetGUID),
+                new Pair<string, string>("Action(LOOKAT, -, -, -, -)", targetGUID),
+                new Pair<string, string>("Action(ATTACK, -, -, -, -)", targetGUID)
             };
         }
 
