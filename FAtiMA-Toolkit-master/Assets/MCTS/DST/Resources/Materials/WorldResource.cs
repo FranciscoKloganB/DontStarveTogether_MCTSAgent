@@ -58,10 +58,7 @@ namespace MCTS.DST.Resources.Materials
 
     public class Tool : BasicWorldResource
     {
-        public Tool(string name, int quantity) : base (name, quantity, false)
-        {
-            // TODO?
-        }
+        public Tool(string name, int quantity) : base(name, quantity, false) {  }
     }
 
     public class CompoundWorldResource : WorldResource
