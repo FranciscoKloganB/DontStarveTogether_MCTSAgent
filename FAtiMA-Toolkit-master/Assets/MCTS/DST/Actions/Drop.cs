@@ -3,39 +3,37 @@ using System.Collections.Generic;
 using Utilities;
 using MCTS.DST.WorldModels;
 using MCTS.DST;
+using MCTS.DST.Resources.Materials;
 
 
 namespace MCTS.DST.Actions
 {
 
-    public class Unequip : ActionDST
+    public class Drop : ActionDST
     {
-        private string Target;
-        private float Duration;
-        private static readonly string actionName = "Unequip_";
+        public string Target;
+        public float Duration;
+        private static readonly string actionName = "Drop_";
 
-        public Unequip(string target) : base(actionName + target)
+        public Drop(string target) : base(actionName + target)
         {
             this.Target = target;
-            this.Duration = 0.0f;
+            this.Duration = 0.33f;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
             worldState.Cycle += this.Duration;
             worldState.RemoveFromEquipped(this.Target);
-            worldState.AddToPossessedItems(this.Target, 1);
-            ActionDST equipAction = new Equip(this.Target);
-            worldState.AddAction(equipAction);
-
-            // TODO - Remove Drop action in Unequip
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
+            var x = preWorldState.Walter.GetPosX();
+            var z = preWorldState.Walter.GetPosZ();
             return new List<Pair<string, string>>(1)
             {
-                new Pair<string, string>("Action(UNEQUIP, -, -, -, -)", preWorldState.GetInventoryGUID(this.Target).ToString())
+                new Pair<string, string>("Action(DROP, " + preWorldState.GetEquippedGUID(this.Target).ToString() + ", " + x + ", " + z + ", -)", "-")
             };
         }
 

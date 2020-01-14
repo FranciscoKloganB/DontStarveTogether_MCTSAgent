@@ -35,6 +35,7 @@
     <Compile Include="DST\Actions\Construct.cs" />
     <Compile Include="DST\Actions\Equip.cs" />
     <Compile Include="DST\Actions\HoldPosition.cs" />
+    <Compile Include="DST\Actions\Drop.cs" />
     <Compile Include="DST\Actions\Unequip.cs" />
     <Compile Include="DST\Actions\PickUp.cs" />
     <Compile Include="DST\Actions\Cook.cs" />
