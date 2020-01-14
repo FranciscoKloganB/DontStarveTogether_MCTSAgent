@@ -6,10 +6,29 @@ using MCTS.DST.WorldModels;
 using WellFormedNames;
 using System.Linq;
 
-namespace MCTS.DST { 
+namespace MCTS.DST {
 
     public class PreWorldState
-    {        
+    {
+        private static HashSet<string> treeBase = new HashSet<string>() { 
+            "evergreen", "mushtree_tall", "mushtree_medium",
+            "mushtree_small", "mushtree_tall_webbed", "evergreen_sparse",
+            "twiggy_short", "twiggy_normal", "twiggy_tall", 
+            "twiggy_old", "deciduoustree", "twiggytree",
+        };
+
+        private static HashSet<string> rockBase = new HashSet<string>()
+        {
+            "rock1", "rock2", "rock_flintless",
+            "rock_moon", "rock_petrified_tree_short", "rock_petrified_tree_med",
+            "rock_petrified_tree_tall", "rock_petrified_tree_old",
+        };
+
+        private static HashSet<string> fireBase = new HashSet<string>()
+        {
+            "campfire", "firepit", "endothermic_fire",
+        };
+
         public Character Walter;
         public float Cycle;
         public int[] CycleInfo;
@@ -19,6 +38,7 @@ namespace MCTS.DST {
         public List<Pair<string, int>> Equipped;
         public List<Tuple<string, int, int>> Fuel;
         public List<Tuple<string, int, int>> Fire;
+        public List<NPCData> NPC;
         public KB KnowledgeBase;
 
        
@@ -30,6 +50,7 @@ namespace MCTS.DST {
             this.Equipped = new List<Pair<string, int>>(); // it is a list of pairs (2-tuples) that contain the name and the GUID of each equipped object
             this.Fuel = new List<Tuple<string, int, int>>(); // it is a list of 3-tuples that contain the name, the GUID and the quantity of the items that can be used as fuel for res
             this.Fire = new List<Tuple<string, int, int>>(); // list of 3-tuples that contain the name and the position of the fires in the world
+            this.NPC = new List<NPCData>();
 
             //Getting Character Stats
 
@@ -116,11 +137,20 @@ namespace MCTS.DST {
 
             foreach (var entity in entities)
             {
-                Boolean b = false;
+                bool b = false;
                 string strEntGuid = entity.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
                 int entGuid = int.Parse(strEntGuid);
                 string entPrefab = entity.Item1.Value.ToString();
                 string realEntPrefab = RealEntityPrefab(entPrefab);
+
+                if (IsNPC(entPrefab))
+                {
+                    string posXStr = "PosX(" + strEntGuid + ")";
+                    int posX = int.Parse(knowledgeBase.AskProperty((Name)posXStr).Value.ToString());
+                    string posZStr = "PosZ(" + strEntGuid + ")";
+                    int posZ = int.Parse(knowledgeBase.AskProperty((Name)posZStr).Value.ToString());
+                    this.NPC.Add(new NPCData(entPrefab, posX, posZ));
+                }
 
                 if (IsFire(entPrefab))
                 {
@@ -188,18 +218,17 @@ namespace MCTS.DST {
 
         public bool IsTree(string tree)
         {
-            return (tree == "evergreen" || tree == "mushtree_tall" || tree == "mushtree_medium" ||
-                tree == "mushtree_small" || tree == "mushtree_tall_webbed" || tree == "evergreen_sparse" ||
-                tree == "twiggy_short" || tree == "twiggy_normal" || tree == "twiggy_tall" || tree == "twiggy_old" || 
-                tree == "deciduoustree" || tree == "twiggytree");
+            return PreWorldState.treeBase.Contains(tree);
         }
 
         public bool IsBoulder(string boulder)
         {
-            return (boulder == "rock1" || boulder == "rock2" || boulder == "rock_flintless" ||
-                boulder == "rock_moon" || boulder == "rock_petrified_tree_short" ||
-                boulder == "rock_petrified_tree_med" || boulder == "rock_petrified_tree_tall" ||
-                boulder == "rock_petrified_tree_old");
+            return PreWorldState.rockBase.Contains(boulder);
+        }
+
+        public bool IsFire(string prefab)
+        {
+            return PreWorldState.fireBase.Contains(prefab);
         }
 
         public string RealEntityPrefab(string entity)
@@ -295,27 +324,22 @@ namespace MCTS.DST {
 
         }
 
-        public bool IsFire(string prefab)
-        {
-            return prefab == "campfire" || prefab == "firepit";
-        }
-
         public bool IsFuel(string guid)
         {
             string strEntFuel = "IsFuel(" + guid + ")";
             var entFuel = KnowledgeBase.AskProperty((Name)strEntFuel);
-            var fuelQ = entFuel.Value.ToString();
-            return fuelQ == "True";
+            string fuelQ = entFuel.Value.ToString();
+            return fuelQ.Equals("True");
         }
 
         public int GetEntitiesGUID(string prefab)
         {
-            foreach (ObjectProperties entity in this.Entities)
+            for (int i = 0; i < this.Entities.Count; i++)
             {
-                if (entity.Prefab == prefab)
+                if (this.Entities[i].Prefab.Equals(prefab))
                 {
-                    return entity.GUID;
-                }               
+                    return this.Entities[i].GUID;
+                }
             }
             return 0;
         }
