@@ -50,7 +50,6 @@ namespace MCTS.DST
 
             Console.WriteLine("Running MCTS Search");
 
-            // TODO - Consider adding multiple playouts.
             while (this.CurrentIterations++ < MAX_ITERATIONS_PER_FRAME)
             {
                 selectedNode = Selection(this.InitialNode);

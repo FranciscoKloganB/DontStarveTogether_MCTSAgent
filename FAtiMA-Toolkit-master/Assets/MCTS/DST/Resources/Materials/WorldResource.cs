@@ -22,6 +22,7 @@ namespace MCTS.DST.Resources.Materials
             ["cutgrass"] = Cutgrass.Instance,
             ["berry"] = Berry.Instance,
             ["carrot"] = Carrot.Instance,
+            ["flower"] = Flower.Instance,
         };
 
         private MaterialDict() { }
@@ -57,10 +58,7 @@ namespace MCTS.DST.Resources.Materials
 
     public class Tool : BasicWorldResource
     {
-        public Tool(string name, int quantity) : base (name, quantity, false)
-        {
-            // TODO?
-        }
+        public Tool(string name, int quantity) : base(name, quantity, false) {  }
     }
 
     public class CompoundWorldResource : WorldResource
@@ -255,6 +253,13 @@ namespace MCTS.DST.Resources.Materials
         }
 
         public static Carrot Instance { get; } = new Carrot(1);
+    }
+
+    public sealed class Flower : BasicWorldResource
+    {
+        public Flower(int quantity) : base("flower", quantity, true) {  }
+
+        public static Flower Instance { get; } = new Flower(1);
     }
 
     public sealed class Torch : Tool
