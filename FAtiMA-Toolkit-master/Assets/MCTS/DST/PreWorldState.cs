@@ -186,7 +186,7 @@ namespace MCTS.DST {
             }          
         }
 
-        public Boolean IsTree(string tree)
+        public bool IsTree(string tree)
         {
             return (tree == "evergreen" || tree == "mushtree_tall" || tree == "mushtree_medium" ||
                 tree == "mushtree_small" || tree == "mushtree_tall_webbed" || tree == "evergreen_sparse" ||
@@ -194,7 +194,7 @@ namespace MCTS.DST {
                 tree == "deciduoustree" || tree == "twiggytree");
         }
 
-        public Boolean IsBoulder(string boulder)
+        public bool IsBoulder(string boulder)
         {
             return (boulder == "rock1" || boulder == "rock2" || boulder == "rock_flintless" ||
                 boulder == "rock_moon" || boulder == "rock_petrified_tree_short" ||
@@ -295,12 +295,12 @@ namespace MCTS.DST {
 
         }
 
-        public Boolean IsFire(string prefab)
+        public bool IsFire(string prefab)
         {
             return prefab == "campfire" || prefab == "firepit";
         }
 
-        public Boolean IsFuel(string guid)
+        public bool IsFuel(string guid)
         {
             string strEntFuel = "IsFuel(" + guid + ")";
             var entFuel = KnowledgeBase.AskProperty((Name)strEntFuel);
@@ -363,7 +363,7 @@ namespace MCTS.DST {
             return 0;
         }
 
-        public Boolean EntityIsPickable(string entity)
+        public bool EntityIsPickable(string entity)
         {
             foreach (ObjectProperties item in this.Entities)
             {
@@ -375,7 +375,7 @@ namespace MCTS.DST {
             return false;
         }
 
-        public Boolean EntityIsCollectable(string entity)
+        public bool EntityIsCollectable(string entity)
         {
             foreach (ObjectProperties item in this.Entities)
             {
@@ -387,7 +387,7 @@ namespace MCTS.DST {
             return false;
         }
 
-        public Boolean IsEquipped(string item)
+        public bool IsEquipped(string item)
         {
             foreach (var equip in this.Equipped)
             {
