@@ -88,17 +88,31 @@ namespace MCTS.DST.WorldModels
             }
 
             //Getting Available Actions
-            this.AddAvailableActions();
+            this.AddAvailableActions(preWorldState);
         }
 
-        private void AddAvailableActions()
+        private void AddAvailableActions(PreWorldState preWorldState)
         {
             this.AvailableActions = new HashSet<ActionDST>();
             this.AvailableActions.Add(new Wander());
 
+            Console.WriteLine("Added wander");
+            Console.WriteLine("WorldOvjects count - " + this.WorldObjects.Count);
+            Console.WriteLine("Possessed items count - " + this.PossessedItems.Count);
+
+            // TODO - PickUp, Gather, AddFuel
+
             for (int i = 0; i < this.WorldObjects.Count; i++)
-            {   // PickUp, Gather, AddFuel
-                var objectName = this.WorldObjects[i].ObjectName;
+            {
+                string objectName = this.WorldObjects[i].ObjectName;
+                Console.WriteLine("new world object - " + objectName);
+
+                if (materialBase.ContainsKey(objectName))
+                {
+                    Console.WriteLine("object is in material base: " + objectName);
+                }
+
+
                 if (objectName.Equals("firepit") || objectName.Equals("campfire"))
                 {
                     if (this.HasFuel())
@@ -125,7 +139,9 @@ namespace MCTS.DST.WorldModels
 
             for (int i = 0; i < this.PossessedItems.Count; i++)
             {
-                var possessedItem = this.PossessedItems.ElementAt(i).Key;
+                string possessedItem = this.PossessedItems.ElementAt(i).Key;
+                Console.WriteLine("new possessed item - " + possessedItem);
+
                 if (foodBase.ContainsKey(possessedItem))
                 {
                     this.AvailableActions.Add(new Eat(possessedItem));
@@ -485,11 +501,6 @@ namespace MCTS.DST.WorldModels
         public void UpdateSanity(float value)
         {
             this.Walter.UpdateSanity(value);
-        }
-
-        public bool IsTerminal()
-        {
-            return this.Walter.HP == 0;
         }
     }
 }
