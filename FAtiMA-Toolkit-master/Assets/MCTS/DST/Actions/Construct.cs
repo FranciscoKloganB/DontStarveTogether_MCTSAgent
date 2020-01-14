@@ -39,7 +39,20 @@ namespace MCTS.DST.Actions
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            return base.Decompose(preWorldState);
+            if (this.Target.Equals("campfire") || this.Target.Equals("firepit") || this.Target.Equals("endothermic_firepit"))
+            {
+                var x = preWorldState.Walter.GetPosX();
+                var z = preWorldState.Walter.GetPosZ();
+                return new List<Pair<string, string>>(1)
+            {
+                new Pair<string, string>("Action(BUILD, -, " + x + ", " + z + ", " + this.Target +")", "-")
+            };
+            }
+
+            return new List<Pair<string, string>>(1)
+            {
+                new Pair<string, string>("Action(BUILD, -, -, -, " + this.Target +")", "-")
+            };
         }
 
         public override Pair<string, int> NextActionInfo()
