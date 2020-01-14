@@ -5,11 +5,15 @@ using MCTS.DST.Actions;
 using MCTS.DST;
 using System.Linq;
 using MCTS.DST.Resources.Edibles;
+using MCTS.DST.Resources.Materials;
 
 namespace MCTS.DST.WorldModels
 {
     public class WorldModelDST
     {
+        Dictionary<string, Material> materialBase = MaterialDict.Instance.materialBase;
+        Dictionary<string, Food> foodBase = FoodDict.Instance.foodBase;
+
         public Character Walter;
         public HashSet<ActionDST> AvailableActions;
         public List<WorldObjectData> WorldObjects;
@@ -84,19 +88,48 @@ namespace MCTS.DST.WorldModels
             }
 
             //Getting Available Actions
-            ActionDST action = new Wander();
-            this.AvailableActions = new HashSet<ActionDST>();
-            this.AvailableActions.Add(action);
+            this.AddAvailableActions();
+        }
 
-            if (Possesses("berries"))
-            {
-                action = new Eat("berries");
-                this.AvailableActions.Add(action);
+        private void AddAvailableActions()
+        {
+            this.AvailableActions = new HashSet<ActionDST>();
+            this.AvailableActions.Add(new Wander());
+
+            for (int i = 0; i < this.WorldObjects.Count; i++)
+            {   // PickUp, Gather, AddFuel
+                var objectName = this.WorldObjects[i].ObjectName;
+                if (objectName.Equals("firepit") || objectName.Equals("campfire"))
+                {
+                    if (this.HasFuel())
+                    {
+                        this.AvailableActions.Add(new AddFuel(objectName));
+                    }
+
+                    if (this.IsNight())
+                    {
+                        this.AvailableActions.Add(new HoldPosition(objectName));
+                    }
+                }
+                else if (foodBase.ContainsKey(objectName))
+                {
+                    this.AvailableActions.Add(new PickUp(objectName));
+                }
+                else if (materialBase.ContainsKey(objectName) && materialBase[objectName].IsPickable)
+                {
+                    this.AvailableActions.Add(new PickUp(objectName));
+                }
+
+                // TODO Gather
             }
-            if (Possesses("carrot"))
+
+            for (int i = 0; i < this.PossessedItems.Count; i++)
             {
-                action = new Eat("carrot");
-                this.AvailableActions.Add(action);
+                var possessedItem = this.PossessedItems.ElementAt(i).Key;
+                if (foodBase.ContainsKey(possessedItem))
+                {
+                    this.AvailableActions.Add(new Eat(possessedItem));
+                }
             }
         }
 
@@ -399,7 +432,7 @@ namespace MCTS.DST.WorldModels
             return hungerValue * 0.6f + invFoodValue * 0.4f;
         }
 
-        public Boolean HasFuel()
+        public bool HasFuel()
         {
             return this.Fuel.Count > 0;
         }
