@@ -12,9 +12,9 @@ namespace MCTS.DST.Actions
     {
         private string Target;
         private float Duration;
-        private static readonly string ActionName = "HoldPosition_";
+        private static readonly string actionName = "HoldPosition_";
 
-        public HoldPosition(string target) : base(ActionName + target)
+        public HoldPosition(string target) : base(actionName + target)
         {
             this.Target = target;
             this.Duration = 0.33f;

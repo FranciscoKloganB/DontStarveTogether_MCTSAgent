@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Utilities;
 using MCTS.DST.WorldModels;
 using MCTS.DST;
+using MCTS.DST.Resources.Materials;
 
 
 namespace MCTS.DST.Actions
@@ -10,38 +11,36 @@ namespace MCTS.DST.Actions
 
     public class Fight : ActionDST
     {
-        public Fight(string name) : base(name)
+        public string Target;
+        public float Duration;
+        private static readonly string actionName = "Face_&_Attack_";
+
+        public Fight(string target) : base(actionName + target)
         {
+            this.Target = target;
+            this.Duration = 1.0f;
         }
 
-        public override void ApplyActionEffects(WorldModelDST worldState)
+        public override void ApplyActionEffects(WorldModelDST worldModel)
         {
-            base.ApplyActionEffects(worldState);
+            worldModel.Cycle += this.Duration;
+            worldModel.UpdateSatiation(-3.0f);
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            return base.Decompose(preWorldState);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
+            string targetGUID = preWorldState.GetEntitiesGUID(this.Target).ToString();
+            return new List<Pair<string, string>>(3)
+            {
+                new Pair<string, string>("Action(WALKTO, -, -, -, -)", targetGUID),
+                new Pair<string, string>("Action(LOOKAT, -, -, -, -)", targetGUID),
+                new Pair<string, string>("Action(ATTACK, -, -, -, -)", targetGUID)
+            };
         }
 
         public override Pair<string, int> NextActionInfo()
         {
             return base.NextActionInfo();
-        }
-
-        public override string ToString()
-        {
-            return base.ToString();
         }
     }
 }

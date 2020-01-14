@@ -11,6 +11,7 @@ namespace MCTS.DST.Actions
     public class Wander : ActionDST
     {
         public float Duration;
+        public static readonly string actionName = "Wander_";
 
         public Wander() : base("Wander")
         {

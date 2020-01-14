@@ -12,9 +12,9 @@ namespace MCTS.DST.Actions
     {
         private string Target;
         private float Duration;
-        private static readonly string ActionName = "Unequip_";
+        private static readonly string actionName = "Unequip_";
 
-        public Unequip(string target) : base(ActionName + target)
+        public Unequip(string target) : base(actionName + target)
         {
             this.Target = target;
             this.Duration = 0.0f;
