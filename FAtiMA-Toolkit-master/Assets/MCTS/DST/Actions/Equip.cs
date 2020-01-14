@@ -12,9 +12,9 @@ namespace MCTS.DST.Actions
     {
         private string Target;
         private float Duration;
-        private static readonly string ActionName = "Equip_";
+        private static readonly string actionName = "Equip_";
 
-        public Equip(string target) : base(ActionName + target)
+        public Equip(string target) : base(actionName + target)
         {
             this.Target = target;
             this.Duration = 0.0f;
@@ -29,7 +29,7 @@ namespace MCTS.DST.Actions
             worldState.AddAction(unequipAction);
             if (!worldState.Possesses(this.Target))
             {
-                worldState.RemoveAction(ActionName + this.Target);
+                worldState.RemoveAction(actionName + this.Target);
             }
         }
 

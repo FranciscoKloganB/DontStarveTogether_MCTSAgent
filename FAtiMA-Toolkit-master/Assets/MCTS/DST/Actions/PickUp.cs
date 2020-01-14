@@ -14,9 +14,9 @@ namespace MCTS.DST.Actions
         private Dictionary<string, WorldResource> MaterialBase { get; } = MaterialDict.Instance.materialBase;
         public string Target;
         public float Duration;
-        private static readonly string ActionName = "Pickup_";
+        private static readonly string actionName = "Pickup_";
 
-        public PickUp(string target) : base(ActionName + target)
+        public PickUp(string target) : base(actionName + target)
         {
             this.Target = target;
             this.Duration = 0.33f;
