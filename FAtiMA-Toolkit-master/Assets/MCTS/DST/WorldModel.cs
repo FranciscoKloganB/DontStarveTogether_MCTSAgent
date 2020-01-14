@@ -11,7 +11,7 @@ namespace MCTS.DST.WorldModels
 {
     public class WorldModelDST
     {
-        public static Dictionary<string, Material> materialBase = MaterialDict.Instance.materialBase;
+        public static Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
         public static Dictionary<string, Food> foodBase = FoodDict.Instance.foodBase;
 
         public Character Walter;

@@ -11,7 +11,7 @@ namespace MCTS.DST.Actions
 
     public class PickUp : ActionDST
     {
-        private Dictionary<string, Material> MaterialBase { get; } = MaterialDict.Instance.materialBase;
+        private Dictionary<string, WorldResource> MaterialBase { get; } = MaterialDict.Instance.materialBase;
         public string Target;
         public float Duration;
 
@@ -22,7 +22,7 @@ namespace MCTS.DST.Actions
         }
 
 
-        private void ExecutePrimitiveBehaviour(WorldModelDST worldState, PrimitiveMaterial targetMaterial)
+        private void ExecuteBasicWorldResourceBehaviour(WorldModelDST worldState, BasicWorldResource targetMaterial)
         {
             worldState.AddToPossessedItems(targetMaterial.MaterialName, targetMaterial.Quantity);
             if (targetMaterial.IsFuel)
@@ -39,22 +39,22 @@ namespace MCTS.DST.Actions
             worldState.UpdateSatiation(-1.0f);
             worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
 
-            Material material = this.MaterialBase[this.Target];
+            WorldResource material = this.MaterialBase[this.Target];
             worldState.RemoveFromWorld(this.Target, 1);
             
             if (!material.IsPrimitive)
             { // ComposedMaterial behaviour.
-                ComposedMaterial targetMaterial = (ComposedMaterial) material;
+                CompoundWorldResource targetMaterial = (CompoundWorldResource) material;
                 for (int i = 0; i < targetMaterial.ComposingItems.Count; i++)
                 {
-                    PrimitiveMaterial primitiveComponent = targetMaterial.ComposingItems[i];
-                    ExecutePrimitiveBehaviour(worldState, primitiveComponent);
+                    BasicWorldResource primitiveComponent = targetMaterial.ComposingItems[i];
+                    ExecuteBasicWorldResourceBehaviour(worldState, primitiveComponent);
                 }
             }
             else
             { // PrimitiveMaterial behaviour.
-                PrimitiveMaterial targetMaterial = (PrimitiveMaterial) material;
-                ExecutePrimitiveBehaviour(worldState, targetMaterial);
+                BasicWorldResource targetMaterial = (BasicWorldResource) material;
+                ExecuteBasicWorldResourceBehaviour(worldState, targetMaterial);
             }
 
 
