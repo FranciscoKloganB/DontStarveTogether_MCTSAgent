@@ -63,9 +63,7 @@ namespace MCTS.DST.Resources.Buildables
 
             for (int i = 0; i < this.RequiredMaterials.Count; i++)
             {
-                var materialName = this.RequiredMaterials.ElementAt(i).Key;
-                var materialUses = ((BasicWorldResource)materialBase[materialName]).Recipes;
-
+                var materialUses = ((BasicWorldResource)materialBase[this.RequiredMaterials.ElementAt(i).Key]).Recipes;
                 for (int j = 0; j < materialUses.Count; j++)
                 {
                     var craftableName = materialUses.ElementAt(j).Key;
