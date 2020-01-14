@@ -14,10 +14,11 @@ namespace MCTS.DST.Actions
         private Dictionary<string, WorldResource> MaterialBase { get; } = MaterialDict.Instance.materialBase;
         public string Target;
         public float Duration;
+        private static readonly string ActionName = "Pickup_";
 
-        public PickUp(string name) : base(name)
+        public PickUp(string target) : base(ActionName + target)
         {
-            this.Target = name;
+            this.Target = target;
             this.Duration = 0.33f;
         }
 
