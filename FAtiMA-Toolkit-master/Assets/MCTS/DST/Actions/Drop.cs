@@ -28,7 +28,7 @@ namespace MCTS.DST.Actions
             worldState.RemoveFromEquipped(this.Target);
             this.Position = new Pair<int, int>(worldState.Walter.GetPosX(), worldState.Walter.GetPosZ());
 
-            // TODO - Who do we get the quantity of items to drop?
+            // TODO - How do we get the quantity of items to drop?
             worldState.AddToWorld(this.Target, 1, this.Position.Item1, this.Position.Item2);
         }
 
