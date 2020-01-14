@@ -11,13 +11,15 @@ namespace MCTS.DST.Actions
 
     public class Fight : ActionDST
     {
-        public string Target;
-        public float Duration;
+        private readonly string Target;
+        private readonly string TargetGUID;
+        private readonly float Duration;
         private static readonly string actionName = "Face_&_Attack_";
 
-        public Fight(string target) : base(actionName + target)
+        public Fight(string target, string guid) : base(actionName + target)
         {
             this.Target = target;
+            this.TargetGUID = guid;
             this.Duration = 1.0f;
         }
 
@@ -32,9 +34,9 @@ namespace MCTS.DST.Actions
             // string targetGUID = preWorldState.GetEntitiesGUID(this.Target).ToString();
             return new List<Pair<string, string>>()
             {
-                //new Pair<string, string>("Action(WALKTO, -, -, -, -)", targetGUID),
-                //new Pair<string, string>("Action(LOOKAT, -, -, -, -)", targetGUID),
-                new Pair<string, string>("Action(ATTACK, -, -, -, -)", targetGUID)
+                //new Pair<string, string>("Action(WALKTO, -, -, -, -)", TargetGUID),
+                //new Pair<string, string>("Action(LOOKAT, -, -, -, -)", TargetGUID),
+                new Pair<string, string>("Action(ATTACK, -, -, -, -)", this.TargetGUID)
             };
         }
 
