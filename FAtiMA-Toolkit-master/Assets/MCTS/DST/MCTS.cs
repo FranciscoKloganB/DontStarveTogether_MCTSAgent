@@ -69,7 +69,6 @@ namespace MCTS.DST
 
         protected MCTSNode Selection(MCTSNode nodeToDoSelection)
         {
-            Console.WriteLine(nodeToDoSelection.State.GetExecutableActions().Count);
             MCTSNode currentNode = nodeToDoSelection;
             int currentDepth = -1;
             while (++currentDepth < MAX_SELECTION_DEPTH) // !currentNode.State.IsTerminal())
@@ -172,7 +171,6 @@ namespace MCTS.DST
             {
                 child = node.ChildNodes[i];
                 UCTValue = (float) ((child.Q / child.N) + 1.4f * Math.Sqrt(Math.Log(node.N) / child.N));
-                Console.WriteLine("utcvaule = " + UCTValue);
                 if (UCTValue > bestUCT)
                 {
                     bestUCT = UCTValue;
