@@ -35,54 +35,6 @@ namespace MCTS.DST.Actions
             {
                 ;
             }
-
-            if (this.Target == "torch")
-            {
-                if (!worldState.Possesses("twigs", 2))
-                    worldState.RemoveAction("Build_pickaxe");
-                if (!worldState.Possesses("twigs", 1))
-                    worldState.RemoveAction("Build_axe");
-                if (!worldState.Possesses("twigs", 2) || !worldState.Possesses("cutgrass", 2))
-                    worldState.RemoveAction("Build_torch");
-            }
-            else if (this.Target == "pickaxe")
-            {
-                if (!worldState.Possesses("twigs", 2) || !worldState.Possesses("flint", 2))
-                    worldState.RemoveAction("Build_pickaxe");
-                if (!worldState.Possesses("twigs", 1) || !worldState.Possesses("flint", 1))
-                    worldState.RemoveAction("Build_axe");
-                if (!worldState.Possesses("twigs", 2))
-                    worldState.RemoveAction("Build_torch");
-
-            }
-            else if (this.Target == "axe")
-            {
-                if (!worldState.Possesses("twigs", 2) || !worldState.Possesses("flint", 2))
-                    worldState.RemoveAction("Build_pickaxe");
-                if (!worldState.Possesses("twigs", 1) || !worldState.Possesses("flint", 1))
-                    worldState.RemoveAction("Build_axe");
-                if (!worldState.Possesses("twigs", 2))
-                    worldState.RemoveAction("Build_torch");
-
-            }
-            else if (this.Target == "campfire")
-            {
-
-                if (!worldState.Possesses("log", 2))
-                    worldState.RemoveAction("Build_firepit");
-                if (!worldState.Possesses("log", 2) || !worldState.Possesses("cutgrass", 3))
-                    worldState.RemoveAction("Build_campfire");
-                if (!worldState.Possesses("cutgrass", 2))
-                    worldState.RemoveAction("Build_torch");
-            }
-            else
-            {
-                if (!worldState.Possesses("log", 2) || !worldState.Possesses("rocks", 12))
-                    worldState.RemoveAction("Build_firepit");
-                if (!worldState.Possesses("log", 2))
-                    worldState.RemoveAction("Build_campfire");
-
-            }
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
