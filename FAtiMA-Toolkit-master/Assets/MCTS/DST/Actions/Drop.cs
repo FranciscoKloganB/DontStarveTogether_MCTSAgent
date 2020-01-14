@@ -14,7 +14,7 @@ namespace MCTS.DST.Actions
         public string Target;
         public float Duration;
         public Pair<int, int> Position;
-        private static readonly string actionName = "Drop_";
+        public static readonly string actionName = "Drop_";
 
         public Drop(string target) : base(actionName + target)
         {
