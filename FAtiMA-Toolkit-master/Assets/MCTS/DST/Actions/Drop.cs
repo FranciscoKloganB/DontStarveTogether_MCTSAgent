@@ -13,6 +13,7 @@ namespace MCTS.DST.Actions
     {
         public string Target;
         public float Duration;
+        public Pair<int, int> Position;
         private static readonly string actionName = "Drop_";
 
         public Drop(string target) : base(actionName + target)
@@ -25,15 +26,17 @@ namespace MCTS.DST.Actions
         {
             worldState.Cycle += this.Duration;
             worldState.RemoveFromEquipped(this.Target);
+            this.Position = new Pair<int, int>(worldState.Walter.GetPosX(), worldState.Walter.GetPosZ());
+
+            // TODO - Who do we get the quantity of items to drop?
+            worldState.AddToWorld(this.Target, 1, this.Position.Item1, this.Position.Item2);
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            var x = preWorldState.Walter.GetPosX();
-            var z = preWorldState.Walter.GetPosZ();
             return new List<Pair<string, string>>(1)
             {
-                new Pair<string, string>("Action(DROP, " + preWorldState.GetEquippedGUID(this.Target).ToString() + ", " + x + ", " + z + ", -)", "-")
+                new Pair<string, string>("Action(DROP, " + preWorldState.GetEquippedGUID(this.Target).ToString() + ", " + this.Position.Item1 + ", " + this.Position.Item2 + ", -)", "-")
             };
         }
 
