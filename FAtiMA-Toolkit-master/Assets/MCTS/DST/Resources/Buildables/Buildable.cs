@@ -68,7 +68,14 @@ namespace MCTS.DST.Resources.Buildables
 
                 for (int j = 0; j < materialUses.Count; j++)
                 {
-                    ; // TODo
+                    var craftableName = materialUses.ElementAt(j).Key;
+                    var requiredQuantity = materialUses.ElementAt(j).Value;
+                    /*
+                    if (worldModel.Possesses < requiredQuantity)
+                    {
+                        worldModel.RemoveAction(actionName + craftableName);
+                    }
+                    */
                 }
             }
         }
