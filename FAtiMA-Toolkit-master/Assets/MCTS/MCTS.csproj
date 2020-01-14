@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="DST\Actions\ActionDST.cs" />
     <Compile Include="DST\Actions\Construct.cs" />
+    <Compile Include="DST\Actions\LookAt.cs" />
     <Compile Include="DST\Actions\Equip.cs" />
     <Compile Include="DST\Actions\HoldPosition.cs" />
     <Compile Include="DST\Actions\Drop.cs" />
