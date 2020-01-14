@@ -61,9 +61,46 @@ namespace MCTS.DST.Actions
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            return new List<Pair<string, string>>(1)
-            {
-                new Pair<string, string>("Action(PICKUP, -, -, -, -)", preWorldState.GetInventoryGUID(this.Target).ToString())
+            WorldResource material = this.MaterialBase[this.Target];
+
+            if (material.IsPickable)
+            { // Material can be picked up by hand, using the PICKUP action.
+                Console.WriteLine("decompose, material is pickable.");
+                return new List<Pair<string, string>>(1)
+                {
+                    new Pair<string, string>("Action(PICKUP, -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
+                };
+            }
+            // Material needs tools to be gathered / can only use PICK action.
+            CompoundWorldResource compoundMaterial = (CompoundWorldResource) material;
+            // Gets tool needed to gather target.
+            Tool tool = compoundMaterial.usableTool;
+
+            if (tool == null)
+            { // If tool can be hands, but the action needs to be PICK.
+                return new List<Pair<string, string>>(1)
+                {
+                    new Pair<string, string>("Action(PICK, -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
+                };
+            }
+
+            string toolName = tool.MaterialName;
+            string harvestingActionName = compoundMaterial.doableToolAction;
+
+            if (preWorldState.IsEquipped(toolName))
+            { // If the necessary tool is already equiped, harvests.
+                return new List<Pair<string, string>>(1)
+                {
+                    new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
+                };
+            }
+
+            // TODO - Check if the required tool is in the inventory. If not then what???????
+
+            return new List<Pair<string, string>>(2)
+            { // Constructs the compound action of equipping the tool and harvesting.
+                new Pair<string, string>("Action(EQUIP, " + preWorldState.GetInventoryGUID(toolName).ToString() + ", -, -, -)", "-"),
+                new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
             };
         }
 
