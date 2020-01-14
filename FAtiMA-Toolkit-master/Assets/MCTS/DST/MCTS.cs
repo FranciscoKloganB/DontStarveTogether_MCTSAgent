@@ -10,7 +10,7 @@ namespace MCTS.DST
     public class MCTSAlgorithm
     {
         private const int MAX_SELECTION_DEPTH = 2;
-        private const int MAX_PLAYOUT_DEPTH = 4;
+        private const int MAX_PLAYOUT_DEPTH = 2;
         private const int MAX_ITERATIONS_PER_FRAME = 100;
         public const float C = 1.4f;
 
@@ -59,8 +59,11 @@ namespace MCTS.DST
                     Console.WriteLine("Initial node does not have any children.");
                     break;
                 }
-                reward = Playout(selectedNode.State);
-                Backpropagate(selectedNode, reward);
+                for (short j = 0; j < MAX_PLAYOUT_DEPTH; j++)
+                {
+                    reward = Playout(selectedNode.State);
+                    Backpropagate(selectedNode, reward);
+                }
             }
             
             this.InProgress = false;
