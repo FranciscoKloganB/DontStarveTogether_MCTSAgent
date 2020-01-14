@@ -2,11 +2,14 @@
 using MCTS.DST.WorldModels;
 using System.Collections.Generic;
 using MCTS.DST.Actions;
+using MCTS.DST.Resources.Materials;
 
 namespace MCTS.DST.Resources.Buildables
 {
     public sealed class BuildablesDict
     {
+        public static Dictionary<string, Material> materialBase = MaterialDict.Instance.materialBase;
+
         public static BuildablesDict Instance { get; } = new BuildablesDict();
 
         private BuildablesDict()
@@ -31,20 +34,20 @@ namespace MCTS.DST.Resources.Buildables
 
     public class Buildable
     {
-        protected Dictionary<string, int> Materials { get; private set; }
+        protected Dictionary<string, int> RequiredMaterials { get; private set; }
         protected string BuildableName { get; private set; }
 
         public Buildable(Dictionary<string, int> materialsQuantityDict, string name)
         {
-            this.Materials = materialsQuantityDict;
+            this.RequiredMaterials = materialsQuantityDict;
             this.BuildableName = name;
         }
 
         public void Build(WorldModelDST worldState)
         {
-            for (int i = 0; i < this.Materials.Count; i++)
+            for (int i = 0; i < this.RequiredMaterials.Count; i++)
             {
-                var element = this.Materials.ElementAt(i);
+                var element = this.RequiredMaterials.ElementAt(i);
                 var material = element.Key;
                 worldState.RemoveFromPossessedItems(material, element.Value);
             }
@@ -58,7 +61,10 @@ namespace MCTS.DST.Resources.Buildables
 
         public virtual void TryRemoveAction(WorldModelDST worldModel, string actionName)
         {
-            ;
+            for (int i = 0; i < this.RequiredMaterials.Count; i++)
+            {
+
+            }
         }
     }
 
