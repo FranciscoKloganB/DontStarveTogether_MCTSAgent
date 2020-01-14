@@ -42,9 +42,9 @@ namespace MCTS.DST.Resources.Buildables
 
         public void Build(WorldModelDST worldState)
         {
-            for (int index = 0; index < this.Materials.Count; index++)
+            for (int i = 0; i < this.Materials.Count; i++)
             {
-                var element = this.Materials.ElementAt(index);
+                var element = this.Materials.ElementAt(i);
                 var material = element.Key;
                 worldState.RemoveFromPossessedItems(material, element.Value);
             }
