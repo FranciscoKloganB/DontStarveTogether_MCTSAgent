@@ -86,15 +86,13 @@ namespace MCTS
             if (this.ToDoActionsList.Count == 0)
             {
                 PreWorldState preWorldState = new PreWorldState(kbCloned);
-               
-
                 WorldModelDST worldModel = new WorldModelDST(preWorldState);
 
                 Console.WriteLine("Available Actions: ");
 
                 foreach (var action in worldModel.AvailableActions)
                 {
-                    Console.WriteLine(action.Name);
+                    Console.WriteLine("     " + action.Name);
                 }
                 Console.WriteLine("");
 
