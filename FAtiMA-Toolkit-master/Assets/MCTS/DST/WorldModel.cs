@@ -95,9 +95,7 @@ namespace MCTS.DST.WorldModels
         {
             this.AvailableActions = new HashSet<ActionDST>();
             this.AvailableActions.Add(new Wander());
-
-            // TODO - PickUp, Gather, AddFuel
-
+            
             for (int i = 0; i < this.WorldObjects.Count; i++)
             {
                 string objectName = this.WorldObjects[i].ObjectName;
@@ -141,8 +139,6 @@ namespace MCTS.DST.WorldModels
                         this.AvailableActions.Add(new PickUp(objectName));
                     }
                 }
-
-                // TODO Gather
             }
 
             for (int i = 0; i < this.PossessedItems.Count; i++)
