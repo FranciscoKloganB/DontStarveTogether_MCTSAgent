@@ -33,7 +33,7 @@ namespace MCTS.DST.Actions
             worldState.RemoveFromPossessedItems(this.Fuel, 1);
             worldState.RemoveFromFuel(this.Fuel);
             worldState.Walter.Position = worldState.GetNextPosition(this.Target, "fire");
-            // TODO - Removed Construct actions that are now impossible due to loss of material.
+            // TODO - Remove Construct actions.
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)

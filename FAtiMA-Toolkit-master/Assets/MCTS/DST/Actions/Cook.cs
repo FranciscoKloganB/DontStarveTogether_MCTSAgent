@@ -17,6 +17,7 @@ namespace MCTS.DST.Actions
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
             base.ApplyActionEffects(worldState);
+            // TODO - Remove Construct actions.
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
