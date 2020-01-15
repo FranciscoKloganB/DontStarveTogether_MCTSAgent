@@ -30,7 +30,7 @@ namespace MCTS.DST.Actions
             }
 
             this.Fuel = worldState.Fuel.ElementAt(0).Key;
-            worldState.Cycle += this.Duration;
+            worldState.Cycle += Duration;
             worldState.RemoveFromPossessedItems(this.Fuel, 1);
             worldState.RemoveFromFuel(this.Fuel);
             worldState.Walter.Position = worldState.GetNextPosition(this.Target, "fire");
