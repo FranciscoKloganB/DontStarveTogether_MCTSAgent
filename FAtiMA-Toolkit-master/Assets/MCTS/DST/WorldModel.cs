@@ -115,7 +115,8 @@ namespace MCTS.DST.WorldModels
                 }
                 else if (foodBase.ContainsKey(objectName))
                 {
-                    this.AvailableActions.Add(new PickUp(objectName));
+                    // TODO: Consider that we can pickup Food, not only Materials
+                    // this.AvailableActions.Add(new PickUp(objectName)); 
                 }
                 else if (materialBase.ContainsKey(objectName))
                 {
