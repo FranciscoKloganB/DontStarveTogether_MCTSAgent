@@ -4,7 +4,8 @@ using Utilities;
 using MCTS.DST.WorldModels;
 using MCTS.DST;
 using MCTS.DST.Resources.Materials;
-
+using MCTS.DST.Resources.Buildables;
+using System.Linq;
 
 namespace MCTS.DST.Actions
 {
@@ -31,7 +32,37 @@ namespace MCTS.DST.Actions
                 worldState.AddToFuel(targetMaterial.MaterialName, targetMaterial.Quantity);
             }
 
-            // TODO - Add Construct behavior.
+            TryAddAction(worldState, targetMaterial);
+        }
+
+        public void TryAddAction(WorldModelDST worldModel, WorldResource resource)
+        {
+            Dictionary<string, int> resourceRecipes = resource.Recipes;
+            Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
+
+            for (int i = 0; i < resourceRecipes.Count; i++)
+            {
+                string recipeName = resourceRecipes.ElementAt(i).Key;
+                Buildable buildable = buildableBase[recipeName];
+                Dictionary<string, int> requiredMaterials = buildable.RequiredMaterials;
+
+                bool nowCanDo = true;
+                for (int j = 0; j < requiredMaterials.Count; j++)
+                {
+                    string requiredMaterialName = requiredMaterials.ElementAt(j).Key;
+                    int requiredMaterialQuantity = requiredMaterials.ElementAt(j).Value;
+                    if (!(worldModel.Possesses(requiredMaterialName) && worldModel.PossessedItems[requiredMaterialName] >= requiredMaterialQuantity))
+                    {
+                        nowCanDo = false;
+                        break;
+                    }
+                }
+
+                if (nowCanDo)
+                {
+                    worldModel.AddAction(new Construct(recipeName));
+                }
+            }
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
@@ -100,6 +131,9 @@ namespace MCTS.DST.Actions
                 new Pair<string, string>("Action(EQUIP, " + preWorldState.GetInventoryGUID(toolName).ToString() + ", -, -, -)", "-"),
                 new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
             };
+
+            // TODO - Add Construct Actions.
+            // TODO - Add new PickUp Actions if picked item is tool.
         }
 
         public override Pair<string, int> NextActionInfo()

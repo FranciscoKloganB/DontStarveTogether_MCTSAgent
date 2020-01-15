@@ -32,6 +32,7 @@ namespace MCTS.DST.Resources.Materials
         public bool IsPrimitive { get; private set; }
         public bool IsFuel { get; private set; }
         public bool IsPickable { get; private set; }
+        public Dictionary<string, int> Recipes { get; protected set; }
 
         public WorldResource(bool isPrimitive, bool isFuel, bool isPickable)
         {
@@ -45,8 +46,6 @@ namespace MCTS.DST.Resources.Materials
     {
         public int Quantity { get; private set; }
         public string MaterialName { get; private set; }
-
-        public Dictionary<string, int> Recipes { get; protected set; }
 
         public BasicWorldResource(string name, int quantity, bool isFuel) : base(true, isFuel, true)
         {
