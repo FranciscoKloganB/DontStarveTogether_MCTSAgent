@@ -195,6 +195,10 @@ namespace MCTS.DST
 
         public bool IsNPC(string npc)
         {
+            if (NPCDict.Instance == null || NPCDict.Instance.npcBase == null)
+            {
+                Environment.Exit(0);
+            }
             return NPCDict.Instance.npcBase.ContainsKey(npc);
         }
 
