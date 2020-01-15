@@ -52,6 +52,8 @@ namespace MCTS.DST
 
             while (this.CurrentIterations++ < MAX_ITERATIONS_PER_FRAME)
             {
+                Console.WriteLine("MCTS run iteration.");
+
                 selectedNode = Selection(this.InitialNode);
                 if (selectedNode == this.InitialNode)
                 { // Initial node does not have any children.

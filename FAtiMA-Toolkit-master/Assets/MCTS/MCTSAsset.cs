@@ -83,6 +83,8 @@ namespace MCTS
                 this.ToDoActionsList.Add(pairOfPriorityAction);
             }
 
+            Console.WriteLine("MCTS search called, todo action count - " + this.ToDoActionsList.Count);
+
             if (this.ToDoActionsList.Count == 0)
             {
                 PreWorldState preWorldState = new PreWorldState(kbCloned);

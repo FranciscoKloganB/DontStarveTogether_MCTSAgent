@@ -124,10 +124,19 @@ namespace MCTS.DST.WorldModels
                 }
                 else if (materialBase.ContainsKey(objectName))
                 {
+                    Console.WriteLine("material base contains - " + objectName);
                     this.AvailableActions.Add(new PickUp(objectName));
                 }
             }
 
+            Console.WriteLine("Avialable actions: ");
+            for (short i = 0; i < this.AvailableActions.Count; i++)
+            {
+                Console.WriteLine("new action - " + this.AvailableActions.ElementAt(i).Name);
+            }
+            Console.WriteLine("End of available actions.");
+
+            /*
             for (int i = 0; i < this.PossessedItems.Count; i++)
             {
                 string possessedItem = this.PossessedItems.ElementAt(i).Key;
@@ -144,6 +153,7 @@ namespace MCTS.DST.WorldModels
                     this.AvailableActions.Add(new Fight(this.NPC[i].NPCName, this.NPC[i].GUID));
                 }
             }
+            */
         }
 
         public HashSet<ActionDST> GetExecutableActions()

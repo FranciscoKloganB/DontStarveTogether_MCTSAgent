@@ -5,7 +5,6 @@ using KnowledgeBase;
 using MCTS.DST.WorldModels;
 using WellFormedNames;
 using System.Linq;
-using MCTS.DST.Resources.NPCs;
 
 namespace MCTS.DST
 {
@@ -16,7 +15,6 @@ namespace MCTS.DST
         public float Cycle;
         public int[] CycleInfo;
 
-        public List<NPCData> NPC;
         public List<ObjectProperties> Entities;
         public List<Tuple<string, int, int>> Inventory;
         public List<Pair<string, int>> Equipped;
@@ -33,7 +31,7 @@ namespace MCTS.DST
             this.Equipped = new List<Pair<string, int>>(); // it is a list of pairs (2-tuples) that contain the name and the GUID of each equipped object
             this.Fuel = new List<Tuple<string, int, int>>(); // it is a list of 3-tuples that contain the name, the GUID and the quantity of the items that can be used as fuel for res
             this.Fire = new List<Tuple<string, int, int>>(); // list of 3-tuples that contain the name and the position of the fires in the world
-            this.NPC = new List<NPCData>();
+
             //Getting Character Stats
 
             var hp = knowledgeBase.AskProperty((Name)"Health(Walter)");
@@ -80,6 +78,8 @@ namespace MCTS.DST
 
             var equippeditems = knowledgeBase.AskPossibleProperties((Name)"IsEquipped([GUID])", Name.SELF_SYMBOL, subset);
 
+
+
             foreach (var item in equippeditems)
             {
                 string strEntGuid = item.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
@@ -125,11 +125,7 @@ namespace MCTS.DST
                 string entPrefab = entity.Item1.Value.ToString();
                 string realEntPrefab = RealEntityPrefab(entPrefab);
 
-                if (IsNPC(entPrefab))
-                {
-                    this.NPC.Add(new NPCData(entPrefab, this.GetEntitiesGUID(entPrefab).ToString()));
-                }
-                else if (IsFire(entPrefab))
+                if (IsFire(entPrefab))
                 {
                     string strEntPosx = "PosX(" + strEntGuid + ")";
                     var POSx = knowledgeBase.AskProperty((Name)strEntPosx);
@@ -146,19 +142,19 @@ namespace MCTS.DST
                 {
                     string strEntIsCollectable = "IsCollectable(" + strEntGuid + ")";
                     var isCollectable = knowledgeBase.AskProperty((Name)strEntIsCollectable);
-                    bool entIsCollectable = bool.Parse(isCollectable.Value.ToString());
+                    Boolean entIsCollectable = Boolean.Parse(isCollectable.Value.ToString());
 
                     string strEntIsPickable = "IsPickable(" + strEntGuid + ")";
                     var isPickable = knowledgeBase.AskProperty((Name)strEntIsPickable);
-                    bool entIsPickable = bool.Parse(isPickable.Value.ToString());
+                    Boolean entIsPickable = Boolean.Parse(isPickable.Value.ToString());
 
                     string strEntIsMineable = "IsMineable(" + strEntGuid + ")";
                     var isMineable = knowledgeBase.AskProperty((Name)strEntIsMineable);
-                    bool entIsMineable = bool.Parse(isMineable.Value.ToString());
+                    Boolean entIsMineable = Boolean.Parse(isMineable.Value.ToString());
 
                     string strEntIsChoppable = "IsChoppable(" + strEntGuid + ")";
                     var isChoppable = knowledgeBase.AskProperty((Name)strEntIsChoppable);
-                    bool entIsChoppable = bool.Parse(isChoppable.Value.ToString());
+                    Boolean entIsChoppable = Boolean.Parse(isChoppable.Value.ToString());
 
                     if (entIsPickable || entIsCollectable || entIsMineable || entIsChoppable)
                     {
@@ -193,17 +189,7 @@ namespace MCTS.DST
             }
         }
 
-        public bool IsNPC(string npc)
-        {
-            if (NPCDict.Instance == null || NPCDict.Instance.npcBase == null)
-            {
-                Environment.Exit(0);
-            }
-            return NPCDict.Instance.npcBase.ContainsKey(npc);
-        }
-
-
-        public bool IsTree(string tree)
+        public Boolean IsTree(string tree)
         {
             return (tree == "evergreen" || tree == "mushtree_tall" || tree == "mushtree_medium" ||
                 tree == "mushtree_small" || tree == "mushtree_tall_webbed" || tree == "evergreen_sparse" ||
@@ -211,7 +197,7 @@ namespace MCTS.DST
                 tree == "deciduoustree" || tree == "twiggytree");
         }
 
-        public bool IsBoulder(string boulder)
+        public Boolean IsBoulder(string boulder)
         {
             return (boulder == "rock1" || boulder == "rock2" || boulder == "rock_flintless" ||
                 boulder == "rock_moon" || boulder == "rock_petrified_tree_short" ||
@@ -312,12 +298,12 @@ namespace MCTS.DST
 
         }
 
-        public bool IsFire(string prefab)
+        public Boolean IsFire(string prefab)
         {
             return prefab == "campfire" || prefab == "firepit";
         }
 
-        public bool IsFuel(string guid)
+        public Boolean IsFuel(string guid)
         {
             string strEntFuel = "IsFuel(" + guid + ")";
             var entFuel = KnowledgeBase.AskProperty((Name)strEntFuel);
@@ -380,7 +366,7 @@ namespace MCTS.DST
             return 0;
         }
 
-        public bool EntityIsPickable(string entity)
+        public Boolean EntityIsPickable(string entity)
         {
             foreach (ObjectProperties item in this.Entities)
             {
@@ -392,7 +378,7 @@ namespace MCTS.DST
             return false;
         }
 
-        public bool EntityIsCollectable(string entity)
+        public Boolean EntityIsCollectable(string entity)
         {
             foreach (ObjectProperties item in this.Entities)
             {
@@ -404,7 +390,7 @@ namespace MCTS.DST
             return false;
         }
 
-        public bool IsEquipped(string item)
+        public Boolean IsEquipped(string item)
         {
             foreach (var equip in this.Equipped)
             {
