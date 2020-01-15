@@ -7,50 +7,24 @@ using WellFormedNames;
 using System.Linq;
 using MCTS.DST.Resources.NPCs;
 
-namespace MCTS.DST {
+namespace MCTS.DST
+{
 
     public class PreWorldState
     {
-        private static HashSet<string> treeBase = new HashSet<string>() { 
-            "evergreen", "mushtree_tall", "mushtree_medium",
-            "mushtree_small", "mushtree_tall_webbed", "evergreen_sparse",
-            "twiggy_short", "twiggy_normal", "twiggy_tall", 
-            "twiggy_old", "deciduoustree", "twiggytree",
-        };
-
-        private static HashSet<string> rockBase = new HashSet<string>()
-        {
-            "rock1", "rock2", "rock_flintless",
-            "rock_moon", "rock_petrified_tree_short", "rock_petrified_tree_med",
-            "rock_petrified_tree_tall", "rock_petrified_tree_old",
-        };
-
-        private static HashSet<string> fireBase = new HashSet<string>()
-        {
-            "campfire", "firepit", "endothermic_fire",
-        };
-
-        private static HashSet<string> realEntityBase = new HashSet<string>() {
-            "twigs", "sapling",
-            "log", "torch", "grass",
-            "cutgrass", "carrot", "carrot_planted",
-            "rocks", "flint", "axe",
-            "pickaxe", "campfire", "firepit"
-        };
-
         public Character Walter;
         public float Cycle;
         public int[] CycleInfo;
 
+        public List<NPCData> NPC;
         public List<ObjectProperties> Entities;
         public List<Tuple<string, int, int>> Inventory;
         public List<Pair<string, int>> Equipped;
         public List<Tuple<string, int, int>> Fuel;
         public List<Tuple<string, int, int>> Fire;
-        public List<NPCData> NPC;
         public KB KnowledgeBase;
 
-       
+
         public PreWorldState(KB knowledgeBase)
         {
             this.KnowledgeBase = knowledgeBase;
@@ -60,10 +34,9 @@ namespace MCTS.DST {
             this.Fuel = new List<Tuple<string, int, int>>(); // it is a list of 3-tuples that contain the name, the GUID and the quantity of the items that can be used as fuel for res
             this.Fire = new List<Tuple<string, int, int>>(); // list of 3-tuples that contain the name and the position of the fires in the world
             this.NPC = new List<NPCData>();
-
             //Getting Character Stats
 
-            var hp = knowledgeBase.AskProperty((Name)"Health(Walter)");           
+            var hp = knowledgeBase.AskProperty((Name)"Health(Walter)");
             int HP = int.Parse(hp.Value.ToString());
 
             var hunger = knowledgeBase.AskProperty((Name)"Hunger(Walter)");
@@ -135,9 +108,9 @@ namespace MCTS.DST {
                 this.Inventory.Add(tuple);
 
                 if (IsFuel(strEntGuid))
-                {                    
+                {
                     this.Fuel.Add(tuple);
-                }                
+                }
             }
 
             //Getting Entities
@@ -146,7 +119,7 @@ namespace MCTS.DST {
 
             foreach (var entity in entities)
             {
-                bool b = false;
+                Boolean b = false;
                 string strEntGuid = entity.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
                 int entGuid = int.Parse(strEntGuid);
                 string entPrefab = entity.Item1.Value.ToString();
@@ -156,8 +129,7 @@ namespace MCTS.DST {
                 {
                     this.NPC.Add(new NPCData(entPrefab, this.GetEntitiesGUID(entPrefab).ToString()));
                 }
-
-                if (IsFire(entPrefab))
+                else if (IsFire(entPrefab))
                 {
                     string strEntPosx = "PosX(" + strEntGuid + ")";
                     var POSx = knowledgeBase.AskProperty((Name)strEntPosx);
@@ -218,7 +190,7 @@ namespace MCTS.DST {
                         }
                     }
                 }
-            }          
+            }
         }
 
         public bool IsNPC(string npc)
@@ -226,64 +198,136 @@ namespace MCTS.DST {
             return NPCDict.Instance.npcBase.ContainsKey(npc);
         }
 
+
         public bool IsTree(string tree)
         {
-            return PreWorldState.treeBase.Contains(tree);
+            return (tree == "evergreen" || tree == "mushtree_tall" || tree == "mushtree_medium" ||
+                tree == "mushtree_small" || tree == "mushtree_tall_webbed" || tree == "evergreen_sparse" ||
+                tree == "twiggy_short" || tree == "twiggy_normal" || tree == "twiggy_tall" || tree == "twiggy_old" ||
+                tree == "deciduoustree" || tree == "twiggytree");
         }
 
         public bool IsBoulder(string boulder)
         {
-            return PreWorldState.rockBase.Contains(boulder);
-        }
-
-        public bool IsFire(string prefab)
-        {
-            return PreWorldState.fireBase.Contains(prefab);
+            return (boulder == "rock1" || boulder == "rock2" || boulder == "rock_flintless" ||
+                boulder == "rock_moon" || boulder == "rock_petrified_tree_short" ||
+                boulder == "rock_petrified_tree_med" || boulder == "rock_petrified_tree_tall" ||
+                boulder == "rock_petrified_tree_old");
         }
 
         public string RealEntityPrefab(string entity)
         {
-            if (PreWorldState.realEntityBase.Contains(entity))
-            {
-                return entity;
-            }
-            else if (PreWorldState.treeBase.Contains(entity))
+            if (IsTree(entity))
             {
                 return "tree";
             }
-            else if (PreWorldState.rockBase.Contains(entity))
+            else if (IsBoulder(entity))
             {
                 return "boulder";
             }
-            else if (entity.Contains("berrybush"))
+            else if (entity == "sapling")
+            {
+                return "sapling";
+            }
+            else if (entity == "twigs")
+            {
+                return "twigs";
+            }
+            else if (entity == "berrybush")
             {
                 return "berrybush";
             }
-            else if (entity.Contains("berries"))
+            else if (entity == "berrybush2")
+            {
+                return "berrybush";
+            }
+            else if (entity == "berrybush_juicy")
+            {
+                return "berrybush";
+            }
+            else if (entity == "log")
+            {
+                return "log";
+            }
+            else if (entity == "torch")
+            {
+                return "torch";
+            }
+            else if (entity == "grass")
+            {
+                return "grass";
+            }
+            else if (entity == "cutgrass")
+            {
+                return "cutgrass";
+            }
+            else if (entity == "carrot")
+            {
+                return "carrot";
+            }
+            else if (entity == "carrot_planted")
+            {
+                return "carrot_planted";
+            }
+            else if (entity == "berries")
             {
                 return "berries";
+            }
+            else if (entity == "berries_juicy")
+            {
+                return "berries";
+            }
+            else if (entity == "rocks")
+            {
+                return "rocks";
+            }
+            else if (entity == "flint")
+            {
+                return "flint";
+            }
+            else if (entity == "axe")
+            {
+                return "axe";
+            }
+            else if (entity == "pickaxe")
+            {
+                return "pickaxe";
+            }
+            else if (entity == "campfire")
+            {
+                return "campfire";
+            }
+            else if (entity == "firepit")
+            {
+                return "firepit";
             }
             else
             {
                 return "";
             }
+
+        }
+
+        public bool IsFire(string prefab)
+        {
+            return prefab == "campfire" || prefab == "firepit";
         }
 
         public bool IsFuel(string guid)
         {
             string strEntFuel = "IsFuel(" + guid + ")";
             var entFuel = KnowledgeBase.AskProperty((Name)strEntFuel);
-            string fuelQ = entFuel.Value.ToString();
-            return fuelQ.Equals("True");
+            var fuelQ = entFuel.Value.ToString();
+            return fuelQ == "True";
         }
 
         public int GetEntitiesGUID(string prefab)
         {
-            for (int i = 0; i < this.Entities.Count; i++)
+            foreach (ObjectProperties entity in this.Entities)
             {
-                if (this.Entities[i].Prefab.Equals(prefab))
+                if (entity.Prefab == prefab)
                 {
-                    return this.Entities[i].GUID;
+                    return entity.GUID;
                 }
             }
             return 0;
@@ -291,7 +335,7 @@ namespace MCTS.DST {
 
         public int GetEquippableGUID(string prefab)
         {
-            foreach (Pair<string,int> item in this.Equipped)
+            foreach (Pair<string, int> item in this.Equipped)
             {
                 if (item.Item1 == prefab)
                 {
@@ -385,7 +429,7 @@ namespace MCTS.DST {
                         {
                             return "berries_juicy";
                         }
-                    }                   
+                    }
                 }
                 return info;
             }
