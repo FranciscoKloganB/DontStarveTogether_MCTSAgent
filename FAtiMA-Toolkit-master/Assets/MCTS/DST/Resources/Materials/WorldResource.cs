@@ -71,8 +71,8 @@ namespace MCTS.DST.Resources.Materials
         // Items gathered by picking up by materials, that can burn.
         public List<BasicWorldResource> FuelItems { get; private set; } = new List<BasicWorldResource>();
 
-        public Tool usableTool { get; protected set; }
-        public string doableToolAction { get; protected set; }
+        public Tool RequiredTool { get; protected set; }
+        public string RequiredToolAction { get; protected set; }
 
         public CompoundWorldResource() : base(false, false, false) { }
 
@@ -91,8 +91,8 @@ namespace MCTS.DST.Resources.Materials
         {
             this.ComposingItems.Add(new Rock(2));
             this.ComposingItems.Add(new Flint(1));
-            this.usableTool = Pickaxe.Instance;
-            this.doableToolAction = "MINE";
+            this.RequiredTool = Pickaxe.Instance;
+            this.RequiredToolAction = "MINE";
         }
 
         public static Boulder Instance { get; } = new Boulder();
@@ -104,8 +104,8 @@ namespace MCTS.DST.Resources.Materials
         {
             this.ComposingItems.Add(new Log(2));
             this.FuelItems.Add(new Log(2));
-            this.usableTool = Axe.Instance;
-            this.doableToolAction = "CHOP";
+            this.RequiredTool = Axe.Instance;
+            this.RequiredToolAction = "CHOP";
         }
 
         public static Tree Instance { get; } = new Tree();
@@ -117,8 +117,8 @@ namespace MCTS.DST.Resources.Materials
         {
             this.ComposingItems.Add(new Twig(1));
             this.FuelItems.Add(new Twig(1));
-            this.usableTool = null;
-            this.doableToolAction = "PICK";
+            this.RequiredTool = null;
+            this.RequiredToolAction = "PICK";
         }
 
         public static Sapling Instance { get; } = new Sapling();
@@ -130,8 +130,8 @@ namespace MCTS.DST.Resources.Materials
         {
             this.ComposingItems.Add(new Cutgrass(2));
             this.FuelItems.Add(new Cutgrass(2));
-            this.usableTool = null;
-            this.doableToolAction = "PICK";
+            this.RequiredTool = null;
+            this.RequiredToolAction = "PICK";
         }
 
         public static Grass Instance { get; } = new Grass();
@@ -142,8 +142,8 @@ namespace MCTS.DST.Resources.Materials
         public BerryBush()
         {
             this.ComposingItems.Add(new Berry(2));
-            this.usableTool = null;
-            this.doableToolAction = "PICK";
+            this.RequiredTool = null;
+            this.RequiredToolAction = "PICK";
         }
 
         public static BerryBush Instance { get; } = new BerryBush();

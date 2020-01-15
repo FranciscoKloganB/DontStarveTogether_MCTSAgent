@@ -74,7 +74,7 @@ namespace MCTS.DST.Actions
             // Material needs tools to be gathered / can only use PICK action.
             CompoundWorldResource compoundMaterial = (CompoundWorldResource) material;
             // Gets tool needed to gather target.
-            Tool tool = compoundMaterial.usableTool;
+            Tool tool = compoundMaterial.RequiredTool;
 
             if (tool == null)
             { // If tool can be hands, but the action needs to be PICK.
@@ -85,7 +85,7 @@ namespace MCTS.DST.Actions
             }
 
             string toolName = tool.MaterialName;
-            string harvestingActionName = compoundMaterial.doableToolAction;
+            string harvestingActionName = compoundMaterial.RequiredToolAction;
 
             if (preWorldState.IsEquipped(toolName))
             { // If the necessary tool is already equiped, harvests.
@@ -94,8 +94,6 @@ namespace MCTS.DST.Actions
                     new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
                 };
             }
-
-            // TODO - Check if the required tool is in the inventory. If not then what???????
 
             return new List<Pair<string, string>>(2)
             { // Constructs the compound action of equipping the tool and harvesting.
