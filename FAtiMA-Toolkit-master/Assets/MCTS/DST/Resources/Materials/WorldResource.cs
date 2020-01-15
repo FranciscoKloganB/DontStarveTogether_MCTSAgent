@@ -39,6 +39,7 @@ namespace MCTS.DST.Resources.Materials
             this.IsPrimitive = isPrimitive;
             this.IsFuel = isFuel;
             this.IsPickable = isPickable;
+            this.Recipes = new Dictionary<string, int>();
         }
     }
 
@@ -84,6 +85,17 @@ namespace MCTS.DST.Resources.Materials
         }
     }
 
+    public class GatherableCompoundWorldResource : CompoundWorldResource
+    {
+        public BasicWorldResource ResourceWhenPicked { get; protected set; }
+
+        public GatherableCompoundWorldResource() : base() {  }
+
+        public GatherableCompoundWorldResource(bool isFuel) : base(isFuel) { }
+
+        public GatherableCompoundWorldResource(List<BasicWorldResource> composingItems, List<BasicWorldResource> fuelItems) : base(composingItems, fuelItems) { }
+    }
+
     public sealed class Boulder : CompoundWorldResource
     {
         public Boulder()
@@ -110,10 +122,11 @@ namespace MCTS.DST.Resources.Materials
         public static Tree Instance { get; } = new Tree();
     }
 
-    public sealed class Sapling : CompoundWorldResource
+    public sealed class Sapling : GatherableCompoundWorldResource
     {
         public Sapling()
         {
+            this.ResourceWhenPicked = Twig.Instance;
             this.ComposingItems.Add(new Twig(1));
             this.FuelItems.Add(new Twig(1));
             this.RequiredTool = null;
@@ -123,10 +136,11 @@ namespace MCTS.DST.Resources.Materials
         public static Sapling Instance { get; } = new Sapling();
     }
 
-    public sealed class Grass : CompoundWorldResource
+    public sealed class Grass : GatherableCompoundWorldResource
     {
         public Grass()
         {
+            this.ResourceWhenPicked = Cutgrass.Instance;
             this.ComposingItems.Add(new Cutgrass(2));
             this.FuelItems.Add(new Cutgrass(2));
             this.RequiredTool = null;

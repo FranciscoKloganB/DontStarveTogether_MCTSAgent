@@ -23,19 +23,7 @@ namespace MCTS.DST.Actions
             this.Duration = 0.33f;
         }
 
-
-        private void ExecuteBasicWorldResourceBehaviour(WorldModelDST worldState, BasicWorldResource targetMaterial)
-        {
-            worldState.AddToPossessedItems(targetMaterial.MaterialName, targetMaterial.Quantity);
-            if (targetMaterial.IsFuel)
-            {
-                worldState.AddToFuel(targetMaterial.MaterialName, targetMaterial.Quantity);
-            }
-
-            TryAddAction(worldState, targetMaterial);
-        }
-
-        public void TryAddAction(WorldModelDST worldModel, WorldResource resource)
+        public static void TryAddAction(WorldModelDST worldModel, WorldResource resource)
         {
             Dictionary<string, int> resourceRecipes = resource.Recipes;
             Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
@@ -43,6 +31,14 @@ namespace MCTS.DST.Actions
             for (int i = 0; i < resourceRecipes.Count; i++)
             {
                 string recipeName = resourceRecipes.ElementAt(i).Key;
+
+                // TODO - Add all recipe names in resource.Recipes to the BuildableBase dictionary.
+
+                if (!buildableBase.ContainsKey(recipeName))
+                {
+                    continue;
+                }
+
                 Buildable buildable = buildableBase[recipeName];
                 Dictionary<string, int> requiredMaterials = buildable.RequiredMaterials;
 
@@ -51,7 +47,21 @@ namespace MCTS.DST.Actions
                 {
                     string requiredMaterialName = requiredMaterials.ElementAt(j).Key;
                     int requiredMaterialQuantity = requiredMaterials.ElementAt(j).Value;
+
+                    // Commenting this as it isn't easily debugable.
+                    /*
                     if (!(worldModel.Possesses(requiredMaterialName) && worldModel.PossessedItems[requiredMaterialName] >= requiredMaterialQuantity))
+                    {
+                        nowCanDo = false;
+                        break;
+                    }
+                    */
+                    if (!worldModel.Possesses(requiredMaterialName))
+                    {
+                        nowCanDo = false;
+                        break;
+                    }
+                    else if (worldModel.PossessedItems[requiredMaterialName] < requiredMaterialQuantity)
                     {
                         nowCanDo = false;
                         break;
@@ -70,24 +80,38 @@ namespace MCTS.DST.Actions
             worldState.Cycle += this.Duration;
             worldState.UpdateSatiation(-1.0f);
             worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
-
-            WorldResource material = this.MaterialBase[this.Target];
             worldState.RemoveFromWorld(this.Target, 1);
             
-            if (!material.IsPrimitive)
-            { // ComposedMaterial behaviour.
-                CompoundWorldResource targetMaterial = (CompoundWorldResource) material;
-                for (int i = 0; i < targetMaterial.ComposingItems.Count; i++)
-                {
-                    BasicWorldResource primitiveComponent = targetMaterial.ComposingItems[i];
-                    ExecuteBasicWorldResourceBehaviour(worldState, primitiveComponent);
-                }
-            }
-            else
+            WorldResource material = this.MaterialBase[this.Target];
+            if (material.IsPrimitive)
             { // PrimitiveMaterial behaviour.
                 BasicWorldResource targetMaterial = (BasicWorldResource) material;
-                ExecuteBasicWorldResourceBehaviour(worldState, targetMaterial);
+                worldState.AddToPossessedItems(targetMaterial.MaterialName, targetMaterial.Quantity);
+                if (targetMaterial.IsFuel)
+                {
+                    worldState.AddToFuel(targetMaterial.MaterialName, targetMaterial.Quantity);
+                }
+
+                // TryAddAction(worldState, targetMaterial);
             }
+            /*
+            else if (material is GatherableCompoundWorldResource)
+            {
+                GatherableCompoundWorldResource gatherableMaterial = (GatherableCompoundWorldResource)material;
+                BasicWorldResource basicMaterial = gatherableMaterial.ResourceWhenPicked;
+                // TryAddAction(worldState, basicMaterial);
+            }
+            */
+
+            /*
+            If the resource is compound, the agent mines / chops it, and the composing 
+            basic materials (rocks / flint / nitre / logs) remain on the ground.
+            There is no need for additional behaviour here, as the basic materials
+            aren't put in the inventory.
+            */
+
+
+            // TODO - Add new PickUp Actions if picked item is tool.
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
@@ -107,7 +131,7 @@ namespace MCTS.DST.Actions
             // Gets tool needed to gather target.
             Tool tool = compoundMaterial.RequiredTool;
 
-            if (tool == null)
+            if (tool is null)
             { // If tool can be hands, but the action needs to be PICK.
                 return new List<Pair<string, string>>(1)
                 {
@@ -131,9 +155,6 @@ namespace MCTS.DST.Actions
                 new Pair<string, string>("Action(EQUIP, " + preWorldState.GetInventoryGUID(toolName).ToString() + ", -, -, -)", "-"),
                 new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
             };
-
-            // TODO - Add Construct Actions.
-            // TODO - Add new PickUp Actions if picked item is tool.
         }
 
         public override Pair<string, int> NextActionInfo()

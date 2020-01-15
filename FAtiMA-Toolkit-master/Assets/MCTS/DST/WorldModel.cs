@@ -11,9 +11,6 @@ namespace MCTS.DST.WorldModels
 {
     public class WorldModelDST
     {
-        public static Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
-        public static Dictionary<string, Food> foodBase = FoodDict.Instance.foodBase;
-
         public Character Walter;
         public HashSet<ActionDST> AvailableActions;
         public List<WorldObjectData> WorldObjects;
@@ -93,6 +90,9 @@ namespace MCTS.DST.WorldModels
 
         private void AddAvailableActions(PreWorldState preWorldState)
         {
+            Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
+            Dictionary<string, Food> foodBase = FoodDict.Instance.foodBase;
+
             this.AvailableActions = new HashSet<ActionDST>();
             this.AvailableActions.Add(new Wander());
             
@@ -147,6 +147,20 @@ namespace MCTS.DST.WorldModels
                 if (foodBase.ContainsKey(possessedItem))
                 {
                     this.AvailableActions.Add(new Eat(possessedItem));
+                }
+                else if (materialBase.ContainsKey(possessedItem))
+                {
+                    WorldResource material = materialBase[possessedItem];
+                    if (material.IsPrimitive)
+                    {
+                        PickUp.TryAddAction(this, material);
+                    }
+                    else if (material is GatherableCompoundWorldResource)
+                    {
+                        GatherableCompoundWorldResource gatherableMaterial = (GatherableCompoundWorldResource) material;
+                        BasicWorldResource basicMaterial = gatherableMaterial.ResourceWhenPicked;
+                        PickUp.TryAddAction(this, basicMaterial);
+                    }
                 }
             }
         }

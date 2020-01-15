@@ -56,22 +56,47 @@ namespace MCTS.DST.Resources.Buildables
         {
             ;
         }
-
-        public virtual void TryRemoveAction(WorldModelDST worldModel, string actionName)
+        
+        public static void TryRemoveAction(WorldModelDST worldModel, string expendedResourceName)
         {
-            Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
+            MaterialDict materialDict = MaterialDict.Instance;
+            Dictionary<string, WorldResource> materialBase = materialDict.materialBase;
 
-            for (int i = 0; i < this.RequiredMaterials.Count; i++)
+            if (materialBase.ContainsKey(expendedResourceName))
             {
-                var materialUses = ((BasicWorldResource)materialBase[this.RequiredMaterials.ElementAt(i).Key]).Recipes;
+                WorldResource resource = materialBase[expendedResourceName];
+                Dictionary<string, int> resourceRecipes = resource.Recipes;
+                Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
 
-                for (int j = 0; j < materialUses.Count; j++)
+                for (int i = 0; i < resourceRecipes.Count; i++)
                 {
-                    var craftableName = materialUses.ElementAt(j).Key;
-                    var requiredQuantity = materialUses.ElementAt(j).Value;
-                    if (worldModel.PossessedItems[craftableName] < requiredQuantity)
+                    string recipeName = resourceRecipes.ElementAt(i).Key;
+                    Buildable buildable = buildableBase[recipeName];
+                    Dictionary<string, int> requiredMaterials = buildable.RequiredMaterials;
+
+                    for (int j = 0; j < requiredMaterials.Count; j++)
                     {
-                        worldModel.RemoveAction(actionName + craftableName);
+                        string requiredMaterialName = requiredMaterials.ElementAt(j).Key;
+                        int requiredMaterialQuantity = requiredMaterials.ElementAt(j).Value;
+
+                        // Commenting this as it isn't easily debugable.
+                        /*
+                        if (!(worldModel.Possesses(requiredMaterialName) && worldModel.PossessedItems[requiredMaterialName] >= requiredMaterialQuantity))
+                        {
+                            worldModel.RemoveAction(recipeName);
+                            break;
+                        }
+                        */
+                        if (!worldModel.Possesses(requiredMaterialName))
+                        {
+                            worldModel.RemoveAction(recipeName);
+                            break;
+                        }
+                        else if (worldModel.PossessedItems[requiredMaterialName] < requiredMaterialQuantity)
+                        {
+                            worldModel.RemoveAction(recipeName);
+                            break;
+                        }
                     }
                 }
             }

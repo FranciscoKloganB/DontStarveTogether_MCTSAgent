@@ -11,7 +11,6 @@ namespace MCTS.DST.Actions
 
     public class Construct : ActionDST
     {
-        private Dictionary<string, Buildable> BuildableBase { get; } = BuildablesDict.Instance.buildableBase;
         private static readonly float duration = 0.05f;
         public static readonly string actionName = "Construct_";
         private readonly string Target;
@@ -25,11 +24,11 @@ namespace MCTS.DST.Actions
         {
             try
             {
-                Buildable targetBuildable = BuildableBase[this.Target];
+                worldState.Cycle += duration;
+                Buildable targetBuildable = BuildablesDict.Instance.buildableBase[this.Target];
                 targetBuildable.Build(worldState);
                 targetBuildable.PostProcessBuildable(worldState);
-                targetBuildable.TryRemoveAction(worldState, actionName);
-                worldState.Cycle += duration;
+                Buildable.TryRemoveAction(worldState, actionName);
             }
             catch (KeyNotFoundException)
             {
