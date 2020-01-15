@@ -33,7 +33,7 @@ namespace MCTS.DST.Resources.Buildables
     public class Buildable
     {
         public Dictionary<string, int> RequiredMaterials { get; private set; }
-        protected string BuildableName { get; private set; }
+        public string BuildableName { get; private set; }
 
         public Buildable(Dictionary<string, int> materialsQuantityDict, string name)
         {

@@ -49,13 +49,6 @@ namespace MCTS.DST.Actions
                     int requiredMaterialQuantity = requiredMaterials.ElementAt(j).Value;
 
                     // Commenting this as it isn't easily debugable.
-                    /*
-                    if (!(worldModel.Possesses(requiredMaterialName) && worldModel.PossessedItems[requiredMaterialName] >= requiredMaterialQuantity))
-                    {
-                        nowCanDo = false;
-                        break;
-                    }
-                    */
                     if (!worldModel.Possesses(requiredMaterialName))
                     {
                         nowCanDo = false;
