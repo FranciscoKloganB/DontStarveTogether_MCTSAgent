@@ -23,10 +23,6 @@ namespace MCTS.DST.Resources.Buildables
             ["campfire"] = Campfire.Instance,
             ["firepit"] = FirePit.Instance,
             ["torch"] = Torch.Instance,
-            ["endothermic_fire"] = EndothermicFire.Instance,
-            ["fishing_rod"] = FishingRod.Instance,
-            ["umbrella"] = Umbrella.Instance,
-            ["whirly_fan"] = WhirlyFan.Instance,
         };
     }
 
@@ -79,14 +75,6 @@ namespace MCTS.DST.Resources.Buildables
                         string requiredMaterialName = requiredMaterials.ElementAt(j).Key;
                         int requiredMaterialQuantity = requiredMaterials.ElementAt(j).Value;
 
-                        // Commenting this as it isn't easily debugable.
-                        /*
-                        if (!(worldModel.Possesses(requiredMaterialName) && worldModel.PossessedItems[requiredMaterialName] >= requiredMaterialQuantity))
-                        {
-                            worldModel.RemoveAction(recipeName);
-                            break;
-                        }
-                        */
                         if (!worldModel.Possesses(requiredMaterialName))
                         {
                             worldModel.RemoveAction(recipeName);
@@ -136,7 +124,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     instance = new Axe(new Dictionary<string, int>() { ["twigs"] = 1, ["flint"] = 1 }, "axe");
                 }
@@ -155,7 +143,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     instance = new Pickaxe(new Dictionary<string, int>() { ["twigs"] = 2, ["flint"] = 2 }, "pickaxe");
                 }
@@ -174,7 +162,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     instance = new Shovel(new Dictionary<string, int>() { ["twigs"] = 2, ["flint"] = 2 }, "shovel");
                 }
@@ -193,7 +181,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     instance = new Hammer(new Dictionary<string, int>() { ["twigs"] = 3, ["rocks"] = 3, ["cutgrass"] = 6 }, "hammer");
                 }
@@ -212,7 +200,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     instance = new Campfire(new Dictionary<string, int>() { ["cutgrass"] = 3, ["log"] = 2 }, "campfire");
                 }
@@ -231,7 +219,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     instance = new FirePit(new Dictionary<string, int>() { ["log"] = 2, ["rocks"] = 12 }, "firepit");
                 }
@@ -250,7 +238,7 @@ namespace MCTS.DST.Resources.Buildables
         {
             get
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     instance = new Torch(new Dictionary<string, int>() { ["cutgrass"] = 2, ["twigs"] = 2 }, "torch");
                 }
@@ -259,81 +247,5 @@ namespace MCTS.DST.Resources.Buildables
         }
 
         private Torch(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
-    }
-
-    public sealed class EndothermicFire : Structure
-    {
-        private static Buildable instance;
-
-        public static Buildable Instance
-        {
-            get
-            {
-                if (instance == null)
-                {                    
-                    instance = new EndothermicFire(new Dictionary<string, int>() { ["cutgrass"] = 3, ["nitre"] = 2 }, "endothermic_fire");
-                }
-                return instance;
-            }
-        }
-
-        private EndothermicFire(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
-    }
-
-    public sealed class FishingRod : Item
-    {
-        private static Buildable instance;
-
-        public static Buildable Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new FishingRod(new Dictionary<string, int>() { ["twigs"] = 2, ["silk"] = 2 }, "fishing_rod");
-                }
-                return instance;
-            }
-        }
-
-        private FishingRod(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
-    }
-
-    public sealed class Umbrella : Item
-    {
-        private static Buildable instance;
-
-        public static Buildable Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Umbrella(new Dictionary<string, int>() { ["twigs"] = 6, ["silk"] = 2, ["pig_skin"] = 1 }, "umbrella");
-                }
-                return instance;
-            }
-        }
-
-        private Umbrella(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
-    }
-
-    public sealed class WhirlyFan : Item
-    {
-        private static Buildable instance;
-
-        public static Buildable Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new WhirlyFan(new Dictionary<string, int>(){ ["twigs"] = 3, ["petals"] = 1}, "whirly_fan");
-                }
-                return instance;
-            }
-        }
-
-        private WhirlyFan(Dictionary<string, int> materialsQuantityDict, string name) : base(materialsQuantityDict, name) { }
     }
 }

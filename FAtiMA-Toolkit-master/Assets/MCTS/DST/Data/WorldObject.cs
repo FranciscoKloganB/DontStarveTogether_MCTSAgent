@@ -30,7 +30,7 @@ namespace MCTS.DST.WorldModels
         {
             var item = obj as WorldObjectData;
 
-            if (item == null)
+            if (item is null)
             {
                 return false;
             }

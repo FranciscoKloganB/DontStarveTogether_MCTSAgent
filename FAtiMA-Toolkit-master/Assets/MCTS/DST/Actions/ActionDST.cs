@@ -46,7 +46,7 @@ namespace MCTS.DST.Actions
         {
             var item = obj as ActionDST;
 
-            if (item == null)
+            if (item is null)
             {
                 return false;
             }
@@ -64,7 +64,7 @@ namespace MCTS.DST.Actions
             var one = x as ActionDST;
             var another = y as ActionDST;
 
-            if (x == null || y == null)
+            if (x is null || y is null)
             {
                 return false;
             }
@@ -76,7 +76,7 @@ namespace MCTS.DST.Actions
         {
             var _ = obj as ActionDST;
 
-            if (_ == null)
+            if (_ is null)
             {
                 return 0;
             }
