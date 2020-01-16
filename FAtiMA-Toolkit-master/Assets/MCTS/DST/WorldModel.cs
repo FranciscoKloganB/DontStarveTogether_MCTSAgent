@@ -301,11 +301,7 @@ namespace MCTS.DST.WorldModels
             {
                 if (this.WorldObjects[i].ObjectName == prefab)
                 {
-                    if (this.WorldObjects[i].Quantity < quantity)
-                    {
-                        throw new ArgumentException("Insufficient Quantity");
-                    }
-                    else if (this.WorldObjects[i].Quantity == quantity)
+                    if (this.WorldObjects[i].Quantity <= quantity)
                     {
                         this.WorldObjects.RemoveAt(i);
                     }
