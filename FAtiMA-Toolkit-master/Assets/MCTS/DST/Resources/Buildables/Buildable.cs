@@ -70,32 +70,37 @@ namespace MCTS.DST.Resources.Buildables
         
         public static void TryRemoveAction(WorldModelDST worldModel, string expendedResourceName)
         {
-            MaterialDict materialDict = MaterialDict.Instance;
-            Dictionary<string, WorldResource> materialBase = materialDict.materialBase;
-
-            if (materialBase.ContainsKey(expendedResourceName))
+            Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
+            if (!buildableBase.ContainsKey(expendedResourceName))
             {
-                WorldResource resource = materialBase[expendedResourceName];
-                Dictionary<string, int> resourceRecipes = resource.Recipes;
-                Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
+                return;
+            }
 
-                for (int i = 0; i < resourceRecipes.Count; i++)
+            Buildable constructedBuildable = buildableBase[expendedResourceName];
+            Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
+
+            for (int i = 0; i < constructedBuildable.RequiredMaterials.Count; i++)
+            {
+                string materialName = constructedBuildable.RequiredMaterials.ElementAt(i).Key;
+                if (!materialBase.ContainsKey(materialName))
                 {
-                    string recipeName = resourceRecipes.ElementAt(i).Key;
+                    continue;
+                }
+                
+                WorldResource resource = materialBase[materialName];
+                Dictionary<string, int> resourceRecipes = resource.Recipes;
+                for (int j = 0; j < resourceRecipes.Count; j++)
+                {
+                    string recipeName = resourceRecipes.ElementAt(j).Key;
                     Buildable buildable = buildableBase[recipeName];
                     Dictionary<string, int> requiredMaterials = buildable.RequiredMaterials;
 
-                    for (int j = 0; j < requiredMaterials.Count; j++)
+                    for (int k = 0; k < requiredMaterials.Count; k++)
                     {
-                        string requiredMaterialName = requiredMaterials.ElementAt(j).Key;
-                        int requiredMaterialQuantity = requiredMaterials.ElementAt(j).Value;
+                        string requiredMaterialName = requiredMaterials.ElementAt(k).Key;
+                        int requiredMaterialQuantity = requiredMaterials.ElementAt(k).Value;
 
-                        if (!worldModel.Possesses(requiredMaterialName))
-                        {
-                            worldModel.RemoveAction(recipeName);
-                            break;
-                        }
-                        else if (worldModel.PossessedItems[requiredMaterialName] < requiredMaterialQuantity)
+                        if (!worldModel.Possesses(requiredMaterialName, requiredMaterialQuantity))
                         {
                             worldModel.RemoveAction(recipeName);
                             break;
