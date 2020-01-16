@@ -22,17 +22,13 @@ namespace MCTS.DST.Actions
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            try
+            if (BuildablesDict.Instance.buildableBase.ContainsKey(this.Target))
             {
                 worldState.Cycle += duration;
                 Buildable targetBuildable = BuildablesDict.Instance.buildableBase[this.Target];
                 targetBuildable.Build(worldState);
                 targetBuildable.PostProcessBuildable(worldState);
                 Buildable.TryRemoveAction(worldState, actionName);
-            }
-            catch (KeyNotFoundException)
-            {
-                ;
             }
         }
 
