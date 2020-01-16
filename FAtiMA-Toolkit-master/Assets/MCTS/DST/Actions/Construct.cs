@@ -39,7 +39,7 @@ namespace MCTS.DST.Actions
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            if (this.Target.Equals("campfire") || this.Target.Equals("firepit") || this.Target.Equals("endothermic_firepit"))
+            if (this.Target.Equals("campfire") || this.Target.Equals("firepit"))
             {
                 var x = preWorldState.Walter.GetPosX();
                 var z = preWorldState.Walter.GetPosZ();
