@@ -37,8 +37,17 @@ namespace MCTS.DST.Resources.Buildables
             this.BuildableName = name;
         }
 
-        public void Build(WorldModelDST worldState)
+        public bool Build(WorldModelDST worldState)
         {
+            for (int i = 0; i < this.RequiredMaterials.Count; i++)
+            {
+                var element = this.RequiredMaterials.ElementAt(i);
+                if (!worldState.Possesses(element.Key, element.Value))
+                {
+                    return false;
+                }
+            }
+
             for (int i = 0; i < this.RequiredMaterials.Count; i++)
             {
                 var element = this.RequiredMaterials.ElementAt(i);
@@ -46,6 +55,7 @@ namespace MCTS.DST.Resources.Buildables
                 worldState.RemoveFromPossessedItems(material, element.Value);
             }
             worldState.AddToPossessedItems(this.BuildableName, 1);
+            return true;
         }
 
         public virtual void PostProcessBuildable(WorldModelDST worldModel)
