@@ -69,20 +69,14 @@ namespace MCTS.DST.Resources.Buildables
             ;
         }
         
-        public static void TryRemoveAction(WorldModelDST worldModel, string expendedResourceName)
+        public void TryRemoveAction(WorldModelDST worldModel)
         {
             Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
-            if (!buildableBase.ContainsKey(expendedResourceName))
-            {
-                return;
-            }
-
-            Buildable constructedBuildable = buildableBase[expendedResourceName];
             Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
 
-            for (int i = 0; i < constructedBuildable.RequiredMaterials.Count; i++)
+            for (int i = 0; i < this.RequiredMaterials.Count; i++)
             {
-                string materialName = constructedBuildable.RequiredMaterials.ElementAt(i).Key;
+                string materialName = this.RequiredMaterials.ElementAt(i).Key;
                 if (!materialBase.ContainsKey(materialName))
                 {
                     continue;

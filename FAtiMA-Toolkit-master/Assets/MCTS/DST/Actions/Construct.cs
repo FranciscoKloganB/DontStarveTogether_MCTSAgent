@@ -33,7 +33,7 @@ namespace MCTS.DST.Actions
                     return;
                 }
                 targetBuildable.PostProcessBuildable(worldState);
-                Buildable.TryRemoveAction(worldState, actionName);
+                targetBuildable.TryRemoveAction(worldState);
             }
         }
 
