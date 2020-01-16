@@ -115,30 +115,11 @@ namespace MCTS.DST.WorldModels
                 }
                 else if (foodBase.ContainsKey(objectName))
                 {
-                    // TODO: Consider that we can pickup Food, not only Materials
-                    // this.AvailableActions.Add(new PickUp(objectName)); 
+                    PickUpFoodBehavior(objectName);
                 }
                 else if (materialBase.ContainsKey(objectName))
                 {
-                    WorldResource material = materialBase[objectName];
-
-                    if (material.IsPickable)
-                    { // Material can be picked up by hand, no need to check if has tool.
-                        this.AvailableActions.Add(new PickUp(objectName));
-                        continue;
-                    }
-                    // Material needs tools to be gathered. / can only use PICK action.
-                    CompoundWorldResource compoundMaterial = (CompoundWorldResource)material;
-                    // Gets tool needed to gather target.
-                    Tool tool = compoundMaterial.RequiredTool;
-                    if (tool is null)
-                    { // If tool can be hands, there is no need to check if tool is in inventory.
-                        this.AvailableActions.Add(new PickUp(objectName));
-                    }
-                    else if (this.PossessedItems.ContainsKey(tool.MaterialName))
-                    { // The necessary tool is already equiped.
-                        this.AvailableActions.Add(new PickUp(objectName));
-                    }
+                    PickUpMaterialBehavior(materialBase, objectName);
                 }
             }
 
@@ -159,11 +140,42 @@ namespace MCTS.DST.WorldModels
                     }
                     else if (material is GatherableCompoundWorldResource)
                     {
-                        GatherableCompoundWorldResource gatherableMaterial = (GatherableCompoundWorldResource) material;
-                        BasicWorldResource basicMaterial = gatherableMaterial.ResourceWhenPicked;
-                        PickUp.TryAddAction(this, basicMaterial);
+                        GatherableCompoundWorldResource gatherableMaterial = (GatherableCompoundWorldResource)material;
+                        Object basicMaterial = gatherableMaterial.ResourceWhenPicked;
+                        if (!(basicMaterial is Food))
+                        {
+                            BasicWorldResource bMaterial = (BasicWorldResource)basicMaterial;
+                            PickUp.TryAddAction(this, bMaterial);
+                        }
                     }
                 }
+            }
+        }
+
+        private void PickUpFoodBehavior(string objectName)
+        {
+            this.AvailableActions.Add(new PickUp(objectName));
+        }
+
+        private void PickUpMaterialBehavior(Dictionary<string, WorldResource> materialBase, string objectName)
+        {
+            WorldResource material = materialBase[objectName];
+
+            if (material.IsPickable)
+            { // Material can be picked up by hand, no need to check if has tool.
+                this.AvailableActions.Add(new PickUp(objectName));
+                return;
+            }
+            // Material needs tools to be gathered. / can only use PICK action. Gets the required tool.
+            CompoundWorldResource compoundMaterial = (CompoundWorldResource)material;
+            Tool tool = compoundMaterial.RequiredTool;
+            if (tool is null)
+            { // If tool can be hands, there is no need to check if tool is in inventory.
+                this.AvailableActions.Add(new PickUp(objectName));
+            }
+            else if (this.PossessedItems.ContainsKey(tool.MaterialName))
+            { // The necessary tool is already equiped.
+                this.AvailableActions.Add(new PickUp(objectName));
             }
         }
 

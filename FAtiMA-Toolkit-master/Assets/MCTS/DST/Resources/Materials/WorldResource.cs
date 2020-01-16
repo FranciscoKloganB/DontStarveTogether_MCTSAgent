@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCTS.DST.Resources.Edibles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +21,7 @@ namespace MCTS.DST.Resources.Materials
             ["twigs"] = Twig.Instance,
             ["grass"] = Grass.Instance,
             ["cutgrass"] = Cutgrass.Instance,
-            ["berry"] = Berry.Instance,
-            ["carrot"] = Carrot.Instance,
+            ["berrybush"] = BerryBush.Instance,
         };
 
         private MaterialDict() { }
@@ -87,7 +87,7 @@ namespace MCTS.DST.Resources.Materials
 
     public class GatherableCompoundWorldResource : CompoundWorldResource
     {
-        public BasicWorldResource ResourceWhenPicked { get; protected set; }
+        public Object ResourceWhenPicked { get; protected set; }
 
         public GatherableCompoundWorldResource() : base() {  }
 
@@ -150,11 +150,11 @@ namespace MCTS.DST.Resources.Materials
         public static Grass Instance { get; } = new Grass();
     }
 
-    public sealed class BerryBush : CompoundWorldResource
+    public sealed class BerryBush : GatherableCompoundWorldResource
     {
         public BerryBush()
         {
-            this.ComposingItems.Add(new Berry(2));
+            this.ResourceWhenPicked = Berries.Instance;
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
         }
@@ -229,26 +229,12 @@ namespace MCTS.DST.Resources.Materials
             {
                 ["torch"] = 2,
                 ["hammer"] = 6,
-                ["campire"] = 3,
+                ["campfire"] = 3,
                 // ["trap"] = 6,
             };
         }
 
         public static Cutgrass Instance { get; } = new Cutgrass(1);
-    }
-
-    public sealed class Berry : BasicWorldResource
-    {
-        public Berry(int quantity) : base("berries", quantity, true) { }
-
-        public static Berry Instance { get; } = new Berry(1);
-    }
-
-    public sealed class Carrot : BasicWorldResource
-    {
-        public Carrot(int quantity) : base("carrot", quantity, true) { }
-
-        public static Carrot Instance { get; } = new Carrot(1);
     }
 
     public sealed class Torch : Tool

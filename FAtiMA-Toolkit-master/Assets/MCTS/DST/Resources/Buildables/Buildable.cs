@@ -74,34 +74,42 @@ namespace MCTS.DST.Resources.Buildables
             Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
             Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
 
-            for (int i = 0; i < this.RequiredMaterials.Count; i++)
+            string recipeName = "";
+            try
             {
-                string materialName = this.RequiredMaterials.ElementAt(i).Key;
-                if (!materialBase.ContainsKey(materialName))
+                for (int i = 0; i < this.RequiredMaterials.Count; i++)
                 {
-                    continue;
-                }
-                
-                WorldResource resource = materialBase[materialName];
-                Dictionary<string, int> resourceRecipes = resource.Recipes;
-                for (int j = 0; j < resourceRecipes.Count; j++)
-                {
-                    string recipeName = resourceRecipes.ElementAt(j).Key;
-                    Buildable buildable = buildableBase[recipeName];
-                    Dictionary<string, int> requiredMaterials = buildable.RequiredMaterials;
-
-                    for (int k = 0; k < requiredMaterials.Count; k++)
+                    string materialName = this.RequiredMaterials.ElementAt(i).Key;
+                    if (!materialBase.ContainsKey(materialName))
                     {
-                        string requiredMaterialName = requiredMaterials.ElementAt(k).Key;
-                        int requiredMaterialQuantity = requiredMaterials.ElementAt(k).Value;
+                        continue;
+                    }
 
-                        if (!worldModel.Possesses(requiredMaterialName, requiredMaterialQuantity))
+                    WorldResource resource = materialBase[materialName];
+                    Dictionary<string, int> resourceRecipes = resource.Recipes;
+                    for (int j = 0; j < resourceRecipes.Count; j++)
+                    {
+                        recipeName = resourceRecipes.ElementAt(j).Key;
+                        Buildable buildable = buildableBase[recipeName];
+                        Dictionary<string, int> requiredMaterials = buildable.RequiredMaterials;
+
+                        for (int k = 0; k < requiredMaterials.Count; k++)
                         {
-                            worldModel.RemoveAction(recipeName);
-                            break;
+                            string requiredMaterialName = requiredMaterials.ElementAt(k).Key;
+                            int requiredMaterialQuantity = requiredMaterials.ElementAt(k).Value;
+
+                            if (!worldModel.Possesses(requiredMaterialName, requiredMaterialQuantity))
+                            {
+                                worldModel.RemoveAction(recipeName);
+                                break;
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Buildable.cs error with recipe " + recipeName + ": " + ex.Message + "\n" + ex.StackTrace);
             }
         }
     }
