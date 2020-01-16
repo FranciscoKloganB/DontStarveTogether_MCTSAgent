@@ -39,7 +39,7 @@ namespace MCTS.DST.Resources.Buildables
 
         public bool Build(WorldModelDST worldState)
         {
-            for (int i = 0; i < this.RequiredMaterials.Count; i++)
+            for (int i = 0; i < this.RequiredMaterials.Keys.Count; i++)
             {
                 var element = this.RequiredMaterials.ElementAt(i);
                 if (!worldState.Possesses(element.Key, element.Value))
