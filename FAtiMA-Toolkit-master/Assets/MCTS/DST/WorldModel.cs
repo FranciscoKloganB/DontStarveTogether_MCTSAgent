@@ -262,7 +262,7 @@ namespace MCTS.DST.WorldModels
                 }
                 else
                 {
-                    this.PossessedItems[prefab] -= quantity;
+                    this.PossessedItems[prefab] = this.PossessedItems[prefab] - quantity;
                 }
             }
         }
@@ -270,10 +270,9 @@ namespace MCTS.DST.WorldModels
         
         public void AddToPossessedItems(string prefab, int quantity)
         {
-            Console.WriteLine("Adding to posssed items: " + prefab);
             if (this.PossessedItems.ContainsKey(prefab))
             {
-                this.PossessedItems[prefab] += quantity;
+                this.PossessedItems[prefab] = this.PossessedItems[prefab] + quantity;
             }
             else
             {

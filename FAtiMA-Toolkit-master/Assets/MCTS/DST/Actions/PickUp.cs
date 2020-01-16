@@ -65,8 +65,8 @@ namespace MCTS.DST.Actions
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
             worldState.Cycle += this.Duration;
-            worldState.UpdateSatiation(-1.0f);
-            worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
+            // worldState.UpdateSatiation(-1.0f);
+            // worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
             worldState.RemoveFromWorld(this.Target, 1);
             
             WorldResource material = this.MaterialBase[this.Target];
