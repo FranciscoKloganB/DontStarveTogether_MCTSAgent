@@ -168,9 +168,7 @@ namespace MCTS.DST.Resources.Materials
         {
             base.Recipes = new Dictionary<string, int>()
             {
-                ["firepit"] = 12,
-                ["hammer"] = 3,
-                ["battle_helm"] = 2
+                ["hammer"] = 3
             };
         }
 
@@ -184,10 +182,7 @@ namespace MCTS.DST.Resources.Materials
             base.Recipes = new Dictionary<string, int>()
             {
                 ["axe"] = 1,
-                ["pickaxe"] = 2,
-                ["battle_helm"] = 2,
-                ["battle_spear"] = 2,
-                ["compass"] = 1,
+                ["pickaxe"] = 2
             };
         }
 
@@ -198,11 +193,6 @@ namespace MCTS.DST.Resources.Materials
     {
         public Log(int quantity) : base("log", quantity, true)
         {
-            base.Recipes = new Dictionary<string, int>()
-            {
-                ["campfire"] = 2,
-                ["firepit"] = 2,
-            };
         }
 
         public static Log Instance { get; } = new Log(1);
@@ -214,13 +204,9 @@ namespace MCTS.DST.Resources.Materials
         {
             base.Recipes = new Dictionary<string, int>()
             {
-                ["axe"] = 1,
-                ["pickaxe"] = 2,
-                ["hammer"] = 3,
                 ["torch"] = 2,
-                ["trap"] = 2,
-                ["grass_suit"] = 2,
-                ["battle_spear"] = 2,
+                ["axe"] = 1,
+                ["pickaxe"] = 2
             };
         }
 
@@ -233,11 +219,7 @@ namespace MCTS.DST.Resources.Materials
         {
             base.Recipes = new Dictionary<string, int>()
             {
-                ["campfire"] = 3,
-                ["torch"] = 2,
-                ["trap"] = 6,
-                ["hammer"] = 6,
-                ["grass_suit"] = 10,
+                ["torch"] = 2
             };
         }
 
@@ -250,7 +232,6 @@ namespace MCTS.DST.Resources.Materials
         {
             base.Recipes = new Dictionary<string, int>()
             {
-                ["roasted_berries"] = 1,
             };
         }
 
@@ -263,7 +244,6 @@ namespace MCTS.DST.Resources.Materials
         {
             Recipes = new Dictionary<string, int>()
             {
-                ["roasted_carrot"] = 1,
             };
         }
 
