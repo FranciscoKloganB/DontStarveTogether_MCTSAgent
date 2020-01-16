@@ -168,7 +168,8 @@ namespace MCTS.DST.Resources.Materials
         {
             base.Recipes = new Dictionary<string, int>()
             {
-                ["hammer"] = 3
+                ["hammer"] = 3,
+                ["firepit"] = 12,
             };
         }
 
@@ -182,7 +183,7 @@ namespace MCTS.DST.Resources.Materials
             base.Recipes = new Dictionary<string, int>()
             {
                 ["axe"] = 1,
-                ["pickaxe"] = 2
+                ["pickaxe"] = 2,
             };
         }
 
@@ -193,6 +194,11 @@ namespace MCTS.DST.Resources.Materials
     {
         public Log(int quantity) : base("log", quantity, true)
         {
+            base.Recipes = new Dictionary<string, int>()
+            {
+                ["campfire"] = 2,
+                ["firepit"] = 2,
+            };
         }
 
         public static Log Instance { get; } = new Log(1);
@@ -206,7 +212,9 @@ namespace MCTS.DST.Resources.Materials
             {
                 ["torch"] = 2,
                 ["axe"] = 1,
-                ["pickaxe"] = 2
+                ["pickaxe"] = 2,
+                ["hammer"] = 3,
+                // ["trap"] = 2,
             };
         }
 
@@ -219,7 +227,10 @@ namespace MCTS.DST.Resources.Materials
         {
             base.Recipes = new Dictionary<string, int>()
             {
-                ["torch"] = 2
+                ["torch"] = 2,
+                ["hammer"] = 6,
+                ["campire"] = 3,
+                // ["trap"] = 6,
             };
         }
 
@@ -228,24 +239,14 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Berry : BasicWorldResource
     {
-        public Berry(int quantity) : base("berries", quantity, true)
-        {
-            base.Recipes = new Dictionary<string, int>()
-            {
-            };
-        }
+        public Berry(int quantity) : base("berries", quantity, true) { }
 
         public static Berry Instance { get; } = new Berry(1);
     }
 
     public sealed class Carrot : BasicWorldResource
     {
-        public Carrot(int quantity) : base("carrot", quantity, true)
-        {
-            Recipes = new Dictionary<string, int>()
-            {
-            };
-        }
+        public Carrot(int quantity) : base("carrot", quantity, true) { }
 
         public static Carrot Instance { get; } = new Carrot(1);
     }
