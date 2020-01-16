@@ -29,7 +29,7 @@ namespace MCTS.DST.Actions
                 bool isBuildable = targetBuildable.Build(worldState);
                 if (!isBuildable)
                 {
-                    Console.WriteLine("\n\n Can't build that. \n\n");
+                    // Console.WriteLine("\n\n Can't build that. \n\n");
                     return;
                 }
                 targetBuildable.PostProcessBuildable(worldState);
@@ -44,9 +44,9 @@ namespace MCTS.DST.Actions
                 var x = preWorldState.Walter.GetPosX();
                 var z = preWorldState.Walter.GetPosZ();
                 return new List<Pair<string, string>>(1)
-            {
-                new Pair<string, string>("Action(BUILD, -, " + x + ", " + z + ", " + this.Target +")", "-")
-            };
+                {
+                    new Pair<string, string>("Action(BUILD, -, " + x + ", " + z + ", " + this.Target +")", "-")
+                };
             }
 
             return new List<Pair<string, string>>(1)
