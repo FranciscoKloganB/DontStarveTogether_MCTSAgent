@@ -157,23 +157,11 @@ namespace MCTS.DST.WorldModels
                         BasicWorldResource targetMaterial = (BasicWorldResource) material;
                         PickUp.TryAddAction(this, targetMaterial);
                     }
-                    else
+                    else if (material is GatherableCompoundWorldResource)
                     {
-                        try
-                        {
-                            GatherableCompoundWorldResource gatherableMaterial = (GatherableCompoundWorldResource) material;
-                            BasicWorldResource basicMaterial = gatherableMaterial.ResourceWhenPicked;
-                            PickUp.TryAddAction(this, basicMaterial);
-                        }
-                        catch (InvalidCastException)
-                        {
-                            continue;
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("WorldModel.cs - exception: " + ex.Message);
-                            Console.WriteLine(ex.StackTrace);
-                        }
+                        GatherableCompoundWorldResource gatherableMaterial = (GatherableCompoundWorldResource) material;
+                        BasicWorldResource basicMaterial = gatherableMaterial.ResourceWhenPicked;
+                        PickUp.TryAddAction(this, basicMaterial);
                     }
                 }
             }
