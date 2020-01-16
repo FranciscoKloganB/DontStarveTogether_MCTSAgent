@@ -149,20 +149,6 @@ namespace MCTS.DST.WorldModels
                 {
                     this.AvailableActions.Add(new Eat(possessedItem));
                 }
-                else if (materialBase.ContainsKey(possessedItem))
-                {
-                    WorldResource material = materialBase[possessedItem];
-                    if (material.IsPrimitive)
-                    {
-                        PickUp.TryAddAction(this, material);
-                    }
-                    else if (material is GatherableCompoundWorldResource)
-                    {
-                        GatherableCompoundWorldResource gatherableMaterial = (GatherableCompoundWorldResource) material;
-                        BasicWorldResource basicMaterial = gatherableMaterial.ResourceWhenPicked;
-                        PickUp.TryAddAction(this, basicMaterial);
-                    }
-                }
             }
         }
 

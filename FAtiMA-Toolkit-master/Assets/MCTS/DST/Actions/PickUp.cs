@@ -23,7 +23,7 @@ namespace MCTS.DST.Actions
             this.Duration = 0.33f;
         }
 
-        public static void TryAddAction(WorldModelDST worldModel, WorldResource resource)
+        public void TryAddAction(WorldModelDST worldModel, WorldResource resource)
         {
             Dictionary<string, int> resourceRecipes = resource.Recipes;
             Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
@@ -36,6 +36,7 @@ namespace MCTS.DST.Actions
 
                 if (!buildableBase.ContainsKey(recipeName))
                 {
+                    // Console.WriteLine("    Recipe name is not in BuildableBase: " + recipeName);
                     continue;
                 }
 
@@ -48,14 +49,9 @@ namespace MCTS.DST.Actions
                     string requiredMaterialName = requiredMaterials.ElementAt(j).Key;
                     int requiredMaterialQuantity = requiredMaterials.ElementAt(j).Value;
 
-                    // Commenting this as it isn't easily debugable.
-                    if (!worldModel.Possesses(requiredMaterialName))
+                    if (!worldModel.Possesses(requiredMaterialName, requiredMaterialQuantity))
                     {
-                        nowCanDo = false;
-                        break;
-                    }
-                    else if (worldModel.PossessedItems[requiredMaterialName] < requiredMaterialQuantity)
-                    {
+                        // Console.WriteLine("    WorldModel does not possess enough of " + requiredMaterialName + ", to construct " + recipeName);
                         nowCanDo = false;
                         break;
                     }
@@ -84,17 +80,15 @@ namespace MCTS.DST.Actions
                 {
                     worldState.AddToFuel(targetMaterial.MaterialName, targetMaterial.Quantity);
                 }
-
-                // TryAddAction(worldState, targetMaterial);
+                TryAddAction(worldState, material);
             }
-            /*
             else if (material is GatherableCompoundWorldResource)
             {
                 GatherableCompoundWorldResource gatherableMaterial = (GatherableCompoundWorldResource)material;
                 BasicWorldResource basicMaterial = gatherableMaterial.ResourceWhenPicked;
-                // TryAddAction(worldState, basicMaterial);
+                worldState.AddToPossessedItems(basicMaterial.MaterialName, basicMaterial.Quantity);
+                TryAddAction(worldState, basicMaterial);
             }
-            */
 
             /*
             If the resource is compound, the agent mines / chops it, and the composing 
