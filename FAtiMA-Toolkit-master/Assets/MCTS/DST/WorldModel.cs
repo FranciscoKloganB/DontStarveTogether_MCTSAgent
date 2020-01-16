@@ -149,6 +149,33 @@ namespace MCTS.DST.WorldModels
                 {
                     this.AvailableActions.Add(new Eat(possessedItem));
                 }
+                else if (materialBase.ContainsKey(possessedItem))
+                {
+                    WorldResource material = materialBase[possessedItem];
+                    if (material.IsPrimitive)
+                    {
+                        BasicWorldResource targetMaterial = (BasicWorldResource) material;
+                        PickUp.TryAddAction(this, targetMaterial);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            GatherableCompoundWorldResource gatherableMaterial = (GatherableCompoundWorldResource) material;
+                            BasicWorldResource basicMaterial = gatherableMaterial.ResourceWhenPicked;
+                            PickUp.TryAddAction(this, basicMaterial);
+                        }
+                        catch (InvalidCastException)
+                        {
+                            continue;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("WorldModel.cs - exception: " + ex.Message);
+                            Console.WriteLine(ex.StackTrace);
+                        }
+                    }
+                }
             }
         }
 

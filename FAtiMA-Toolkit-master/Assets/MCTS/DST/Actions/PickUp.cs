@@ -23,7 +23,7 @@ namespace MCTS.DST.Actions
             this.Duration = 0.33f;
         }
 
-        public void TryAddAction(WorldModelDST worldModel, WorldResource resource)
+        public static void TryAddAction(WorldModelDST worldModel, WorldResource resource)
         {
             Dictionary<string, int> resourceRecipes = resource.Recipes;
             Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
@@ -78,7 +78,7 @@ namespace MCTS.DST.Actions
                 {
                     worldState.AddToFuel(targetMaterial.MaterialName, targetMaterial.Quantity);
                 }
-                TryAddAction(worldState, material);
+                TryAddAction(worldState, targetMaterial);
             }
             else if (material is GatherableCompoundWorldResource)
             {
