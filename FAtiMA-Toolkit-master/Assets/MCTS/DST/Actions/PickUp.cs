@@ -36,7 +36,6 @@ namespace MCTS.DST.Actions
 
                 if (!buildableBase.ContainsKey(recipeName))
                 {
-                    // Console.WriteLine("    Recipe name is not in BuildableBase: " + recipeName);
                     continue;
                 }
 
@@ -51,7 +50,6 @@ namespace MCTS.DST.Actions
 
                     if (!worldModel.Possesses(requiredMaterialName, requiredMaterialQuantity))
                     {
-                        // Console.WriteLine("    WorldModel does not possess enough of " + requiredMaterialName + ", to construct " + recipeName);
                         nowCanDo = false;
                         break;
                     }
