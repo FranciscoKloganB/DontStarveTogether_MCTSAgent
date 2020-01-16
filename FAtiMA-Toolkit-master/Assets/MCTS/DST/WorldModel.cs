@@ -300,7 +300,7 @@ namespace MCTS.DST.WorldModels
             // TODO This doesn't make sense. We are lacking PosX and PosZ and in DST you can only pick up the entire stack!
             for (int i = 0; i < this.WorldObjects.Count; i++)
             {
-                if (this.WorldObjects[i].ObjectName == prefab)
+                if (this.WorldObjects[i].ObjectName.Equals(prefab))
                 {
                     if (this.WorldObjects[i].Quantity <= quantity)
                     {
