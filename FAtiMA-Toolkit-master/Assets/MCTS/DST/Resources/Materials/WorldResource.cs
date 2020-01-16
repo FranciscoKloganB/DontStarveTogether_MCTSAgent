@@ -23,6 +23,7 @@ namespace MCTS.DST.Resources.Materials
             ["grass"] = Grass.Instance,
             ["cutgrass"] = Cutgrass.Instance,
             ["berrybush"] = BerryBush.Instance,
+            ["carrot_planted"] = PlantedCarrot.Instance,
             ["flower"] = Flower.Instance,
         };
 
@@ -164,6 +165,18 @@ namespace MCTS.DST.Resources.Materials
         }
 
         public static BerryBush Instance { get; } = new BerryBush();
+    }
+
+    public sealed class PlantedCarrot : GatherableCompoundWorldResource
+    {
+        public PlantedCarrot()
+        {
+            this.ResourceWhenPicked = Carrot.Instance;
+            this.RequiredTool = null;
+            this.RequiredToolAction = "PICK";
+        }
+
+        public static PlantedCarrot Instance { get; } = new PlantedCarrot();
     }
 
     public sealed class Flower : GatherableCompoundWorldResource
