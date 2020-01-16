@@ -86,6 +86,8 @@ namespace MCTS.DST.Actions
         private void MaterialBehavior(WorldModelDST worldState)
         {
             WorldResource material = this.MaterialBase[this.Target];
+            material.GetBonuses(worldState);
+
             if (material.IsPrimitive)
             { // PrimitiveMaterial behaviour.
                 BasicWorldResource targetMaterial = (BasicWorldResource)material;
@@ -104,8 +106,7 @@ namespace MCTS.DST.Actions
                 {
                     Food food = (Food)basicMaterial;
                     worldState.AddToPossessedItems(food.FoodName, 1);
-                    // ActionDST eatAction = new Eat(food.FoodName);
-                    // worldState.AddAction(eatAction);
+                    worldState.AddAction(new Eat(food.FoodName));
                 }
                 else
                 {
