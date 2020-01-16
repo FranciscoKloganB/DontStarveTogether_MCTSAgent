@@ -29,7 +29,7 @@ namespace MCTS.DST.Actions
                 bool isBuildable = targetBuildable.Build(worldState);
                 if (!isBuildable)
                 {
-                    Console.WriteLine("\n\n Can't build that. \n\n");
+                    Console.WriteLine("Can't build: " + this.Target);
                     return;
                 }
                 targetBuildable.PostProcessBuildable(worldState);
