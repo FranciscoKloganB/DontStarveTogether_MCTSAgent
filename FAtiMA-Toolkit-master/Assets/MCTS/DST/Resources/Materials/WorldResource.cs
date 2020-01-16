@@ -1,4 +1,5 @@
 ﻿using MCTS.DST.Resources.Edibles;
+using MCTS.DST.WorldModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace MCTS.DST.Resources.Materials
             ["grass"] = Grass.Instance,
             ["cutgrass"] = Cutgrass.Instance,
             ["berrybush"] = BerryBush.Instance,
+            ["flower"] = Flower.Instance,
         };
 
         private MaterialDict() { }
@@ -41,6 +43,8 @@ namespace MCTS.DST.Resources.Materials
             this.IsPickable = isPickable;
             this.Recipes = new Dictionary<string, int>();
         }
+
+        public virtual void GetBonuses(WorldModelDST worldModel) { }
     }
 
     public class BasicWorldResource : WorldResource
@@ -160,6 +164,23 @@ namespace MCTS.DST.Resources.Materials
         }
 
         public static BerryBush Instance { get; } = new BerryBush();
+    }
+
+    public sealed class Flower : GatherableCompoundWorldResource
+    {
+        public Flower()
+        {
+            this.ResourceWhenPicked = Petals.Instance;
+            this.RequiredTool = null;
+            this.RequiredToolAction = "PICK";
+        }
+
+        public void GetBonuses(WorldModelDST worldModel)
+        {
+            worldModel.Walter.UpdateSanity(5.0f);
+        }
+
+        public static Flower Instance { get; } = new Flower();
     }
 
     public sealed class Rock : BasicWorldResource

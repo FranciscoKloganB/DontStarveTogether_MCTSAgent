@@ -266,6 +266,10 @@ namespace MCTS.DST {
             {
                 return "seeds";
             }
+            else if (entity == "flower")
+            {
+                return "flower";
+            }
             else if (entity == "berries_juicy")
             {
                 return "berries";
