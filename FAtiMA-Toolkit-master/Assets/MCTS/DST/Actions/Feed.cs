@@ -11,12 +11,10 @@ namespace MCTS.DST.Actions
 
     public class Feed : ActionDST
     {
-        public static readonly string actionName = "Feed_";
-
         private static readonly float duration = 0.05f;
-        
-        private readonly HashSet<string> diet;
+        private static readonly string actionName = "Feed_";
         private readonly string target;
+        private readonly HashSet<string> diet;
 
         public Feed(HashSet<string> diet, string target) : base(string.Concat(actionName, target))
         {

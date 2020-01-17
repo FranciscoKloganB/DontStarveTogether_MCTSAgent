@@ -11,12 +11,12 @@ namespace MCTS.DST.Actions
     public class HoldPosition : ActionDST
     {        
         private static readonly float duration = 0.33f;
-        private static readonly string ActionName = "HoldPosition_";
-        private readonly string Target;
+        private static readonly string actionName = "HoldPosition_";
+        private readonly string target;
 
-        public HoldPosition(string target) : base(ActionName + target)
+        public HoldPosition(string target) : base(actionName + target)
         {
-            this.Target = target;
+            this.target = target;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
@@ -30,7 +30,7 @@ namespace MCTS.DST.Actions
         {
             return new List<Pair<string, string>>(1)
             {
-                new Pair<string, string>("Action(WALKTO, -, -, -, -)", preWorldState.GetInventoryGUID(this.Target).ToString())
+                new Pair<string, string>("Action(WALKTO, -, -, -, -)", preWorldState.GetInventoryGUID(this.target).ToString())
             };
         }
 

@@ -10,6 +10,10 @@ namespace MCTS.DST.Actions
 
     public class Fight : ActionDST
     {
+        private static readonly float duration = 0.33f;
+        private static readonly string actionName = "Fight_";
+        private readonly string target;
+
         public Fight(string name) : base(name)
         {
             // TODO
