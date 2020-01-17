@@ -13,10 +13,12 @@ namespace MCTS.DST.Actions
     {
         private static readonly float duration = 0.05f;
         public static readonly string actionName = "Feed_";
+        private readonly string DietName;
         private readonly string Target;
 
-        public Feed(string target) : base(string.Concat(actionName, target))
+        public Feed(string dietName, string target) : base(string.Concat(actionName, target))
         {
+            this.DietName = dietName;
             this.Target = target;
         }
 
