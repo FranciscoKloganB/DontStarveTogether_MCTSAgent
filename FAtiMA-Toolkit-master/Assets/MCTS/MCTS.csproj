@@ -39,6 +39,7 @@
     <Compile Include="DST\Actions\PickUp.cs" />
     <Compile Include="DST\Actions\Cook.cs" />
     <Compile Include="DST\Actions\Fight.cs" />
+    <Compile Include="DST\Actions\Feed.cs" />
     <Compile Include="DST\Actions\AddFuel.cs" />
     <Compile Include="DST\Actions\NextAction.cs" />
     <Compile Include="DST\Data\FireData.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="DST\Resources\Edibles\Food.cs" />
     <Compile Include="DST\Resources\Buildables\Buildable.cs" />
     <Compile Include="DST\Resources\Materials\WorldResource.cs" />
+    <Compile Include="DST\Resources\NPCs\NPC.cs" />
     <Compile Include="DST\WorldModel.cs" />
     <Compile Include="MCTSAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

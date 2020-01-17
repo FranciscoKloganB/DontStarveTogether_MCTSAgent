@@ -11,15 +11,17 @@ namespace MCTS.DST.Actions
 
     public class Feed : ActionDST
     {
-        private static readonly float duration = 0.05f;
         public static readonly string actionName = "Feed_";
-        private readonly string DietName;
-        private readonly string Target;
 
-        public Feed(string dietName, string target) : base(string.Concat(actionName, target))
+        private static readonly float duration = 0.05f;
+        
+        private readonly HashSet<string> diet;
+        private readonly string target;
+
+        public Feed(HashSet<string> diet, string target) : base(string.Concat(actionName, target))
         {
-            this.DietName = dietName;
-            this.Target = target;
+            this.diet = diet;
+            this.target = target;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
@@ -30,8 +32,8 @@ namespace MCTS.DST.Actions
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
             // TODO: Replace this invobjectGUID "this.Target" with string<name> of the food we want to feed to target
-            string targetGUID = preWorldState.GetEntitiesGUID(this.Target).ToString();
-            string invobjectGUID = preWorldState.GetEntitiesGUID(this.Target).ToString(); 
+            string targetGUID = preWorldState.GetEntitiesGUID(this.target).ToString();
+            string invobjectGUID = preWorldState.GetEntitiesGUID(this.target).ToString(); 
             return new List<Pair<string, string>>(1)
             {
                 new Pair<string, string>("Action(FEED, " + invobjectGUID + ", -, -, " + targetGUID +")", "-")
