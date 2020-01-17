@@ -15,14 +15,13 @@ namespace MCTS.DST.Actions
     {
         private Dictionary<string, WorldResource> MaterialBase { get; } = MaterialDict.Instance.materialBase;
         private Dictionary<string, Food> FoodBase { get; } = FoodDict.Instance.foodBase;
-        public string Target;
-        public float Duration;
+        private static readonly float duration = 0.33f;
         private static readonly string ActionName = "Pickup_";
+        private readonly string Target;
 
         public PickUp(string target) : base(ActionName + target)
         {
             this.Target = target;
-            this.Duration = 0.33f;
         }
 
         public static void TryAddAction(WorldModelDST worldModel, WorldResource resource)
@@ -66,7 +65,7 @@ namespace MCTS.DST.Actions
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            worldState.Cycle += this.Duration;
+            worldState.Cycle += duration;
             // worldState.UpdateSatiation(-1.0f);
             // worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
             worldState.RemoveFromWorld(this.Target, 1);

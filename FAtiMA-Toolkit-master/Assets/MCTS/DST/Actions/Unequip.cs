@@ -10,19 +10,18 @@ namespace MCTS.DST.Actions
 
     public class Unequip : ActionDST
     {
-        private string Target;
-        private float Duration;
+        private static readonly float duration = 0.0f;
         private static readonly string ActionName = "Unequip_";
+        private readonly string Target;
 
         public Unequip(string target) : base(ActionName + target)
         {
             this.Target = target;
-            this.Duration = 0.0f;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            worldState.Cycle += this.Duration;
+            worldState.Cycle += duration;
             worldState.RemoveFromEquipped(this.Target);
             worldState.AddToPossessedItems(this.Target, 1);
             ActionDST equipAction = new Equip(this.Target);
