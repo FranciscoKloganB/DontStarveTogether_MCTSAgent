@@ -188,7 +188,7 @@ namespace MCTS.DST.Resources.Materials
             this.RequiredToolAction = "PICK";
         }
 
-        public void GetBonuses(WorldModelDST worldModel)
+        public override void GetBonuses(WorldModelDST worldModel)
         {
             worldModel.Walter.UpdateSanity(5.0f);
         }
