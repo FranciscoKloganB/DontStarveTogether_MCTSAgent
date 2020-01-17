@@ -3,6 +3,7 @@ using MCTS.DST.WorldModels;
 using System.Collections.Generic;
 using MCTS.DST.Actions;
 using MCTS.DST.Resources.Materials;
+using MCTS.DST.Interfaces;
 
 namespace MCTS.DST.Resources.NPCs
 {
@@ -64,7 +65,7 @@ namespace MCTS.DST.Resources.NPCs
         }
     }
 
-    public sealed class Spider : NPC
+    public sealed class Spider : Enemy
     {
         private Spider(string name) : base(name)
         {
@@ -79,7 +80,7 @@ namespace MCTS.DST.Resources.NPCs
         public static NPC Instance { get; } = new Spider("spider");
     }
 
-    public sealed class SpiderWarrior : NPC
+    public sealed class SpiderWarrior : Enemy
     {
         private SpiderWarrior(string name) : base(name)
         {
@@ -94,7 +95,7 @@ namespace MCTS.DST.Resources.NPCs
         public static NPC Instance { get; } = new SpiderWarrior("spider_warrior");
     }
 
-    public sealed class Hound : NPC
+    public sealed class Hound : Enemy
     {
         private Hound(string name) : base(name)
         {
@@ -109,7 +110,7 @@ namespace MCTS.DST.Resources.NPCs
         public static NPC Instance { get; } = new Hound("hound");
     }
 
-    public sealed class Pig : NPC
+    public sealed class Pig : Neutral, IDiet
     {
         private Pig(string name) : base(name)
         {
@@ -123,9 +124,15 @@ namespace MCTS.DST.Resources.NPCs
 
         public static NPC Instance { get; } = new Pig("pig");
 
+        private override HashSet<string> GetDiet()
+        {
+            return new HashSet<string>() { "meat", "cooked_meat", "monster_meat", "cooked_monster_meat", "morsel", "cooked_morsel"};
+        }
+
+        
         public override ActionDST GetAction(WorldModelDST worldModel)
         {
-            return new Feed(base.NPCName);
+            return new Feed(this.GetDiet(), base.NPCName);
         }
     }
 }
