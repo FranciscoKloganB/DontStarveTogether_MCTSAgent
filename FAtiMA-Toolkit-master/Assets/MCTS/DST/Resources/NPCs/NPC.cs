@@ -123,16 +123,15 @@ namespace MCTS.DST.Resources.NPCs
         }
 
         public static NPC Instance { get; } = new Pig("pig");
-
-        private override HashSet<string> GetDiet()
-        {
-            return new HashSet<string>() { "meat", "cooked_meat", "monster_meat", "cooked_monster_meat", "morsel", "cooked_morsel"};
-        }
-
         
         public override ActionDST GetAction(WorldModelDST worldModel)
         {
             return new Feed(this.GetDiet(), base.NPCName);
+        }
+
+        public HashSet<string> GetDiet()
+        {
+            return new HashSet<string>() { "meat", "cooked_meat", "monster_meat", "cooked_monster_meat", "morsel", "cooked_morsel" };
         }
     }
 }
