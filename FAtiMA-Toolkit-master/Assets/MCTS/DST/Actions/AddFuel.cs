@@ -10,15 +10,14 @@ namespace MCTS.DST.Actions
 
     public class AddFuel : ActionDST
     {
-        private string Fuel;
-        private string Target;
-        private float Duration;
-        private static readonly string ActionName = "AddFuel_";
+        private static readonly float duration = 0.33f;
+        private static readonly string actionName = "AddFuel_";
+        private readonly string target;
+        private string fuel;
 
-        public AddFuel(string target) : base(ActionName + target)
+        public AddFuel(string target) : base(actionName + target)
         {
-            this.Target = target;
-            this.Duration = 0.33f;
+            this.target = target;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
@@ -28,18 +27,18 @@ namespace MCTS.DST.Actions
                 return; // TODO?
             }
 
-            this.Fuel = worldState.Fuel.ElementAt(0).Key;
-            worldState.Cycle += this.Duration;
-            worldState.RemoveFromPossessedItems(this.Fuel, 1);
-            worldState.RemoveFromFuel(this.Fuel);
-            worldState.Walter.Position = worldState.GetNextPosition(this.Target, "fire");
+            this.fuel = worldState.Fuel.ElementAt(0).Key;
+            worldState.Cycle += duration;
+            worldState.RemoveFromPossessedItems(this.fuel, 1);
+            worldState.RemoveFromFuel(this.fuel);
+            worldState.Walter.Position = worldState.GetNextPosition(this.target, "fire");
             // TODO - Remove Construct actions.
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            string fuel = preWorldState.GetInventoryGUID(this.Fuel).ToString();
-            string fire = preWorldState.GetInventoryGUID(this.Target).ToString();
+            string fuel = preWorldState.GetInventoryGUID(this.fuel).ToString();
+            string fire = preWorldState.GetInventoryGUID(this.target).ToString();
             
             return new List<Pair<string, string>>(1)
             {

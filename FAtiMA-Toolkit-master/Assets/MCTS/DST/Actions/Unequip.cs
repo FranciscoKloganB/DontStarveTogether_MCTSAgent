@@ -10,22 +10,21 @@ namespace MCTS.DST.Actions
 
     public class Unequip : ActionDST
     {
-        private string Target;
-        private float Duration;
-        private static readonly string ActionName = "Unequip_";
+        private static readonly float duration = 0.0f;
+        private static readonly string actionName = "Unequip_";
+        private readonly string target;
 
-        public Unequip(string target) : base(ActionName + target)
+        public Unequip(string target) : base(actionName + target)
         {
-            this.Target = target;
-            this.Duration = 0.0f;
+            this.target = target;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            worldState.Cycle += this.Duration;
-            worldState.RemoveFromEquipped(this.Target);
-            worldState.AddToPossessedItems(this.Target, 1);
-            ActionDST equipAction = new Equip(this.Target);
+            worldState.Cycle += duration;
+            worldState.RemoveFromEquipped(this.target);
+            worldState.AddToPossessedItems(this.target, 1);
+            ActionDST equipAction = new Equip(this.target);
             worldState.AddAction(equipAction);
         }
 
@@ -33,7 +32,7 @@ namespace MCTS.DST.Actions
         {
             return new List<Pair<string, string>>(1)
             {
-                new Pair<string, string>("Action(UNEQUIP, -, -, -, -)", preWorldState.GetInventoryGUID(this.Target).ToString())
+                new Pair<string, string>("Action(UNEQUIP, -, -, -, -)", preWorldState.GetInventoryGUID(this.target).ToString())
             };
         }
 

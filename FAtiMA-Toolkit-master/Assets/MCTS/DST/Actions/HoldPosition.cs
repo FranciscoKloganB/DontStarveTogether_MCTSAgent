@@ -9,20 +9,19 @@ namespace MCTS.DST.Actions
 {
 
     public class HoldPosition : ActionDST
-    {
-        private string Target;
-        private float Duration;
-        private static readonly string ActionName = "HoldPosition_";
+    {        
+        private static readonly float duration = 0.33f;
+        private static readonly string actionName = "HoldPosition_";
+        private readonly string target;
 
-        public HoldPosition(string target) : base(ActionName + target)
+        public HoldPosition(string target) : base(actionName + target)
         {
-            this.Target = target;
-            this.Duration = 0.33f;
+            this.target = target;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            worldState.Cycle += this.Duration;
+            worldState.Cycle += duration;
             worldState.UpdateSatiation(-1);
             // TODO - Decrease Sanity based on lighting conditions: Day / Nigth with light source / Night with no ligth source ...
         }
@@ -31,7 +30,7 @@ namespace MCTS.DST.Actions
         {
             return new List<Pair<string, string>>(1)
             {
-                new Pair<string, string>("Action(WALKTO, -, -, -, -)", preWorldState.GetInventoryGUID(this.Target).ToString())
+                new Pair<string, string>("Action(WALKTO, -, -, -, -)", preWorldState.GetInventoryGUID(this.target).ToString())
             };
         }
 

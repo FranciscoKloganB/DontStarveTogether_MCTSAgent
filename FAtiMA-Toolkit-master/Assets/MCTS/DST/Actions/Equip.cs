@@ -10,26 +10,25 @@ namespace MCTS.DST.Actions
 
     public class Equip : ActionDST
     {
-        private string Target;
-        private float Duration;
-        private static readonly string ActionName = "Equip_";
+        private static readonly float duration = 0.0f;
+        private static readonly string actionName = "Equip_";
+        private readonly string target;
 
-        public Equip(string target) : base(ActionName + target)
+        public Equip(string target) : base(actionName + target)
         {
-            this.Target = target;
-            this.Duration = 0.0f;
+            this.target = target;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            worldState.Cycle += this.Duration;
-            worldState.RemoveFromPossessedItems(this.Target, 1);
-            worldState.AddToEquipped(this.Target);
-            ActionDST unequipAction = new Unequip(this.Target);
+            worldState.Cycle += duration;
+            worldState.RemoveFromPossessedItems(this.target, 1);
+            worldState.AddToEquipped(this.target);
+            ActionDST unequipAction = new Unequip(this.target);
             worldState.AddAction(unequipAction);
-            if (!worldState.Possesses(this.Target))
+            if (!worldState.Possesses(this.target))
             {
-                worldState.RemoveAction(ActionName + this.Target);
+                worldState.RemoveAction(actionName + this.target);
             }
         }
 
@@ -37,7 +36,7 @@ namespace MCTS.DST.Actions
         {
             return new List<Pair<string, string>>(1)
             {
-                new Pair<string, string>("Action(EQUIP, " + preWorldState.GetInventoryGUID(this.Target).ToString() + ", -, -, -)", "-")
+                new Pair<string, string>("Action(EQUIP, " + preWorldState.GetInventoryGUID(this.target).ToString() + ", -, -, -)", "-")
             };
         }
 

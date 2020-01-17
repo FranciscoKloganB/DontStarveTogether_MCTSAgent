@@ -10,16 +10,14 @@ namespace MCTS.DST.Actions
 
     public class Wander : ActionDST
     {
-        public float Duration;
+        private static readonly float duration = 0.33f;
+        private static readonly string actionName = "Wander";
 
-        public Wander() : base("Wander")
-        {
-            this.Duration = 0.33f;
-        }
+        public Wander() : base("Wander") { }
 
         public override void ApplyActionEffects(WorldModelDST worldModel)
         {
-            worldModel.Cycle += this.Duration;
+            worldModel.Cycle += duration;
             worldModel.UpdateSatiation(-1.0f);
         }
 
