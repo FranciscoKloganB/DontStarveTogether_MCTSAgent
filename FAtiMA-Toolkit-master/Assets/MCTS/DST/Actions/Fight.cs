@@ -12,6 +12,7 @@ namespace MCTS.DST.Actions
     {
         public Fight(string name) : base(name)
         {
+            // TODO
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)

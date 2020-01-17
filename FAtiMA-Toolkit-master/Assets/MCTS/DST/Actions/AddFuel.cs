@@ -10,15 +10,14 @@ namespace MCTS.DST.Actions
 
     public class AddFuel : ActionDST
     {
+        private static readonly float duration = 0.33f;
+        private static readonly string actionName = "AddFuel_";
+        private readonly string Target;
         private string Fuel;
-        private string Target;
-        private float Duration;
-        private static readonly string ActionName = "AddFuel_";
 
-        public AddFuel(string target) : base(ActionName + target)
+        public AddFuel(string target) : base(actionName + target)
         {
             this.Target = target;
-            this.Duration = 0.33f;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
@@ -29,7 +28,7 @@ namespace MCTS.DST.Actions
             }
 
             this.Fuel = worldState.Fuel.ElementAt(0).Key;
-            worldState.Cycle += this.Duration;
+            worldState.Cycle += duration;
             worldState.RemoveFromPossessedItems(this.Fuel, 1);
             worldState.RemoveFromFuel(this.Fuel);
             worldState.Walter.Position = worldState.GetNextPosition(this.Target, "fire");
