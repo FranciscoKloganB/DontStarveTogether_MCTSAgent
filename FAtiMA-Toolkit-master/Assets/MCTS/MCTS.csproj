@@ -45,6 +45,7 @@
     <Compile Include="DST\Data\WorldObject.cs" />
     <Compile Include="DST\Character.cs" />
     <Compile Include="DST\Actions\Eat.cs" />
+    <Compile Include="DST\Interfaces\IDiet.cs" />
     <Compile Include="DST\MCTS.cs" />
     <Compile Include="DST\MCTSNode.cs" />
     <Compile Include="DST\ObjectProperties.cs" />
@@ -110,9 +111,7 @@
       <HintPath>..\..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DST\Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
