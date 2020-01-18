@@ -70,24 +70,12 @@ namespace MCTS.DST.Resources.Materials
 
     public class CompoundWorldResource : WorldResource
     {
-        // Items gathered by picking up composed materials, such as boulders or trees.
-        public List<BasicWorldResource> ComposingItems { get; private set; } = new List<BasicWorldResource>();
-
-        // Items gathered by picking up by materials, that can burn.
-        public List<BasicWorldResource> FuelItems { get; private set; } = new List<BasicWorldResource>();
-
         public Tool RequiredTool { get; protected set; } = null;
         public string RequiredToolAction { get; protected set; } = "UNDEFINED REQUIRED TOOL ACTION";
 
         public CompoundWorldResource() : base(false, false, false) { }
 
         public CompoundWorldResource(bool isFuel) : base(false, isFuel, false) { }
-
-        public CompoundWorldResource(List<BasicWorldResource> composingItems, List<BasicWorldResource> fuelItems) : base(false, false, false)
-        {
-            this.ComposingItems = composingItems;
-            this.FuelItems = fuelItems;
-        }
     }
 
     public class GatherableCompoundWorldResource : CompoundWorldResource
@@ -95,18 +83,12 @@ namespace MCTS.DST.Resources.Materials
         public Object ResourceWhenPicked { get; protected set; }
 
         public GatherableCompoundWorldResource() : base() {  }
-
-        public GatherableCompoundWorldResource(bool isFuel) : base(isFuel) { }
-
-        public GatherableCompoundWorldResource(List<BasicWorldResource> composingItems, List<BasicWorldResource> fuelItems) : base(composingItems, fuelItems) { }
     }
 
     public sealed class Boulder : CompoundWorldResource
     {
         public Boulder()
         {
-            this.ComposingItems.Add(new Rock(2));
-            this.ComposingItems.Add(new Flint(1));
             this.RequiredTool = Pickaxe.Instance;
             this.RequiredToolAction = "MINE";
         }
@@ -118,8 +100,6 @@ namespace MCTS.DST.Resources.Materials
     {
         public Tree() : base(true)
         {
-            this.ComposingItems.Add(new Log(2));
-            this.FuelItems.Add(new Log(2));
             this.RequiredTool = Axe.Instance;
             this.RequiredToolAction = "CHOP";
         }
@@ -129,11 +109,9 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Sapling : GatherableCompoundWorldResource
     {
-        public Sapling()
+        public Sapling() : base()
         {
             this.ResourceWhenPicked = Twig.Instance;
-            this.ComposingItems.Add(new Twig(1));
-            this.FuelItems.Add(new Twig(1));
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
         }
@@ -143,11 +121,9 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Grass : GatherableCompoundWorldResource
     {
-        public Grass()
+        public Grass() : base()
         {
             this.ResourceWhenPicked = Cutgrass.Instance;
-            this.ComposingItems.Add(new Cutgrass(2));
-            this.FuelItems.Add(new Cutgrass(2));
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
         }
@@ -157,7 +133,7 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class BerryBush : GatherableCompoundWorldResource
     {
-        public BerryBush()
+        public BerryBush() : base()
         {
             this.ResourceWhenPicked = Berries.Instance;
             this.RequiredTool = null;
@@ -169,7 +145,7 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class PlantedCarrot : GatherableCompoundWorldResource
     {
-        public PlantedCarrot()
+        public PlantedCarrot() : base()
         {
             this.ResourceWhenPicked = Carrot.Instance;
             this.RequiredTool = null;
@@ -181,7 +157,7 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Flower : GatherableCompoundWorldResource
     {
-        public Flower()
+        public Flower() : base()
         {
             this.ResourceWhenPicked = Petals.Instance;
             this.RequiredTool = null;
