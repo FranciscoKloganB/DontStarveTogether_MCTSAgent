@@ -164,18 +164,23 @@ namespace MCTS.DST.WorldModels
             if (material.IsPickable)
             { // Material can be picked up by hand, no need to check if has tool.
                 this.AvailableActions.Add(new PickUp(objectName));
-                return;
             }
-            // Material needs tools to be gathered. / can only use PICK action. Gets the required tool.
-            CompoundWorldResource compoundMaterial = (CompoundWorldResource)material;
-            Tool tool = compoundMaterial.RequiredTool;
-            if (tool is null)
-            { // If tool can be hands, there is no need to check if tool is in inventory.
+            else if (material is GatherableCompoundWorldResource)
+            {
                 this.AvailableActions.Add(new PickUp(objectName));
             }
-            else if (this.PossessedItems.ContainsKey(tool.MaterialName))
-            { // The necessary tool is already equiped.
-                this.AvailableActions.Add(new PickUp(objectName));
+            else if (material is CompoundWorldResource compoundMaterial)
+            { // Material needs tools to be gathered / can only use PICK action. Gets the required tool.
+                Tool tool = compoundMaterial.RequiredTool;
+                if (tool is null)
+                { // If tool can be hands, there is no need to check if tool is in inventory.
+                    this.AvailableActions.Add(new PickUp(objectName));
+                }
+                else if (this.Possesses(tool.MaterialName))
+                { // The necessary tool is already equiped.
+                    this.AvailableActions.Add(new PickUp(objectName));
+                }
+                // If the material needs a tool that is not in the inventory, no action can be done.
             }
         }
 
