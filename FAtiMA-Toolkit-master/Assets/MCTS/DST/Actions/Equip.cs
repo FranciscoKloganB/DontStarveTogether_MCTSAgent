@@ -22,6 +22,7 @@ namespace MCTS.DST.Actions
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
             worldState.Cycle += duration;
+            // TODO - It works like this, but it would also make sense without this.
             worldState.RemoveFromPossessedItems(this.target, 1);
             worldState.AddToEquipped(this.target);
             ActionDST unequipAction = new Unequip(this.target);

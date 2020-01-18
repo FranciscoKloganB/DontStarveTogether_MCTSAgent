@@ -21,7 +21,7 @@ namespace MCTS.DST.Actions
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            worldState.Cycle += duration;
+            worldState.RemoveAction(actionName + this.target);
             worldState.RemoveFromEquipped(this.target);
             worldState.AddToPossessedItems(this.target, 1);
             ActionDST equipAction = new Equip(this.target);
@@ -32,7 +32,7 @@ namespace MCTS.DST.Actions
         {
             return new List<Pair<string, string>>(1)
             {
-                new Pair<string, string>("Action(UNEQUIP, -, -, -, -)", preWorldState.GetInventoryGUID(this.target).ToString())
+                new Pair<string, string>("Action(UNEQUIP, " + preWorldState.GetEquippedGUID(this.target).ToString() + ", -, -, -)", "-")
             };
         }
 
