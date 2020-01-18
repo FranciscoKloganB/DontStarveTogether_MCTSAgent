@@ -32,6 +32,15 @@ namespace MCTS.DST.Actions
                     worldState.AddToPossessedItems(targetBuildable.BuildableName, 1);
                     targetBuildable.PostProcessBuildable(worldState);
                     targetBuildable.TryRemoveAction(worldState);
+
+                    if (worldState.IsEquipped(targetBuildable.BuildableName))
+                    { // Item constructed went to one of the equipped slots.
+                        worldState.AddAction(new Unequip(buildableName));
+                    }
+                    else
+                    { // The item is in the inventory, but not equipped.
+                        worldState.AddAction(new Equip(buildableName));
+                    }
                 }
             }
         }
