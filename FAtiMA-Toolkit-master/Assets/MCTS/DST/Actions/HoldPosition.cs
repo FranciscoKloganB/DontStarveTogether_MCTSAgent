@@ -22,8 +22,6 @@ namespace MCTS.DST.Actions
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
             worldState.Cycle += duration;
-            worldState.UpdateSatiation(-1);
-            // TODO - Decrease Sanity based on lighting conditions: Day / Nigth with light source / Night with no ligth source ...
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)

@@ -79,8 +79,6 @@ namespace MCTS.DST.Actions
             {
                 FoodBehavior(worldState);
             }
-
-            // TODO - Add new PickUp Actions if picked item is tool.
         }
 
         private void MaterialBehavior(WorldModelDST worldState)
