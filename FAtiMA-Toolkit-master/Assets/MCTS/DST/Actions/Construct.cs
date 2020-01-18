@@ -20,26 +20,26 @@ namespace MCTS.DST.Actions
             this.target = target;
         }
 
-        public override void ApplyActionEffects(WorldModelDST worldState)
+        public override void ApplyActionEffects(WorldModelDST worldModel)
         {
             if (BuildablesDict.Instance.buildableBase.ContainsKey(this.target))
             {
-                worldState.Cycle += duration;
+                worldModel.Cycle += duration;
                 Buildable targetBuildable = BuildablesDict.Instance.buildableBase[this.target];
-                if (targetBuildable.Build(worldState))
+                if (targetBuildable.Build(worldModel))
                 {
                     string buildableName = targetBuildable.BuildableName;
-                    worldState.AddToPossessedItems(targetBuildable.BuildableName, 1);
-                    targetBuildable.PostProcessBuildable(worldState);
-                    targetBuildable.TryRemoveAction(worldState);
+                    worldModel.AddToPossessedItems(targetBuildable.BuildableName, 1);
+                    targetBuildable.PostProcessBuildable(worldModel);
+                    targetBuildable.TryRemoveAction(worldModel);
 
-                    if (worldState.IsEquipped(targetBuildable.BuildableName))
+                    if (worldModel.IsEquipped(targetBuildable.BuildableName))
                     { // Item constructed went to one of the equipped slots.
-                        worldState.AddAction(new Unequip(buildableName));
+                        worldModel.AddAction(new Unequip(buildableName));
                     }
                     else
                     { // The item is in the inventory, but not equipped.
-                        worldState.AddAction(new Equip(buildableName));
+                        worldModel.AddAction(new Equip(buildableName));
                     }
                 }
             }
