@@ -76,8 +76,8 @@ namespace MCTS.DST.Resources.Materials
         // Items gathered by picking up by materials, that can burn.
         public List<BasicWorldResource> FuelItems { get; private set; } = new List<BasicWorldResource>();
 
-        public Tool RequiredTool { get; protected set; }
-        public string RequiredToolAction { get; protected set; }
+        public Tool RequiredTool { get; protected set; } = null;
+        public string RequiredToolAction { get; protected set; } = "UNDEFINED REQUIRED TOOL ACTION";
 
         public CompoundWorldResource() : base(false, false, false) { }
 
