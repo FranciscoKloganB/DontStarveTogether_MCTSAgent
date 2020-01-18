@@ -13,15 +13,16 @@ namespace MCTS.DST.Actions
 
     public class PickUp : ActionDST
     {
-        private Dictionary<string, WorldResource> MaterialBase { get; } = MaterialDict.Instance.materialBase;
-        private Dictionary<string, Food> FoodBase { get; } = FoodDict.Instance.foodBase;
-        private static readonly float duration = 0.33f;
-        private static readonly string ActionName = "Pickup_";
-        private readonly string Target;
 
-        public PickUp(string target) : base(ActionName + target)
+        private static readonly float duration = 0.33f;
+        private static readonly string action = "Pickup_";
+        private readonly string target;
+        private Dictionary<string, Food> foodBase { get; } = FoodDict.Instance.foodBase;
+        private Dictionary<string, WorldResource> materialBase { get; } = MaterialDict.Instance.materialBase;
+
+        public PickUp(string target) : base(action + target)
         {
-            this.Target = target;
+            this.target = target;
         }
 
         public static void TryAddAction(WorldModelDST worldModel, WorldResource resource)
@@ -68,13 +69,13 @@ namespace MCTS.DST.Actions
             worldState.Cycle += duration;
             // worldState.UpdateSatiation(-1.0f);
             // worldState.Walter.Position = worldState.GetNextPosition(this.Target, "world");
-            worldState.RemoveFromWorld(this.Target, 1);
+            worldState.RemoveFromWorld(this.target, 1);
             
-            if (this.MaterialBase.ContainsKey(this.Target))
+            if (this.materialBase.ContainsKey(this.target))
             {
                 MaterialBehavior(worldState);
             }
-            else if (this.FoodBase.ContainsKey(this.Target))
+            else if (this.foodBase.ContainsKey(this.target))
             {
                 FoodBehavior(worldState);
             }
@@ -84,7 +85,7 @@ namespace MCTS.DST.Actions
 
         private void MaterialBehavior(WorldModelDST worldState)
         {
-            WorldResource material = this.MaterialBase[this.Target];
+            WorldResource material = this.materialBase[this.target];
             material.GetBonuses(worldState);
 
             if (material is BasicWorldResource basicMaterial)
@@ -121,7 +122,7 @@ namespace MCTS.DST.Actions
 
         private void FoodBehavior(WorldModelDST worldState)
         {
-            Food food = this.FoodBase[this.Target];
+            Food food = this.foodBase[this.target];
             worldState.AddToPossessedItems(food.FoodName, 1);
             ActionDST eatAction = new Eat(food.FoodName);
             worldState.AddAction(eatAction);
@@ -129,29 +130,29 @@ namespace MCTS.DST.Actions
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            if (this.FoodBase.ContainsKey(this.Target))
+            if (this.foodBase.ContainsKey(this.target))
             {
                 return new List<Pair<string, string>>(1)
                 {
-                    new Pair<string, string>("Action(PICKUP, -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
+                    new Pair<string, string>("Action(PICKUP, -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
                 };
             }
-            else if (this.MaterialBase.ContainsKey(this.Target))
+            else if (this.materialBase.ContainsKey(this.target))
             {
-                WorldResource material = this.MaterialBase[this.Target];
+                WorldResource material = this.materialBase[this.target];
 
                 if (material.IsPickable)
                 { // Material can be picked up by hand, using the PICKUP action.
                     return new List<Pair<string, string>>(1)
                     {
-                        new Pair<string, string>("Action(PICKUP, -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
+                        new Pair<string, string>("Action(PICKUP, -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
                     };
                 }
                 else if (material is GatherableCompoundWorldResource)
                 {
                     return new List<Pair<string, string>>(1)
                     {
-                        new Pair<string, string>("Action(PICK, -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
+                        new Pair<string, string>("Action(PICK, -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
                     };
                 }
                 else if (material is CompoundWorldResource compoundMaterial)
@@ -164,7 +165,7 @@ namespace MCTS.DST.Actions
                     { // If tool can be hands, but the action needs to be PICK.
                         return new List<Pair<string, string>>(1)
                         {
-                            new Pair<string, string>("Action(PICK, -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
+                            new Pair<string, string>("Action(PICK, -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
                         };
                     }
 
@@ -175,14 +176,14 @@ namespace MCTS.DST.Actions
                     { // If the necessary tool is already equiped, harvests.
                         return new List<Pair<string, string>>(1)
                         {
-                            new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
+                            new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
                         };
                     }
 
                     return new List<Pair<string, string>>(2)
                     { // Constructs the compound action of equipping the tool and harvesting.
                         new Pair<string, string>("Action(EQUIP, " + preWorldState.GetInventoryGUID(toolName).ToString() + ", -, -, -)", "-"),
-                        new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.Target).ToString())
+                        new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
                     };
                 }
             }

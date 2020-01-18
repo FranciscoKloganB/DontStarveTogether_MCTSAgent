@@ -8,21 +8,21 @@ namespace MCTS.DST.Actions
 
     public class Eat : ActionDST
     {
-        private Dictionary<string, Food> FoodBase { get; } = FoodDict.Instance.foodBase;
         private static readonly float duration = 0.05f;
         private static readonly string actionName = "Eat_";
-        private readonly string Target;
+        private readonly string target;
+        private Dictionary<string, Food> foodBase { get; } = FoodDict.Instance.foodBase;
 
         public Eat(string target) : base(string.Concat(actionName, target))
         {
-            this.Target = target;
+            this.target = target;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldModel)
         {
-            if (FoodBase.ContainsKey(this.Target))
+            if (foodBase.ContainsKey(this.target))
             { 
-                Food targetFood = FoodBase[this.Target];
+                Food targetFood = foodBase[this.target];
                 targetFood.Eat(worldModel);
                 targetFood.TryRemoveAction(worldModel, actionName);
                 worldModel.Cycle += duration;
@@ -31,7 +31,7 @@ namespace MCTS.DST.Actions
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            int guid = preWorldState.GetInventoryGUID(this.Target);
+            int guid = preWorldState.GetInventoryGUID(this.target);
 
             List<Pair<string, string>> ListOfActions = new List<Pair<string, string>>(1);
             Pair<string, string> pair;

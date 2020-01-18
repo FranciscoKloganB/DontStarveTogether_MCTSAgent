@@ -10,9 +10,9 @@ namespace MCTS.DST.Actions
 {
     class NextAction
     {
-        public string Prefab;
-        public KB KnowledgeBase;
-        public Pair<float, float> Position;
+        public string Prefab { get; set; }
+        public KB KnowledgeBase { get; set; }
+        public Pair<float, float> Position { get; set; }
 
         public NextAction(string prefab, KB kb)
         {

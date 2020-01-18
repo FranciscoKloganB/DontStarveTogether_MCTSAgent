@@ -13,19 +13,19 @@ namespace MCTS.DST.Actions
     {
         private static readonly float duration = 0.05f;
         private static readonly string actionName = "Construct_";
-        private readonly string Target;
+        private readonly string target;
 
         public Construct(string target) : base(string.Concat(actionName, target))
         {
-            this.Target = target;
+            this.target = target;
         }
 
         public override void ApplyActionEffects(WorldModelDST worldState)
         {
-            if (BuildablesDict.Instance.buildableBase.ContainsKey(this.Target))
+            if (BuildablesDict.Instance.buildableBase.ContainsKey(this.target))
             {
                 worldState.Cycle += duration;
-                Buildable targetBuildable = BuildablesDict.Instance.buildableBase[this.Target];
+                Buildable targetBuildable = BuildablesDict.Instance.buildableBase[this.target];
                 if (targetBuildable.Build(worldState))
                 {
                     targetBuildable.PostProcessBuildable(worldState);
@@ -36,19 +36,19 @@ namespace MCTS.DST.Actions
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)
         {
-            if (this.Target.Equals("campfire") || this.Target.Equals("firepit"))
+            if (this.target.Equals("campfire") || this.target.Equals("firepit"))
             {
                 var x = preWorldState.Walter.GetPosX();
                 var z = preWorldState.Walter.GetPosZ();
                 return new List<Pair<string, string>>(1)
                 {
-                    new Pair<string, string>("Action(BUILD, -, " + x + ", " + z + ", " + this.Target +")", "-")
+                    new Pair<string, string>("Action(BUILD, -, " + x + ", " + z + ", " + this.target +")", "-")
                 };
             }
 
             return new List<Pair<string, string>>(1)
             {
-                new Pair<string, string>("Action(BUILD, -, -, -, " + this.Target +")", "-")
+                new Pair<string, string>("Action(BUILD, -, -, -, " + this.target +")", "-")
             };
         }
 
