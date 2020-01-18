@@ -26,14 +26,11 @@ namespace MCTS.DST.Actions
             {
                 worldState.Cycle += duration;
                 Buildable targetBuildable = BuildablesDict.Instance.buildableBase[this.Target];
-                bool isBuildable = targetBuildable.Build(worldState);
-                if (!isBuildable)
+                if (targetBuildable.Build(worldState))
                 {
-                    // Console.WriteLine("Can't build: " + this.Target);
-                    return;
+                    targetBuildable.PostProcessBuildable(worldState);
+                    targetBuildable.TryRemoveAction(worldState);
                 }
-                targetBuildable.PostProcessBuildable(worldState);
-                targetBuildable.TryRemoveAction(worldState);
             }
         }
 
