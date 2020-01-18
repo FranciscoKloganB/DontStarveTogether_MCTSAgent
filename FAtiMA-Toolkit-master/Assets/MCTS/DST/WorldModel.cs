@@ -130,6 +130,10 @@ namespace MCTS.DST.WorldModels
                 {
                     this.AvailableActions.Add(new Eat(possessedItem));
                 }
+
+                // TODO - Add Equip action if possessed item is Tool.
+
+                // TODO - Does it make any sense for this to be here? PickUp objects already possessed?
                 else if (materialBase.ContainsKey(possessedItem))
                 {
                     WorldResource material = materialBase[possessedItem];
