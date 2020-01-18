@@ -6,6 +6,7 @@ using MCTS.DST;
 using System.Linq;
 using MCTS.DST.Resources.Edibles;
 using MCTS.DST.Resources.Materials;
+using MCTS.DST.Resources.Buildables;
 
 namespace MCTS.DST.WorldModels
 {
@@ -92,10 +93,12 @@ namespace MCTS.DST.WorldModels
         {
             Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
             Dictionary<string, Food> foodBase = FoodDict.Instance.foodBase;
+            Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
 
             this.AvailableActions = new HashSet<ActionDST>();
             this.AvailableActions.Add(new Wander());
-            
+
+            // Adds actions regarding World items.
             for (int i = 0; i < this.WorldObjects.Count; i++)
             {
                 string objectName = this.WorldObjects[i].ObjectName;
@@ -123,6 +126,13 @@ namespace MCTS.DST.WorldModels
                 }
             }
 
+            // Adds actions regarding Equipped items.
+            foreach (string equippedItemName in this.EquippedItems)
+            {
+                AddAction(new Unequip(equippedItemName));
+            }
+
+            // Adds actions regarding Possessed items.
             for (int i = 0; i < this.PossessedItems.Count; i++)
             {
                 string possessedItem = this.PossessedItems.ElementAt(i).Key;
@@ -130,8 +140,10 @@ namespace MCTS.DST.WorldModels
                 {
                     this.AvailableActions.Add(new Eat(possessedItem));
                 }
-
-                // TODO - Add Equip action if possessed item is Tool.
+                else if (buildableBase.ContainsKey(possessedItem))
+                { // Possessed Item can now be equipped.
+                    AddAction(new Equip(possessedItem));
+                }
 
                 // TODO - Does it make any sense for this to be here? PickUp objects already possessed?
                 else if (materialBase.ContainsKey(possessedItem))
@@ -351,8 +363,8 @@ namespace MCTS.DST.WorldModels
 
         public void RemoveAction(string actionName)
         {
-            // this.AvailableActions.RemoveWhere(obj => obj.Name.Equals(actionName));
-            this.AvailableActions.Remove(new ActionDST(actionName));
+            this.AvailableActions.RemoveWhere(obj => obj.Name.Equals(actionName));
+            // this.AvailableActions.Remove(new ActionDST(actionName));
         }
 
         public void AddAction(ActionDST action)
