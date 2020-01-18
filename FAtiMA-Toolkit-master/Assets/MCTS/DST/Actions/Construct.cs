@@ -12,7 +12,7 @@ namespace MCTS.DST.Actions
     public class Construct : ActionDST
     {
         private static readonly float duration = 0.05f;
-        private static readonly string actionName = "Construct_";
+        public static readonly string actionName = "Construct_";
         private readonly string target;
 
         public Construct(string target) : base(string.Concat(actionName, target))

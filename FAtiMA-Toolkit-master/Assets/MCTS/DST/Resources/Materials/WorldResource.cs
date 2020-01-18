@@ -60,7 +60,7 @@ namespace MCTS.DST.Resources.Materials
             {
                 if (!worldModel.Possesses(this.ResourceName, this.Recipes.ElementAt(i).Value))
                 {
-                    worldModel.RemoveAction(string.Concat(actionName, this.ResourceName));
+                    worldModel.RemoveAction(string.Concat(actionName, this.Recipes.ElementAt(i).Key));
                 }
             }
         }
