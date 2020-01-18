@@ -20,16 +20,12 @@ namespace MCTS.DST.Actions
 
         public override void ApplyActionEffects(WorldModelDST worldModel)
         {
-            try
-            {
+            if (FoodBase.ContainsKey(this.Target))
+            { 
                 Food targetFood = FoodBase[this.Target];
                 targetFood.Eat(worldModel);
                 targetFood.TryRemoveAction(worldModel, actionName);
                 worldModel.Cycle += duration;
-            }
-            catch (KeyNotFoundException)
-            {
-                worldModel.RemoveAction(string.Concat(actionName, this.Target));
             }
         }
 
