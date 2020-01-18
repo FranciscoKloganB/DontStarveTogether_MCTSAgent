@@ -55,7 +55,6 @@ namespace MCTS.DST.Resources.Buildables
                 var material = element.Key;
                 worldState.RemoveFromPossessedItems(material, element.Value);
             }
-            worldState.AddToPossessedItems(this.BuildableName, 1);
             return true;
         }
 

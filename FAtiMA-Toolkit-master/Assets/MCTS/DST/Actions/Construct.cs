@@ -28,6 +28,8 @@ namespace MCTS.DST.Actions
                 Buildable targetBuildable = BuildablesDict.Instance.buildableBase[this.target];
                 if (targetBuildable.Build(worldState))
                 {
+                    string buildableName = targetBuildable.BuildableName;
+                    worldState.AddToPossessedItems(targetBuildable.BuildableName, 1);
                     targetBuildable.PostProcessBuildable(worldState);
                     targetBuildable.TryRemoveAction(worldState);
                 }
