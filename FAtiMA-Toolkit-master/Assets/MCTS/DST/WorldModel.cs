@@ -192,7 +192,7 @@ namespace MCTS.DST.WorldModels
                 { // If tool can be hands, there is no need to check if tool is in inventory.
                     this.AvailableActions.Add(new PickUp(objectName));
                 }
-                else if (this.Possesses(tool.MaterialName))
+                else if (this.Possesses(tool.ResourceName))
                 { // The necessary tool is already equiped.
                     this.AvailableActions.Add(new PickUp(objectName));
                 }

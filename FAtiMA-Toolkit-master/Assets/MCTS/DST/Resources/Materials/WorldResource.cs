@@ -32,9 +32,13 @@ namespace MCTS.DST.Resources.Materials
 
     public class WorldResource
     {
-        public bool IsPrimitive { get; private set; }
-        public bool IsFuel { get; private set; }
-        public bool IsPickable { get; private set; }
+
+        public bool IsPrimitive { get; protected set; }
+        public bool IsFuel { get; protected set; }
+        public bool IsPickable { get; protected set; }
+
+        public string ResourceName { get; protected set; }
+
         public Dictionary<string, int> Recipes { get; protected set; }
 
         public WorldResource(bool isPrimitive, bool isFuel, bool isPickable)
@@ -45,17 +49,30 @@ namespace MCTS.DST.Resources.Materials
             this.Recipes = new Dictionary<string, int>();
         }
 
-        public virtual void GetBonuses(WorldModelDST worldModel) { }
+        public virtual void GetBonuses(WorldModelDST worldModel)
+        {
+            ;
+        }
+
+        public virtual void TryRemoveAction(WorldModelDST worldModel, string actionName)
+        { 
+            for (int i = 0; i < this.Recipes.Count; i++)
+            {
+                if (!worldModel.Possesses(this.ResourceName, this.Recipes.ElementAt(i).Value))
+                {
+                    worldModel.RemoveAction(string.Concat(actionName, this.ResourceName));
+                }
+            }
+        }
     }
 
     public class BasicWorldResource : WorldResource
     {
         public int Quantity { get; private set; }
-        public string MaterialName { get; private set; }
 
         public BasicWorldResource(string name, int quantity, bool isFuel) : base(true, isFuel, true)
         {
-            this.MaterialName = name;
+            this.ResourceName = name;
             this.Quantity = quantity;
         }
     }
@@ -89,6 +106,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Boulder()
         {
+            this.ResourceName = "boulder";
             this.RequiredTool = Pickaxe.Instance;
             this.RequiredToolAction = "MINE";
         }
@@ -100,6 +118,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Tree() : base(true)
         {
+            this.ResourceName = "tree";
             this.RequiredTool = Axe.Instance;
             this.RequiredToolAction = "CHOP";
         }
@@ -111,6 +130,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Sapling() : base()
         {
+            this.ResourceName = "sapling";
             this.ResourceWhenPicked = Twig.Instance;
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
@@ -123,6 +143,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Grass() : base()
         {
+            this.ResourceName = "grass";
             this.ResourceWhenPicked = Cutgrass.Instance;
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
@@ -135,6 +156,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public BerryBush() : base()
         {
+            this.ResourceName = "berrybush";
             this.ResourceWhenPicked = Berries.Instance;
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
@@ -147,6 +169,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public PlantedCarrot() : base()
         {
+            this.ResourceName = "carrot_planted";
             this.ResourceWhenPicked = Carrot.Instance;
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
@@ -159,6 +182,7 @@ namespace MCTS.DST.Resources.Materials
     {
         public Flower() : base()
         {
+            this.ResourceName = "flower";
             this.ResourceWhenPicked = Petals.Instance;
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";

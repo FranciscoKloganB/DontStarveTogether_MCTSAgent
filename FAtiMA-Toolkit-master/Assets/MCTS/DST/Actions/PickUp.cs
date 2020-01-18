@@ -90,10 +90,10 @@ namespace MCTS.DST.Actions
 
             if (material is BasicWorldResource basicMaterial)
             {
-                worldState.AddToPossessedItems(basicMaterial.MaterialName, basicMaterial.Quantity);
+                worldState.AddToPossessedItems(basicMaterial.ResourceName, basicMaterial.Quantity);
                 if (basicMaterial.IsFuel)
                 {
-                    worldState.AddToFuel(basicMaterial.MaterialName, basicMaterial.Quantity);
+                    worldState.AddToFuel(basicMaterial.ResourceName, basicMaterial.Quantity);
                 }
                 TryAddAction(worldState, basicMaterial);
             }
@@ -107,7 +107,7 @@ namespace MCTS.DST.Actions
                 }
                 else if (targetObject is BasicWorldResource targetMaterial)
                 {
-                    worldState.AddToPossessedItems(targetMaterial.MaterialName, targetMaterial.Quantity);
+                    worldState.AddToPossessedItems(targetMaterial.ResourceName, targetMaterial.Quantity);
                     TryAddAction(worldState, targetMaterial);
                 }
             }
@@ -169,7 +169,7 @@ namespace MCTS.DST.Actions
                         };
                     }
 
-                    string toolName = tool.MaterialName;
+                    string toolName = tool.ResourceName;
                     string harvestingActionName = compoundMaterial.RequiredToolAction;
 
                     if (preWorldState.IsEquipped(toolName))
