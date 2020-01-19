@@ -6,6 +6,7 @@ using MCTS.DST;
 using MCTS.DST.Resources.NPCs;
 using MCTS.DST.Resources.Materials;
 using MCTS.DST.Resources.Buildables;
+using System.Linq;
 
 namespace MCTS.DST.Actions
 {
@@ -39,7 +40,7 @@ namespace MCTS.DST.Actions
             string targetGUID = preWorldState.GetEntitiesGUID(this.target).ToString();
             for (int i = 0; i < preWorldState.Equipped.Count; i++)
             {
-                string equippedName = preWorldState.Equipped[i].Item1;
+                string equippedName = preWorldState.Equipped.ElementAt(i).Key;
                 if (buildableBase.ContainsKey(equippedName))
                 {
                     return new List<Pair<string, string>>(1)
@@ -51,7 +52,7 @@ namespace MCTS.DST.Actions
             // Equips weapon and attacks.
             for (int i = 0; i < preWorldState.Inventory.Count; i++)
             {
-                string possessedName = preWorldState.Equipped[i].Item1;
+                string possessedName = preWorldState.Equipped.ElementAt(i).Key;
                 if (buildableBase.ContainsKey(possessedName))
                 {
                     return new List<Pair<string, string>>(2)

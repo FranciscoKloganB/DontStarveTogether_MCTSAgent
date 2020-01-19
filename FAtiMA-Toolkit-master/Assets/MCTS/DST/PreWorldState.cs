@@ -15,9 +15,9 @@ namespace MCTS.DST {
         public int[] CycleInfo;
 
         public List<ObjectProperties> Entities;
-        public List<Tuple<string, int, int>> Inventory;
-        public List<Pair<string, int>> Equipped;
-        public List<Tuple<string, int, int>> Fuel;
+        public Dictionary<string, int> Equipped;
+        public Dictionary<string, Pair<int, int>> Inventory;
+        public Dictionary<string, Pair<int, int>> Fuel;
         public List<Tuple<string, int, int>> Fire;
         public KB KnowledgeBase;
 
@@ -26,9 +26,9 @@ namespace MCTS.DST {
         {
             this.KnowledgeBase = knowledgeBase;
             this.Entities = new List<ObjectProperties>(); // it is a list which stores the information of the objects that exist in the world
-            this.Inventory = new List<Tuple<string, int, int>>(); // list of 3-tuples that contain the name, the GUID and the quantity of an object in the inventory
-            this.Equipped = new List<Pair<string, int>>(); // it is a list of pairs (2-tuples) that contain the name and the GUID of each equipped object
-            this.Fuel = new List<Tuple<string, int, int>>(); // it is a list of 3-tuples that contain the name, the GUID and the quantity of the items that can be used as fuel for res
+            this.Equipped = new Dictionary<string, int>(); // Maps the name and the GUID of each equipped object
+            this.Inventory = new Dictionary<string, Pair<int, int>>(); // maps prefab name to Pair<GUID, quantity of an object in the inventory>
+            this.Fuel = new Dictionary<string, Pair<int, int>>(); // maps prefab name to Pair<GUID, quantity of an object that can be used as fuel>
             this.Fire = new List<Tuple<string, int, int>>(); // list of 3-tuples that contain the name and the position of the fires in the world
 
             //Getting Character Stats
@@ -84,9 +84,7 @@ namespace MCTS.DST {
                 string strEntGuid = item.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
                 int entGuid = int.Parse(strEntGuid);
                 string entPrefab = knowledgeBase.AskProperty((Name)("Entity(" + strEntGuid + ")")).Value.ToString();
-
-                Pair<string, int> pair = new Pair<string, int>(entPrefab, entGuid);
-                this.Equipped.Add(pair);
+                this.Equipped[entPrefab] = entGuid;
             }
 
             //Getting Inventory
@@ -102,12 +100,12 @@ namespace MCTS.DST {
                 var quantity = knowledgeBase.AskProperty((Name)strEntQuantity);
                 int entQuantity = int.Parse(quantity.Value.ToString());
 
-                Tuple<string, int, int> tuple = new Tuple<string, int, int>(entPrefab, entGuid, entQuantity);
-                this.Inventory.Add(tuple);
+                Pair<int, int> pair = new Pair<int, int>(entGuid, entQuantity);
+                this.Inventory[entPrefab] = pair;
 
                 if (IsFuel(strEntGuid))
                 {                    
-                    this.Fuel.Add(tuple);
+                    this.Fuel[entPrefab] = pair;
                 }                
             }
 
@@ -339,45 +337,37 @@ namespace MCTS.DST {
 
         public int GetEquippableGUID(string prefab)
         {
-            foreach (Pair<string,int> item in this.Equipped)
+            int guid = 0;
+            
+            this.Equipped.TryGetValue(prefab, out guid);
+
+            if (guid == 0 && this.Inventory.ContainsKey(prefab))
             {
-                if (item.Item1 == prefab)
-                {
-                    return item.Item2;
-                }
+                guid = this.Inventory[prefab].Item1;
             }
-            foreach (Tuple<string, int, int> item in this.Inventory)
-            {
-                if (item.Item1 == prefab)
-                {
-                    return item.Item2;
-                }
-            }
-            return 0;
+
+            return guid;
         }
 
         public int GetInventoryGUID(string prefab)
         {
-            foreach (Tuple<string, int, int> item in this.Inventory)
+            int guid = 0;
+
+            if (this.Inventory.ContainsKey(prefab))
             {
-                if (item.Item1 == prefab)
-                {
-                    return item.Item2;
-                }
+                guid = this.Inventory[prefab].Item1;
             }
-            return 0;
+
+            return guid;
         }
 
         public int GetEquippedGUID(string prefab)
         {
-            foreach (var item in this.Equipped)
-            {
-                if (item.Item1 == prefab)
-                {
-                    return item.Item2;
-                }
-            }
-            return 0;
+            int guid = 0;
+
+            this.Equipped.TryGetValue(prefab, out guid);
+
+            return guid;
         }
 
         public bool EntityIsPickable(string entity)
@@ -406,14 +396,7 @@ namespace MCTS.DST {
 
         public bool IsEquipped(string item)
         {
-            foreach (var equip in this.Equipped)
-            {
-                if (equip.Item1 == item)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return this.Equipped.ContainsKey(item);
         }
 
         public string CompleteNextActionInfo(string info)

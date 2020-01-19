@@ -61,21 +61,21 @@ namespace MCTS.DST.WorldModels
             this.Fuel = new Dictionary<string, int>();
             for (int i = 0; i < preWorldState.Fuel.Count; i++)
             {
-                this.Fuel[preWorldState.Fuel[i].Item1] = preWorldState.Fuel[i].Item3;
+                this.Fuel[preWorldState.Fuel.ElementAt(i).Key] = preWorldState.Fuel.ElementAt(i).Value.Item2;
             }
 
             //Getting Inventory from PreWorldState  
             this.PossessedItems = new Dictionary<string, int>();
             for (int i = 0; i < preWorldState.Inventory.Count; i++)
             {
-                this.PossessedItems[preWorldState.Inventory[i].Item1] = preWorldState.Inventory[i].Item3;   
+                this.PossessedItems[preWorldState.Inventory.ElementAt(i).Key] = preWorldState.Inventory.ElementAt(i).Value.Item2;
             }
 
             //Getting Equipped items from PreWorldState
             this.EquippedItems = new HashSet<string>();
             for (int i = 0; i < preWorldState.Equipped.Count; i++)
             {                
-                this.EquippedItems.Add(preWorldState.Equipped[i].Item1);
+                this.EquippedItems.Add(preWorldState.Equipped.ElementAt(i).Key);
             }
 
             //Getting WorldObjects from PreWorldState's Entities
