@@ -117,14 +117,10 @@ namespace MCTS.DST {
             this.CycleInfo[2] = Cycleinfo3;
 
             //Getting Entities + Inventory + Equipped
-
             var subset = new List<SubstitutionSet> { new SubstitutionSet() };
 
             //Getting Equipped
-
             var equippeditems = knowledgeBase.AskPossibleProperties((Name)"IsEquipped([GUID])", Name.SELF_SYMBOL, subset);
-
-
 
             foreach (var item in equippeditems)
             {
