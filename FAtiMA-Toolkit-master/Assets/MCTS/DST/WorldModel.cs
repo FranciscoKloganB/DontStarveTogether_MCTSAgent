@@ -39,6 +39,7 @@ namespace MCTS.DST.WorldModels
             this.AvailableActions = availableActions;
             this.Parent = parent;
             this.Fire = fire;
+            this.Fuel = fuel;
         }
 
         public WorldModelDST(PreWorldState preWorldState)
