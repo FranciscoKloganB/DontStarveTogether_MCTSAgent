@@ -79,7 +79,7 @@ namespace MCTS.DST {
 
            
 
-            foreach (var item in equippeditems)
+            for (var item in equippeditems)
             {
                 string strEntGuid = item.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
                 int entGuid = int.Parse(strEntGuid);
