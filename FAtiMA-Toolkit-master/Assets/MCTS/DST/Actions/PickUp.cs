@@ -88,10 +88,10 @@ namespace MCTS.DST.Actions
 
             if (material is BasicWorldResource basicMaterial)
             {
-                worldState.AddToPossessedItems(basicMaterial.ResourceName, basicMaterial.Quantity);
+                worldState.AddToPossessedItems(basicMaterial.ResourceName, 1);
                 if (basicMaterial.IsFuel)
                 {
-                    worldState.AddToFuel(basicMaterial.ResourceName, basicMaterial.Quantity);
+                    worldState.AddToFuel(basicMaterial.ResourceName, 1);
                 }
                 TryAddAction(worldState, basicMaterial);
             }
@@ -105,7 +105,7 @@ namespace MCTS.DST.Actions
                 }
                 else if (targetObject is BasicWorldResource targetMaterial)
                 {
-                    worldState.AddToPossessedItems(targetMaterial.ResourceName, targetMaterial.Quantity);
+                    worldState.AddToPossessedItems(targetMaterial.ResourceName, 1);
                     TryAddAction(worldState, targetMaterial);
                 }
             }
@@ -169,24 +169,42 @@ namespace MCTS.DST.Actions
 
                     string toolName = tool.ResourceName;
                     string harvestingActionName = compoundMaterial.RequiredToolAction;
+                    List<Pair<string, string>> decomposeList;
 
                     if (preWorldState.IsEquipped(toolName))
                     { // If the necessary tool is already equiped, harvests.
-                        return new List<Pair<string, string>>(1)
+                        decomposeList = new List<Pair<string, string>>(1)
                         {
                             new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
                         };
                     }
-
-                    return new List<Pair<string, string>>(2)
-                    { // Constructs the compound action of equipping the tool and harvesting.
-                        new Pair<string, string>("Action(EQUIP, " + preWorldState.GetInventoryGUID(toolName).ToString() + ", -, -, -)", "-"),
-                        new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
-                    };
+                    else
+                    {
+                        decomposeList = new List<Pair<string, string>>(2)
+                        { // Constructs the compound action of equipping the tool and harvesting.
+                            new Pair<string, string>("Action(EQUIP, " + preWorldState.GetInventoryGUID(toolName).ToString() + ", -, -, -)", "-"),
+                            new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
+                        };
+                    }
+                    decomposeList.AddRange(DecomposeCompoundWorldResource(preWorldState, compoundMaterial));
+                    return decomposeList;
                 }
             }
             Console.WriteLine("\n PickUp Decompose had to fall back to base.Decompose \n");
             return base.Decompose(preWorldState);
+        }
+
+        private List<Pair<string, string>> DecomposeCompoundWorldResource(PreWorldState preWorldState, CompoundWorldResource compoundResource)
+        {
+            // This might not work every time, as the basic resources that compose the harvested compound resource have to spawn in, and might not be 
+            // in the agent's knowledge base. Hence, sometimes the returned guid by GetEntitiesGUID will be "0".
+            List<Pair<string, string>> basicHarvestingActions = new List<Pair<string, string>>();
+            for (int i = 0; i < compoundResource.ComposingItems.Count; i++)
+            {
+                WorldResource componentResource = compoundResource.ComposingItems[i];
+                basicHarvestingActions.Add(new Pair<string, string>("Action(PICK, -, -, -, -)", preWorldState.GetEntitiesGUID(componentResource.ResourceName).ToString()));
+            }
+            return basicHarvestingActions;
         }
 
         public override Pair<string, int> NextActionInfo()
