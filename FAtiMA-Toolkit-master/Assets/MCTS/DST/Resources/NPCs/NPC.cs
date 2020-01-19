@@ -132,7 +132,7 @@ namespace MCTS.DST.Resources.NPCs
 
         public HashSet<string> GetDiet()
         {
-            return new HashSet<string>() { "meat", "cooked_meat", "monster_meat", "cooked_monster_meat", "morsel", "cooked_morsel" };
+            return new HashSet<string>() { "meat", "cookedmeat", "monstermeat", "cookedmonstermeat", "smallmeat", "cookedsmallmeat" };
         }
     }
 
