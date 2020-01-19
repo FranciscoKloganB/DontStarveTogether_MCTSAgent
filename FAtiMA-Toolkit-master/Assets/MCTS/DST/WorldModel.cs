@@ -50,12 +50,7 @@ namespace MCTS.DST.WorldModels
             this.CycleInfo = preWorldState.CycleInfo;
 
             //Getting Fire Info
-            this.Fire = new List<FireData>();
-            for (int i = 0; i < preWorldState.Fire.Count; i++)
-            {
-                var fireData = new FireData(preWorldState.Fire[i].Item1, preWorldState.Fire[i].Item2, preWorldState.Fire[i].Item3);
-                this.Fire.Add(fireData);
-            }
+            this.Fire = new List<FireData>(preWorldState.Fire);
 
             //Getting Fuel items from PreWorldState
             this.Fuel = new Dictionary<string, int>();
