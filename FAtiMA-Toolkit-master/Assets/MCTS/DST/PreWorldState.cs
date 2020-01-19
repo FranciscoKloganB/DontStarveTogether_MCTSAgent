@@ -77,9 +77,9 @@ namespace MCTS.DST {
 
             var equippeditems = knowledgeBase.AskPossibleProperties((Name)"IsEquipped([GUID])", Name.SELF_SYMBOL, subset);
 
-           
 
-            for (var item in equippeditems)
+
+            foreach (var item in equippeditems)
             {
                 string strEntGuid = item.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
                 int entGuid = int.Parse(strEntGuid);
@@ -92,7 +92,6 @@ namespace MCTS.DST {
             //Getting Inventory
 
             var inventory = knowledgeBase.AskPossibleProperties((Name)"InInventory([GUID])", Name.SELF_SYMBOL, subset);
-
             foreach (var item in inventory)
             {
                 string strEntGuid = item.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
@@ -118,7 +117,7 @@ namespace MCTS.DST {
 
             foreach (var entity in entities)
             {
-                Boolean b = false;
+                bool b = false;
                 string strEntGuid = entity.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
                 int entGuid = int.Parse(strEntGuid);
                 string entPrefab = entity.Item1.Value.ToString();
@@ -141,19 +140,19 @@ namespace MCTS.DST {
                 {
                     string strEntIsCollectable = "IsCollectable(" + strEntGuid + ")";
                     var isCollectable = knowledgeBase.AskProperty((Name)strEntIsCollectable);
-                    Boolean entIsCollectable = Boolean.Parse(isCollectable.Value.ToString());
+                    bool entIsCollectable = bool.Parse(isCollectable.Value.ToString());
 
                     string strEntIsPickable = "IsPickable(" + strEntGuid + ")";
                     var isPickable = knowledgeBase.AskProperty((Name)strEntIsPickable);
-                    Boolean entIsPickable = Boolean.Parse(isPickable.Value.ToString());
+                    bool entIsPickable = bool.Parse(isPickable.Value.ToString());
 
                     string strEntIsMineable = "IsMineable(" + strEntGuid + ")";
                     var isMineable = knowledgeBase.AskProperty((Name)strEntIsMineable);
-                    Boolean entIsMineable = Boolean.Parse(isMineable.Value.ToString());
+                    bool entIsMineable = bool.Parse(isMineable.Value.ToString());
 
                     string strEntIsChoppable = "IsChoppable(" + strEntGuid + ")";
                     var isChoppable = knowledgeBase.AskProperty((Name)strEntIsChoppable);
-                    Boolean entIsChoppable = Boolean.Parse(isChoppable.Value.ToString());
+                    bool entIsChoppable = bool.Parse(isChoppable.Value.ToString());
 
                     if (entIsPickable || entIsCollectable || entIsMineable || entIsChoppable)
                     {
@@ -188,7 +187,7 @@ namespace MCTS.DST {
             }          
         }
 
-        public Boolean IsTree(string tree)
+        public bool IsTree(string tree)
         {
             return (tree == "evergreen" || tree == "mushtree_tall" || tree == "mushtree_medium" ||
                 tree == "mushtree_small" || tree == "mushtree_tall_webbed" || tree == "evergreen_sparse" ||
@@ -196,7 +195,7 @@ namespace MCTS.DST {
                 tree == "deciduoustree" || tree == "twiggytree");
         }
 
-        public Boolean IsBoulder(string boulder)
+        public bool IsBoulder(string boulder)
         {
             return (boulder == "rock1" || boulder == "rock2" || boulder == "rock_flintless" ||
                 boulder == "rock_moon" || boulder == "rock_petrified_tree_short" ||
@@ -313,12 +312,12 @@ namespace MCTS.DST {
 
         }
 
-        public Boolean IsFire(string prefab)
+        public bool IsFire(string prefab)
         {
             return prefab == "campfire" || prefab == "firepit";
         }
 
-        public Boolean IsFuel(string guid)
+        public bool IsFuel(string guid)
         {
             string strEntFuel = "IsFuel(" + guid + ")";
             var entFuel = KnowledgeBase.AskProperty((Name)strEntFuel);
@@ -381,7 +380,7 @@ namespace MCTS.DST {
             return 0;
         }
 
-        public Boolean EntityIsPickable(string entity)
+        public bool EntityIsPickable(string entity)
         {
             foreach (ObjectProperties item in this.Entities)
             {
@@ -393,7 +392,7 @@ namespace MCTS.DST {
             return false;
         }
 
-        public Boolean EntityIsCollectable(string entity)
+        public bool EntityIsCollectable(string entity)
         {
             foreach (ObjectProperties item in this.Entities)
             {
@@ -405,7 +404,7 @@ namespace MCTS.DST {
             return false;
         }
 
-        public Boolean IsEquipped(string item)
+        public bool IsEquipped(string item)
         {
             foreach (var equip in this.Equipped)
             {
