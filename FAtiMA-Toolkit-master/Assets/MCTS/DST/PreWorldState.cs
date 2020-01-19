@@ -222,6 +222,10 @@ namespace MCTS.DST {
             {
                 return "twigs";
             }
+            else if (entity == "butterfly")
+            {
+                return "butterfly";
+            }
             else if (entity == "berrybush")
             {
                 return "berrybush";
