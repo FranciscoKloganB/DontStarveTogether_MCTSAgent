@@ -69,6 +69,28 @@ namespace MCTS.DST {
             "twiggytree",
         };
 
+        private static HashSet<string> realEntityPrefabBase = new HashSet<string>()
+        {
+            // TODO: Next years students should get rid of all thse Hashset<string> structures, ESPECIALLY this one. Tip: Use the FoodDict, MaterialDict classes, etc...
+            "sapling",
+            "twigs",
+            "butterfly",
+            "log",
+            "torch",
+            "grass",
+            "cutgrass",
+            "carrot",
+            "carrot_planted",
+            "seeds",
+            "flower",
+            "rocks",
+            "flint",
+            "axe",
+            "pickaxe",
+            "campfire",
+            "firepit",
+        };
+
         public PreWorldState(KB knowledgeBase)
         {
             this.KnowledgeBase = knowledgeBase;
@@ -240,7 +262,11 @@ namespace MCTS.DST {
 
         public string RealEntityPrefab(string entity)
         {
-            if (IsTree(entity))
+            if (realEntityPrefabBase.Contains(entity))
+            {
+                return entity;
+            }
+            else if (IsTree(entity))
             {
                 return "tree";
             }
@@ -248,95 +274,15 @@ namespace MCTS.DST {
             {
                 return "boulder";
             }
-            else if (entity.Equals("sapling"))
-            {
-                return "sapling";
-            }
-            else if (entity.Equals("twigs"))
-            {
-                return "twigs";
-            }
-            else if (entity.Equals("butterfly"))
-            {
-                return "butterfly";
-            }
-            else if (entity.Equals("berrybush"))
+            else if (entity.Contains("berrybush"))
             {
                 return "berrybush";
             }
-            else if (entity.Equals("berrybush2"))
-            {
-                return "berrybush";
-            }
-            else if (entity.Equals("berrybush_juicy"))
-            {
-                return "berrybush";
-            }
-            else if (entity.Equals("log"))
-            {
-                return "log";
-            }
-            else if (entity.Equals("torch"))
-            {
-                return "torch";
-            }
-            else if (entity.Equals("grass"))
-            {
-                return "grass";
-            }
-            else if (entity.Equals("cutgrass"))
-            {
-                return "cutgrass";
-            }
-            else if (entity.Equals("carrot"))
-            {
-                return "carrot";
-            }
-            else if (entity.Equals("carrot_planted"))
-            {
-                return "carrot_planted";
-            }
-            else if (entity.Equals("berries"))
+            else if (entity.Contains("berries"))
             {
                 return "berries";
             }
-            else if (entity.Equals("seeds"))
-            {
-                return "seeds";
-            }
-            else if (entity.Equals("flower"))
-            {
-                return "flower";
-            }
-            else if (entity.Equals("berries_juicy"))
-            {
-                return "berries";
-            }
-            else if (entity.Equals("rocks"))
-            {
-                return "rocks";
-            }
-            else if (entity.Equals("flint"))
-            {
-                return "flint";
-            }
-            else if (entity.Equals("axe"))
-            {
-                return "axe";
-            }
-            else if (entity.Equals("pickaxe"))
-            {
-                return "pickaxe";
-            }
-            else if (entity.Equals("campfire"))
-            {
-                return "campfire";
-            }
-            else if (entity.Equals("firepit"))
-            {
-                return "firepit";
-            }
-            else if (entity.Equals("pigman"))
+            else if (entity.Contains("pig"))
             {
                 return "pigman";
             }
@@ -344,7 +290,6 @@ namespace MCTS.DST {
             {
                 return "";
             }
-
         }
 
         public bool IsFire(string prefab)
