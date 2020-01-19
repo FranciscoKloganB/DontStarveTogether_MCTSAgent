@@ -31,15 +31,15 @@ namespace MCTS.DST.WorldModels
         public WorldModelDST(Character character, List<WorldObjectData> worldObjects, Dictionary<string, int> possessedItems, HashSet<string> equippedItems, float cycle, int[] cycleInfo, HashSet<ActionDST> availableActions, WorldModelDST parent, Dictionary<string, int> fuel, List<FireData> fire)
         {
             this.Walter = character;
-            this.WorldObjects = worldObjects; // stores in the name, quantity and the position of world objects
+            this.WorldObjects = worldObjects;
             this.PossessedItems = possessedItems;
-            this.EquippedItems = equippedItems; // stores the name of equiped items
+            this.EquippedItems = equippedItems;
             this.Cycle = cycle; // represents the stage of the day
             this.CycleInfo = cycleInfo; // stores the amount of time each phase of the day lasts. The phases are day, dusk and night
-            this.AvailableActions = availableActions; // list of actions that the character can do in the current state. It is created based on the PreWorldState information and it is updated when an action is done
-            this.Parent = parent; // World Model which originates the current one by means of ActionApplyEffect
+            this.AvailableActions = availableActions;
+            this.Parent = parent;
+            this.Fire = fire;
             this.Fuel = fuel;
-            this.Fire = fire; // list of 3-tuples that contain the name and the position of the fires in the world
         }
 
         public WorldModelDST(PreWorldState preWorldState)
@@ -61,21 +61,21 @@ namespace MCTS.DST.WorldModels
             this.Fuel = new Dictionary<string, int>();
             for (int i = 0; i < preWorldState.Fuel.Count; i++)
             {
-                this.Fuel[preWorldState.Fuel[i].Item1] = preWorldState.Fuel[i].Item3;
+                this.Fuel[preWorldState.Fuel.ElementAt(i).Key] = preWorldState.Fuel.ElementAt(i).Value.Item2;
             }
 
             //Getting Inventory from PreWorldState  
             this.PossessedItems = new Dictionary<string, int>();
             for (int i = 0; i < preWorldState.Inventory.Count; i++)
             {
-                this.PossessedItems[preWorldState.Inventory[i].Item1] = preWorldState.Inventory[i].Item3;   
+                this.PossessedItems[preWorldState.Inventory.ElementAt(i).Key] = preWorldState.Inventory.ElementAt(i).Value.Item2;
             }
 
             //Getting Equipped items from PreWorldState
             this.EquippedItems = new HashSet<string>();
             for (int i = 0; i < preWorldState.Equipped.Count; i++)
             {                
-                this.EquippedItems.Add(preWorldState.Equipped[i].Item1);
+                this.EquippedItems.Add(preWorldState.Equipped.ElementAt(i).Key);
             }
 
             //Getting WorldObjects from PreWorldState's Entities
