@@ -12,7 +12,7 @@ namespace MCTS.DST.Actions
     public class Construct : ActionDST
     {
         private static readonly float duration = 0.05f;
-        private static readonly string actionName = "Construct_";
+        public static readonly string actionName = "Construct_";
         private readonly string target;
 
         public Construct(string target) : base(string.Concat(actionName, target))
@@ -20,20 +20,28 @@ namespace MCTS.DST.Actions
             this.target = target;
         }
 
-        public override void ApplyActionEffects(WorldModelDST worldState)
+        public override void ApplyActionEffects(WorldModelDST worldModel)
         {
             if (BuildablesDict.Instance.buildableBase.ContainsKey(this.target))
             {
-                worldState.Cycle += duration;
+                worldModel.Cycle += duration;
                 Buildable targetBuildable = BuildablesDict.Instance.buildableBase[this.target];
-                bool isBuildable = targetBuildable.Build(worldState);
-                if (!isBuildable)
+                if (targetBuildable.Build(worldModel))
                 {
-                    // Console.WriteLine("Can't build: " + this.Target);
-                    return;
+                    string buildableName = targetBuildable.BuildableName;
+                    worldModel.AddToPossessedItems(targetBuildable.BuildableName, 1);
+                    targetBuildable.PostProcessBuildable(worldModel);
+                    targetBuildable.TryRemoveAction(worldModel);
+
+                    if (worldModel.IsEquipped(targetBuildable.BuildableName))
+                    { // Item constructed went to one of the equipped slots.
+                        worldModel.AddAction(new Unequip(buildableName));
+                    }
+                    else
+                    { // The item is in the inventory, but not equipped.
+                        worldModel.AddAction(new Equip(buildableName));
+                    }
                 }
-                targetBuildable.PostProcessBuildable(worldState);
-                targetBuildable.TryRemoveAction(worldState);
             }
         }
 

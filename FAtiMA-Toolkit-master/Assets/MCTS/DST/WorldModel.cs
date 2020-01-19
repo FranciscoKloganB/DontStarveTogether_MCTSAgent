@@ -6,6 +6,8 @@ using MCTS.DST;
 using System.Linq;
 using MCTS.DST.Resources.Edibles;
 using MCTS.DST.Resources.Materials;
+using MCTS.DST.Resources.Buildables;
+using MCTS.DST.Resources.NPCs;
 
 namespace MCTS.DST.WorldModels
 {
@@ -29,15 +31,15 @@ namespace MCTS.DST.WorldModels
         public WorldModelDST(Character character, List<WorldObjectData> worldObjects, Dictionary<string, int> possessedItems, HashSet<string> equippedItems, float cycle, int[] cycleInfo, HashSet<ActionDST> availableActions, WorldModelDST parent, Dictionary<string, int> fuel, List<FireData> fire)
         {
             this.Walter = character;
-            this.WorldObjects = worldObjects; // stores in the name, quantity and the position of world objects
+            this.WorldObjects = worldObjects;
             this.PossessedItems = possessedItems;
-            this.EquippedItems = equippedItems; // stores the name of equiped items
+            this.EquippedItems = equippedItems;
             this.Cycle = cycle; // represents the stage of the day
             this.CycleInfo = cycleInfo; // stores the amount of time each phase of the day lasts. The phases are day, dusk and night
-            this.AvailableActions = availableActions; // list of actions that the character can do in the current state. It is created based on the PreWorldState information and it is updated when an action is done
-            this.Parent = parent; // World Model which originates the current one by means of ActionApplyEffect
+            this.AvailableActions = availableActions;
+            this.Parent = parent;
+            this.Fire = fire;
             this.Fuel = fuel;
-            this.Fire = fire; // list of 3-tuples that contain the name and the position of the fires in the world
         }
 
         public WorldModelDST(PreWorldState preWorldState)
@@ -48,32 +50,27 @@ namespace MCTS.DST.WorldModels
             this.CycleInfo = preWorldState.CycleInfo;
 
             //Getting Fire Info
-            this.Fire = new List<FireData>();
-            for (int i = 0; i < preWorldState.Fire.Count; i++)
-            {
-                var fireData = new FireData(preWorldState.Fire[i].Item1, preWorldState.Fire[i].Item2, preWorldState.Fire[i].Item3);
-                this.Fire.Add(fireData);
-            }
+            this.Fire = new List<FireData>(preWorldState.Fire);
 
             //Getting Fuel items from PreWorldState
             this.Fuel = new Dictionary<string, int>();
             for (int i = 0; i < preWorldState.Fuel.Count; i++)
             {
-                this.Fuel[preWorldState.Fuel[i].Item1] = preWorldState.Fuel[i].Item3;
+                this.Fuel[preWorldState.Fuel.ElementAt(i).Key] = preWorldState.Fuel.ElementAt(i).Value.Item2;
             }
 
             //Getting Inventory from PreWorldState  
             this.PossessedItems = new Dictionary<string, int>();
             for (int i = 0; i < preWorldState.Inventory.Count; i++)
             {
-                this.PossessedItems[preWorldState.Inventory[i].Item1] = preWorldState.Inventory[i].Item3;   
+                this.PossessedItems[preWorldState.Inventory.ElementAt(i).Key] = preWorldState.Inventory.ElementAt(i).Value.Item2;
             }
 
             //Getting Equipped items from PreWorldState
             this.EquippedItems = new HashSet<string>();
             for (int i = 0; i < preWorldState.Equipped.Count; i++)
             {                
-                this.EquippedItems.Add(preWorldState.Equipped[i].Item1);
+                this.EquippedItems.Add(preWorldState.Equipped.ElementAt(i).Key);
             }
 
             //Getting WorldObjects from PreWorldState's Entities
@@ -92,10 +89,13 @@ namespace MCTS.DST.WorldModels
         {
             Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
             Dictionary<string, Food> foodBase = FoodDict.Instance.foodBase;
+            Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
+            Dictionary<string, NPC> npcBase = NPCDict.Instance.npcBase;
 
             this.AvailableActions = new HashSet<ActionDST>();
             this.AvailableActions.Add(new Wander());
-            
+
+            // Adds actions regarding World items / entities.
             for (int i = 0; i < this.WorldObjects.Count; i++)
             {
                 string objectName = this.WorldObjects[i].ObjectName;
@@ -113,6 +113,26 @@ namespace MCTS.DST.WorldModels
                         this.AvailableActions.Add(new HoldPosition(objectName));
                     }
                 }
+                else if (npcBase.ContainsKey(objectName))
+                {
+                    NPC npc = npcBase[objectName];
+                    ActionDST action = npc.GetAction(this);
+                    if (action is Feed feedAction)
+                    {
+                        HashSet<string> diet = feedAction.diet;
+                        IEnumerable<string> possessedDiet = diet.Intersect(PossessedItems.Keys);
+                        if (!possessedDiet.IsEmpty())
+                        {
+                            Console.WriteLine("possessed diet is empty");
+                            feedAction.food = possessedDiet.First();
+                            AddAction(feedAction);
+                        }
+                    }
+                    else
+                    {
+                        AddAction(action);
+                    }
+                }
                 else if (foodBase.ContainsKey(objectName))
                 {
                     PickUpFoodBehavior(objectName);
@@ -123,6 +143,13 @@ namespace MCTS.DST.WorldModels
                 }
             }
 
+            // Adds actions regarding Equipped items.
+            foreach (string equippedItemName in this.EquippedItems)
+            {
+                AddAction(new Unequip(equippedItemName));
+            }
+
+            // Adds actions regarding Possessed items.
             for (int i = 0; i < this.PossessedItems.Count; i++)
             {
                 string possessedItem = this.PossessedItems.ElementAt(i).Key;
@@ -130,6 +157,12 @@ namespace MCTS.DST.WorldModels
                 {
                     this.AvailableActions.Add(new Eat(possessedItem));
                 }
+                else if (buildableBase.ContainsKey(possessedItem))
+                { // Possessed Item can now be equipped.
+                    AddAction(new Equip(possessedItem));
+                }
+
+                // TODO - Does it make any sense for this to be here? PickUp objects already possessed?
                 else if (materialBase.ContainsKey(possessedItem))
                 {
                     WorldResource material = materialBase[possessedItem];
@@ -164,18 +197,23 @@ namespace MCTS.DST.WorldModels
             if (material.IsPickable)
             { // Material can be picked up by hand, no need to check if has tool.
                 this.AvailableActions.Add(new PickUp(objectName));
-                return;
             }
-            // Material needs tools to be gathered. / can only use PICK action. Gets the required tool.
-            CompoundWorldResource compoundMaterial = (CompoundWorldResource)material;
-            Tool tool = compoundMaterial.RequiredTool;
-            if (tool is null)
-            { // If tool can be hands, there is no need to check if tool is in inventory.
+            else if (material is GatherableCompoundWorldResource)
+            {
                 this.AvailableActions.Add(new PickUp(objectName));
             }
-            else if (this.PossessedItems.ContainsKey(tool.MaterialName))
-            { // The necessary tool is already equiped.
-                this.AvailableActions.Add(new PickUp(objectName));
+            else if (material is CompoundWorldResource compoundMaterial)
+            { // Material needs tools to be gathered / can only use PICK action. Gets the required tool.
+                Tool tool = compoundMaterial.RequiredTool;
+                if (tool is null)
+                { // If tool can be hands, there is no need to check if tool is in inventory.
+                    this.AvailableActions.Add(new PickUp(objectName));
+                }
+                else if (this.Possesses(tool.ResourceName))
+                { // The necessary tool is already equiped.
+                    this.AvailableActions.Add(new PickUp(objectName));
+                }
+                // If the material needs a tool that is not in the inventory, no action can be done.
             }
         }
 
@@ -342,8 +380,8 @@ namespace MCTS.DST.WorldModels
 
         public void RemoveAction(string actionName)
         {
-            // this.AvailableActions.RemoveWhere(obj => obj.Name.Equals(actionName));
-            this.AvailableActions.Remove(new ActionDST(actionName));
+            this.AvailableActions.RemoveWhere(obj => obj.Name.Equals(actionName));
+            // this.AvailableActions.Remove(new ActionDST(actionName));
         }
 
         public void AddAction(ActionDST action)

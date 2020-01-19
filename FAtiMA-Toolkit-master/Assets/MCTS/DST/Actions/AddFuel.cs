@@ -4,6 +4,7 @@ using Utilities;
 using MCTS.DST.WorldModels;
 using MCTS.DST;
 using System.Linq;
+using MCTS.DST.Resources.Materials;
 
 namespace MCTS.DST.Actions
 {
@@ -32,7 +33,12 @@ namespace MCTS.DST.Actions
             worldState.RemoveFromPossessedItems(this.fuel, 1);
             worldState.RemoveFromFuel(this.fuel);
             worldState.Walter.Position = worldState.GetNextPosition(this.target, "fire");
-            // TODO - Remove Construct actions.
+
+            if (MaterialDict.Instance.materialBase.ContainsKey(this.fuel))
+            {
+                WorldResource resource = MaterialDict.Instance.materialBase[this.fuel];
+                resource.TryRemoveAction(worldState, Construct.actionName);
+            }
         }
 
         public override List<Pair<string, string>> Decompose(PreWorldState preWorldState)

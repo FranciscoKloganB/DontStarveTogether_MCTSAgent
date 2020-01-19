@@ -79,8 +79,6 @@ namespace MCTS.DST.Actions
             {
                 FoodBehavior(worldState);
             }
-
-            // TODO - Add new PickUp Actions if picked item is tool.
         }
 
         private void MaterialBehavior(WorldModelDST worldState)
@@ -88,31 +86,27 @@ namespace MCTS.DST.Actions
             WorldResource material = this.materialBase[this.target];
             material.GetBonuses(worldState);
 
-            if (material.IsPrimitive)
-            { // PrimitiveMaterial behaviour.
-                BasicWorldResource targetMaterial = (BasicWorldResource)material;
-                worldState.AddToPossessedItems(targetMaterial.MaterialName, targetMaterial.Quantity);
-                if (targetMaterial.IsFuel)
-                {
-                    worldState.AddToFuel(targetMaterial.MaterialName, targetMaterial.Quantity);
-                }
-                TryAddAction(worldState, targetMaterial);
-            }
-            else if (material is GatherableCompoundWorldResource)
+            if (material is BasicWorldResource basicMaterial)
             {
-                GatherableCompoundWorldResource gatherableMaterial = (GatherableCompoundWorldResource)material;
-                Object basicMaterial = gatherableMaterial.ResourceWhenPicked;
-                if (basicMaterial is Food)
+                worldState.AddToPossessedItems(basicMaterial.ResourceName, 1);
+                if (basicMaterial.IsFuel)
                 {
-                    Food food = (Food)basicMaterial;
+                    worldState.AddToFuel(basicMaterial.ResourceName, 1);
+                }
+                TryAddAction(worldState, basicMaterial);
+            }
+            else if (material is GatherableCompoundWorldResource gatherableMaterial)
+            {
+                Object targetObject = gatherableMaterial.ResourceWhenPicked;
+                if (targetObject is Food food)
+                {
                     worldState.AddToPossessedItems(food.FoodName, 1);
                     worldState.AddAction(new Eat(food.FoodName));
                 }
-                else
+                else if (targetObject is BasicWorldResource targetMaterial)
                 {
-                    BasicWorldResource bMaterial = (BasicWorldResource)basicMaterial;
-                    worldState.AddToPossessedItems(bMaterial.MaterialName, bMaterial.Quantity);
-                    TryAddAction(worldState, bMaterial);
+                    worldState.AddToPossessedItems(targetMaterial.ResourceName, 1);
+                    TryAddAction(worldState, targetMaterial);
                 }
             }
 
@@ -136,7 +130,6 @@ namespace MCTS.DST.Actions
         {
             if (this.foodBase.ContainsKey(this.target))
             {
-                Food food = this.foodBase[this.target];
                 return new List<Pair<string, string>>(1)
                 {
                     new Pair<string, string>("Action(PICKUP, -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
@@ -153,37 +146,65 @@ namespace MCTS.DST.Actions
                         new Pair<string, string>("Action(PICKUP, -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
                     };
                 }
-                // Material needs tools to be gathered / can only use PICK action.
-                CompoundWorldResource compoundMaterial = (CompoundWorldResource)material;
-                // Gets tool needed to gather target.
-                Tool tool = compoundMaterial.RequiredTool;
-
-                if (tool is null)
-                { // If tool can be hands, but the action needs to be PICK.
+                else if (material is GatherableCompoundWorldResource)
+                {
                     return new List<Pair<string, string>>(1)
                     {
                         new Pair<string, string>("Action(PICK, -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
                     };
                 }
+                else if (material is CompoundWorldResource compoundMaterial)
+                { // Material needs tools to be gathered / can only use PICK action.
+                    Tool tool = compoundMaterial.RequiredTool;
 
-                string toolName = tool.MaterialName;
-                string harvestingActionName = compoundMaterial.RequiredToolAction;
+                    // TODO - If material is CompoundWorldResource, the tool cannot be null, remove this if.
 
-                if (preWorldState.IsEquipped(toolName))
-                { // If the necessary tool is already equiped, harvests.
-                    return new List<Pair<string, string>>(1)
+                    if (tool is null)
+                    { // If tool can be hands, but the action needs to be PICK.
+                        return new List<Pair<string, string>>(1)
+                        {
+                            new Pair<string, string>("Action(PICK, -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
+                        };
+                    }
+
+                    string toolName = tool.ResourceName;
+                    string harvestingActionName = compoundMaterial.RequiredToolAction;
+                    List<Pair<string, string>> decomposeList;
+
+                    if (preWorldState.IsEquipped(toolName))
+                    { // If the necessary tool is already equiped, harvests.
+                        decomposeList = new List<Pair<string, string>>(1)
+                        {
+                            new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
+                        };
+                    }
+                    else
                     {
-                        new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
-                    };
+                        decomposeList = new List<Pair<string, string>>(2)
+                        { // Constructs the compound action of equipping the tool and harvesting.
+                            new Pair<string, string>("Action(EQUIP, " + preWorldState.GetInventoryGUID(toolName).ToString() + ", -, -, -)", "-"),
+                            new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
+                        };
+                    }
+                    decomposeList.AddRange(DecomposeCompoundWorldResource(preWorldState, compoundMaterial));
+                    return decomposeList;
                 }
-
-                return new List<Pair<string, string>>(2)
-                { // Constructs the compound action of equipping the tool and harvesting.
-                    new Pair<string, string>("Action(EQUIP, " + preWorldState.GetInventoryGUID(toolName).ToString() + ", -, -, -)", "-"),
-                    new Pair<string, string>("Action(" + harvestingActionName + ", -, -, -, -)", preWorldState.GetEntitiesGUID(this.target).ToString())
-                };
             }
+            Console.WriteLine("\n PickUp Decompose had to fall back to base.Decompose \n");
             return base.Decompose(preWorldState);
+        }
+
+        private List<Pair<string, string>> DecomposeCompoundWorldResource(PreWorldState preWorldState, CompoundWorldResource compoundResource)
+        {
+            // This might not work every time, as the basic resources that compose the harvested compound resource have to spawn in, and might not be 
+            // in the agent's knowledge base. Hence, sometimes the returned guid by GetEntitiesGUID will be "0".
+            List<Pair<string, string>> basicHarvestingActions = new List<Pair<string, string>>();
+            for (int i = 0; i < compoundResource.ComposingItems.Count; i++)
+            {
+                WorldResource componentResource = compoundResource.ComposingItems[i];
+                basicHarvestingActions.Add(new Pair<string, string>("Action(PICK, -, -, -, -)", preWorldState.GetEntitiesGUID(componentResource.ResourceName).ToString()));
+            }
+            return basicHarvestingActions;
         }
 
         public override Pair<string, int> NextActionInfo()

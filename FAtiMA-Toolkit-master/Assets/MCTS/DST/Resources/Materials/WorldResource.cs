@@ -32,9 +32,13 @@ namespace MCTS.DST.Resources.Materials
 
     public class WorldResource
     {
-        public bool IsPrimitive { get; private set; }
-        public bool IsFuel { get; private set; }
-        public bool IsPickable { get; private set; }
+
+        public bool IsPrimitive { get; protected set; }
+        public bool IsFuel { get; protected set; }
+        public bool IsPickable { get; protected set; }
+
+        public string ResourceName { get; protected set; }
+
         public Dictionary<string, int> Recipes { get; protected set; }
 
         public WorldResource(bool isPrimitive, bool isFuel, bool isPickable)
@@ -45,49 +49,46 @@ namespace MCTS.DST.Resources.Materials
             this.Recipes = new Dictionary<string, int>();
         }
 
-        public virtual void GetBonuses(WorldModelDST worldModel) { }
+        public virtual void GetBonuses(WorldModelDST worldModel)
+        {
+            ;
+        }
+
+        public virtual void TryRemoveAction(WorldModelDST worldModel, string actionName)
+        { 
+            for (int i = 0; i < this.Recipes.Count; i++)
+            {
+                if (!worldModel.Possesses(this.ResourceName, this.Recipes.ElementAt(i).Value))
+                {
+                    worldModel.RemoveAction(string.Concat(actionName, this.Recipes.ElementAt(i).Key));
+                }
+            }
+        }
     }
 
     public class BasicWorldResource : WorldResource
     {
-        public int Quantity { get; private set; }
-        public string MaterialName { get; private set; }
-
-        public BasicWorldResource(string name, int quantity, bool isFuel) : base(true, isFuel, true)
+        public BasicWorldResource(string name, bool isFuel) : base(true, isFuel, true)
         {
-            this.MaterialName = name;
-            this.Quantity = quantity;
+            this.ResourceName = name;
         }
     }
 
     public class Tool : BasicWorldResource
     {
-        public Tool(string name, int quantity) : base (name, quantity, false)
-        {
-            // TODO?
-        }
+        public Tool(string name) : base (name, false) { ; }
     }
 
     public class CompoundWorldResource : WorldResource
     {
-        // Items gathered by picking up composed materials, such as boulders or trees.
+        public Tool RequiredTool { get; protected set; } = null;
+        public string RequiredToolAction { get; protected set; } = "UNDEFINED REQUIRED TOOL ACTION";
+        // Items dropped after breaking (CHOP / MINE) compound resources (i.e. tree / boulder).
         public List<BasicWorldResource> ComposingItems { get; private set; } = new List<BasicWorldResource>();
-
-        // Items gathered by picking up by materials, that can burn.
-        public List<BasicWorldResource> FuelItems { get; private set; } = new List<BasicWorldResource>();
-
-        public Tool RequiredTool { get; protected set; }
-        public string RequiredToolAction { get; protected set; }
 
         public CompoundWorldResource() : base(false, false, false) { }
 
         public CompoundWorldResource(bool isFuel) : base(false, isFuel, false) { }
-
-        public CompoundWorldResource(List<BasicWorldResource> composingItems, List<BasicWorldResource> fuelItems) : base(false, false, false)
-        {
-            this.ComposingItems = composingItems;
-            this.FuelItems = fuelItems;
-        }
     }
 
     public class GatherableCompoundWorldResource : CompoundWorldResource
@@ -95,20 +96,18 @@ namespace MCTS.DST.Resources.Materials
         public Object ResourceWhenPicked { get; protected set; }
 
         public GatherableCompoundWorldResource() : base() {  }
-
-        public GatherableCompoundWorldResource(bool isFuel) : base(isFuel) { }
-
-        public GatherableCompoundWorldResource(List<BasicWorldResource> composingItems, List<BasicWorldResource> fuelItems) : base(composingItems, fuelItems) { }
     }
 
     public sealed class Boulder : CompoundWorldResource
     {
         public Boulder()
         {
-            this.ComposingItems.Add(new Rock(2));
-            this.ComposingItems.Add(new Flint(1));
+            this.ResourceName = "boulder";
             this.RequiredTool = Pickaxe.Instance;
             this.RequiredToolAction = "MINE";
+            this.ComposingItems.Add(Rock.Instance);
+            this.ComposingItems.Add(Rock.Instance);
+            this.ComposingItems.Add(Flint.Instance);
         }
 
         public static Boulder Instance { get; } = new Boulder();
@@ -118,10 +117,11 @@ namespace MCTS.DST.Resources.Materials
     {
         public Tree() : base(true)
         {
-            this.ComposingItems.Add(new Log(2));
-            this.FuelItems.Add(new Log(2));
+            this.ResourceName = "tree";
             this.RequiredTool = Axe.Instance;
             this.RequiredToolAction = "CHOP";
+            this.ComposingItems.Add(Log.Instance);
+            this.ComposingItems.Add(Log.Instance);
         }
 
         public static Tree Instance { get; } = new Tree();
@@ -129,11 +129,10 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Sapling : GatherableCompoundWorldResource
     {
-        public Sapling()
+        public Sapling() : base()
         {
+            this.ResourceName = "sapling";
             this.ResourceWhenPicked = Twig.Instance;
-            this.ComposingItems.Add(new Twig(1));
-            this.FuelItems.Add(new Twig(1));
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
         }
@@ -143,11 +142,10 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Grass : GatherableCompoundWorldResource
     {
-        public Grass()
+        public Grass() : base()
         {
+            this.ResourceName = "grass";
             this.ResourceWhenPicked = Cutgrass.Instance;
-            this.ComposingItems.Add(new Cutgrass(2));
-            this.FuelItems.Add(new Cutgrass(2));
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
         }
@@ -157,8 +155,9 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class BerryBush : GatherableCompoundWorldResource
     {
-        public BerryBush()
+        public BerryBush() : base()
         {
+            this.ResourceName = "berrybush";
             this.ResourceWhenPicked = Berries.Instance;
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
@@ -169,8 +168,9 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class PlantedCarrot : GatherableCompoundWorldResource
     {
-        public PlantedCarrot()
+        public PlantedCarrot() : base()
         {
+            this.ResourceName = "carrot_planted";
             this.ResourceWhenPicked = Carrot.Instance;
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
@@ -181,8 +181,9 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Flower : GatherableCompoundWorldResource
     {
-        public Flower()
+        public Flower() : base()
         {
+            this.ResourceName = "flower";
             this.ResourceWhenPicked = Petals.Instance;
             this.RequiredTool = null;
             this.RequiredToolAction = "PICK";
@@ -198,7 +199,7 @@ namespace MCTS.DST.Resources.Materials
 
     public sealed class Rock : BasicWorldResource
     {
-        public Rock(int quantity) : base("rocks", quantity, false)
+        public Rock() : base("rocks", false)
         {
             base.Recipes = new Dictionary<string, int>()
             {
@@ -207,12 +208,12 @@ namespace MCTS.DST.Resources.Materials
             };
         }
 
-        public static Rock Instance { get; } = new Rock(1);
+        public static Rock Instance { get; } = new Rock();
     }
 
     public sealed class Flint : BasicWorldResource
     {
-        public Flint(int quantity) : base("flint", quantity, false)
+        public Flint() : base("flint", false)
         {
             base.Recipes = new Dictionary<string, int>()
             {
@@ -221,12 +222,12 @@ namespace MCTS.DST.Resources.Materials
             };
         }
 
-        public static Flint Instance { get; } = new Flint(1);
+        public static Flint Instance { get; } = new Flint();
     }
 
     public sealed class Log : BasicWorldResource
     {
-        public Log(int quantity) : base("log", quantity, true)
+        public Log() : base("log", true)
         {
             base.Recipes = new Dictionary<string, int>()
             {
@@ -235,12 +236,12 @@ namespace MCTS.DST.Resources.Materials
             };
         }
 
-        public static Log Instance { get; } = new Log(1);
+        public static Log Instance { get; } = new Log();
     }
 
     public sealed class Twig : BasicWorldResource
     {
-        public Twig(int quantity) : base("twigs", quantity, true)
+        public Twig() : base("twigs", true)
         {
             base.Recipes = new Dictionary<string, int>()
             {
@@ -252,12 +253,12 @@ namespace MCTS.DST.Resources.Materials
             };
         }
 
-        public static Twig Instance { get; } = new Twig(1);
+        public static Twig Instance { get; } = new Twig();
     }
 
     public sealed class Cutgrass : BasicWorldResource
     {
-        public Cutgrass(int quantity) : base("cutgrass", quantity, true)
+        public Cutgrass() : base("cutgrass", true)
         {
             base.Recipes = new Dictionary<string, int>()
             {
@@ -268,41 +269,41 @@ namespace MCTS.DST.Resources.Materials
             };
         }
 
-        public static Cutgrass Instance { get; } = new Cutgrass(1);
+        public static Cutgrass Instance { get; } = new Cutgrass();
     }
 
     public sealed class Torch : Tool
     {
-        public Torch(int quantity) : base("torch", quantity){ }
+        public Torch() : base("torch"){ }
 
-        public static Torch Instance { get; } = new Torch(1);
+        public static Torch Instance { get; } = new Torch();
     }
 
     public sealed class Pickaxe : Tool
     {
-        public Pickaxe(int quantity) : base("pickaxe", quantity) { }
+        public Pickaxe() : base("pickaxe") { }
 
-        public static Pickaxe Instance { get; } = new Pickaxe(1);
+        public static Pickaxe Instance { get; } = new Pickaxe();
     }
 
     public sealed class Axe : Tool
     {
-        public Axe(int quantity) : base("axe", quantity) { }
+        public Axe() : base("axe") { }
 
-        public static Axe Instance { get; } = new Axe(1);
+        public static Axe Instance { get; } = new Axe();
     }
 
     public sealed class Campfire : Tool
     {
-        public Campfire(int quantity) : base("campfire", quantity) { }
+        public Campfire() : base("campfire") { }
 
-        public static Campfire Instance { get; } = new Campfire(1);
+        public static Campfire Instance { get; } = new Campfire();
     }
 
     public sealed class Hammer : Tool
     {
-        public Hammer(int quantity) : base("hammer", quantity) { }
+        public Hammer() : base("hammer") { }
 
-        public static Hammer Instance { get; } = new Hammer(1);
+        public static Hammer Instance { get; } = new Hammer();
     }
 }

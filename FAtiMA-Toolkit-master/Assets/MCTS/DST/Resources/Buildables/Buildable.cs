@@ -45,11 +45,6 @@ namespace MCTS.DST.Resources.Buildables
                 var element = this.RequiredMaterials.ElementAt(i);
                 if (!worldState.Possesses(element.Key, element.Value))
                 {
-                    /*
-                    int v = -1;
-                    worldState.PossessedItems.TryGetValue(element.Key, out v);
-                    Console.WriteLine("    Needs " + element.Value + "of " + element.Key + ", has " + v);
-                    */
                     return false;
                 }
             }
@@ -60,7 +55,6 @@ namespace MCTS.DST.Resources.Buildables
                 var material = element.Key;
                 worldState.RemoveFromPossessedItems(material, element.Value);
             }
-            worldState.AddToPossessedItems(this.BuildableName, 1);
             return true;
         }
 

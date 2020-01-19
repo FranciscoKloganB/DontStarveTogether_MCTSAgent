@@ -15,21 +15,90 @@ namespace MCTS.DST {
         public int[] CycleInfo;
 
         public List<ObjectProperties> Entities;
-        public List<Tuple<string, int, int>> Inventory;
-        public List<Pair<string, int>> Equipped;
-        public List<Tuple<string, int, int>> Fuel;
-        public List<Tuple<string, int, int>> Fire;
+        public Dictionary<string, int> Equipped;
+        public Dictionary<string, Pair<int, int>> Inventory;
+        public Dictionary<string, Pair<int, int>> Fuel;
+        public List<FireData> Fire;
         public KB KnowledgeBase;
 
-       
+        private static HashSet<string> minableBase = new HashSet<string>()
+        {
+            "rock1",
+            "rock2",
+            "rock_flintless",
+            "rock_charcoal",
+            "rock_obsidian",
+            "pig_ruins_artichoke",
+            "rock_moon",
+            "rock_moon_shell",
+            "rock_petrified_tree_short",
+            "rock_petrified_tree_med",
+            "rock_petrified_tree_tall",
+            "rock_petrified_tree_old"
+        };
+
+        private static HashSet<string> choppableBase = new HashSet<string>()
+        {
+            "evergreen",
+            "evergreen_tall",
+            "evergreen_sparse",
+            "deciduoustree",
+            "marsh_tree",
+            "mushtree_small",
+            "mushtree_medium",
+            "mushtree_tall",
+            "mushtree_tall_webbed",
+            "evergreen_sparse",
+            "livingtree",
+            "palmtree",
+            "jungletree",
+            "mangrovetree",
+            "livingjungletree",
+            "volcano_shrub",
+            "rainforesttree_short",
+            "rainforesttree_normal",
+            "rainforesttree_tall",
+            "rainforesttree_rot",
+            "rainforesttree_short",
+            "rainforesttree_rot_normal",
+            "rainforesttree_rot_tall",
+            "twiggy_short",
+            "twiggy_normal",
+            "twiggy_tall",
+            "twiggy_old",
+            "twiggytree",
+        };
+
+        private static HashSet<string> realEntityPrefabBase = new HashSet<string>()
+        {
+            // TODO: Next years students should get rid of all thse Hashset<string> structures, ESPECIALLY this one. Tip: Use the FoodDict, MaterialDict classes, etc...
+            "sapling",
+            "twigs",
+            "butterfly",
+            "log",
+            "torch",
+            "grass",
+            "cutgrass",
+            "carrot",
+            "carrot_planted",
+            "seeds",
+            "flower",
+            "rocks",
+            "flint",
+            "axe",
+            "pickaxe",
+            "campfire",
+            "firepit",
+        };
+
         public PreWorldState(KB knowledgeBase)
         {
             this.KnowledgeBase = knowledgeBase;
             this.Entities = new List<ObjectProperties>(); // it is a list which stores the information of the objects that exist in the world
-            this.Inventory = new List<Tuple<string, int, int>>(); // list of 3-tuples that contain the name, the GUID and the quantity of an object in the inventory
-            this.Equipped = new List<Pair<string, int>>(); // it is a list of pairs (2-tuples) that contain the name and the GUID of each equipped object
-            this.Fuel = new List<Tuple<string, int, int>>(); // it is a list of 3-tuples that contain the name, the GUID and the quantity of the items that can be used as fuel for res
-            this.Fire = new List<Tuple<string, int, int>>(); // list of 3-tuples that contain the name and the position of the fires in the world
+            this.Equipped = new Dictionary<string, int>(); // Maps the name and the GUID of each equipped object
+            this.Inventory = new Dictionary<string, Pair<int, int>>(); // maps prefab name to Pair<GUID, quantity of an object in the inventory>
+            this.Fuel = new Dictionary<string, Pair<int, int>>(); // maps prefab name to Pair<GUID, quantity of an object that can be used as fuel>
+            this.Fire = new List<FireData>(); // list of FireData that contain the name and the position of the fires in the world
 
             //Getting Character Stats
 
@@ -70,29 +139,22 @@ namespace MCTS.DST {
             this.CycleInfo[2] = Cycleinfo3;
 
             //Getting Entities + Inventory + Equipped
-
             var subset = new List<SubstitutionSet> { new SubstitutionSet() };
 
             //Getting Equipped
-
             var equippeditems = knowledgeBase.AskPossibleProperties((Name)"IsEquipped([GUID])", Name.SELF_SYMBOL, subset);
-
-           
 
             foreach (var item in equippeditems)
             {
                 string strEntGuid = item.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
                 int entGuid = int.Parse(strEntGuid);
                 string entPrefab = knowledgeBase.AskProperty((Name)("Entity(" + strEntGuid + ")")).Value.ToString();
-
-                Pair<string, int> pair = new Pair<string, int>(entPrefab, entGuid);
-                this.Equipped.Add(pair);
+                this.Equipped[entPrefab] = entGuid;
             }
 
             //Getting Inventory
 
             var inventory = knowledgeBase.AskPossibleProperties((Name)"InInventory([GUID])", Name.SELF_SYMBOL, subset);
-
             foreach (var item in inventory)
             {
                 string strEntGuid = item.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
@@ -103,12 +165,12 @@ namespace MCTS.DST {
                 var quantity = knowledgeBase.AskProperty((Name)strEntQuantity);
                 int entQuantity = int.Parse(quantity.Value.ToString());
 
-                Tuple<string, int, int> tuple = new Tuple<string, int, int>(entPrefab, entGuid, entQuantity);
-                this.Inventory.Add(tuple);
+                Pair<int, int> pair = new Pair<int, int>(entGuid, entQuantity);
+                this.Inventory[entPrefab] = pair;
 
                 if (IsFuel(strEntGuid))
                 {                    
-                    this.Fuel.Add(tuple);
+                    this.Fuel[entPrefab] = pair;
                 }                
             }
 
@@ -118,7 +180,7 @@ namespace MCTS.DST {
 
             foreach (var entity in entities)
             {
-                Boolean b = false;
+                bool b = false;
                 string strEntGuid = entity.Item2.FirstOrDefault().FirstOrDefault().SubValue.Value.ToString();
                 int entGuid = int.Parse(strEntGuid);
                 string entPrefab = entity.Item1.Value.ToString();
@@ -134,26 +196,25 @@ namespace MCTS.DST {
                     var POSz = knowledgeBase.AskProperty((Name)strEntPosz);
                     int entPosz = int.Parse(POSz.Value.ToString());
 
-                    Tuple<string, int, int> tuple = new Tuple<string, int, int>(entPrefab, entPosx, entPosz);
-                    this.Fire.Add(tuple);
+                    this.Fire.Add(new FireData(entPrefab, entPosx, entPosz));
                 }
                 else if (realEntPrefab != "" && DistanceCalculator(strEntGuid) > 0)
                 {
                     string strEntIsCollectable = "IsCollectable(" + strEntGuid + ")";
                     var isCollectable = knowledgeBase.AskProperty((Name)strEntIsCollectable);
-                    Boolean entIsCollectable = Boolean.Parse(isCollectable.Value.ToString());
+                    bool entIsCollectable = bool.Parse(isCollectable.Value.ToString());
 
                     string strEntIsPickable = "IsPickable(" + strEntGuid + ")";
                     var isPickable = knowledgeBase.AskProperty((Name)strEntIsPickable);
-                    Boolean entIsPickable = Boolean.Parse(isPickable.Value.ToString());
+                    bool entIsPickable = bool.Parse(isPickable.Value.ToString());
 
                     string strEntIsMineable = "IsMineable(" + strEntGuid + ")";
                     var isMineable = knowledgeBase.AskProperty((Name)strEntIsMineable);
-                    Boolean entIsMineable = Boolean.Parse(isMineable.Value.ToString());
+                    bool entIsMineable = bool.Parse(isMineable.Value.ToString());
 
                     string strEntIsChoppable = "IsChoppable(" + strEntGuid + ")";
                     var isChoppable = knowledgeBase.AskProperty((Name)strEntIsChoppable);
-                    Boolean entIsChoppable = Boolean.Parse(isChoppable.Value.ToString());
+                    bool entIsChoppable = bool.Parse(isChoppable.Value.ToString());
 
                     if (entIsPickable || entIsCollectable || entIsMineable || entIsChoppable)
                     {
@@ -171,7 +232,7 @@ namespace MCTS.DST {
 
                         foreach (ObjectProperties objectproperty in this.Entities)
                         {
-                            if (objectproperty.Prefab == realEntPrefab)
+                            if (objectproperty.Prefab.Equals(realEntPrefab))
                             {
                                 objectproperty.Add(entQuantity, entPrefab, entGuid, entPosx, entPosz, this.Walter);
                                 b = true;
@@ -188,25 +249,23 @@ namespace MCTS.DST {
             }          
         }
 
-        public Boolean IsTree(string tree)
+        public bool IsTree(string tree)
         {
-            return (tree == "evergreen" || tree == "mushtree_tall" || tree == "mushtree_medium" ||
-                tree == "mushtree_small" || tree == "mushtree_tall_webbed" || tree == "evergreen_sparse" ||
-                tree == "twiggy_short" || tree == "twiggy_normal" || tree == "twiggy_tall" || tree == "twiggy_old" || 
-                tree == "deciduoustree" || tree == "twiggytree");
+            return choppableBase.Contains(tree);
         }
 
-        public Boolean IsBoulder(string boulder)
+        public bool IsBoulder(string boulder)
         {
-            return (boulder == "rock1" || boulder == "rock2" || boulder == "rock_flintless" ||
-                boulder == "rock_moon" || boulder == "rock_petrified_tree_short" ||
-                boulder == "rock_petrified_tree_med" || boulder == "rock_petrified_tree_tall" ||
-                boulder == "rock_petrified_tree_old");
+            return minableBase.Contains(boulder);
         }
 
         public string RealEntityPrefab(string entity)
         {
-            if (IsTree(entity))
+            if (realEntityPrefabBase.Contains(entity))
+            {
+                return entity;
+            }
+            else if (IsTree(entity))
             {
                 return "tree";
             }
@@ -214,117 +273,46 @@ namespace MCTS.DST {
             {
                 return "boulder";
             }
-            else if (entity == "sapling")
-            {
-                return "sapling";
-            }
-            else if (entity == "twigs")
-            {
-                return "twigs";
-            }
-            else if (entity == "berrybush")
+            else if (entity.Contains("berrybush"))
             {
                 return "berrybush";
             }
-            else if (entity == "berrybush2")
-            {
-                return "berrybush";
-            }
-            else if (entity == "berrybush_juicy")
-            {
-                return "berrybush";
-            }
-            else if (entity == "log")
-            {
-                return "log";
-            }
-            else if (entity == "torch")
-            {
-                return "torch";
-            }
-            else if (entity == "grass")
-            {
-                return "grass";
-            }
-            else if (entity == "cutgrass")
-            {
-                return "cutgrass";
-            }
-            else if (entity == "carrot")
-            {
-                return "carrot";
-            }
-            else if (entity == "carrot_planted")
-            {
-                return "carrot_planted";
-            }
-            else if (entity == "berries")
+            else if (entity.Contains("berries"))
             {
                 return "berries";
             }
-            else if (entity == "seeds")
+            else if (entity.Contains("pig"))
             {
-                return "seeds";
-            }
-            else if (entity == "flower")
-            {
-                return "flower";
-            }
-            else if (entity == "berries_juicy")
-            {
-                return "berries";
-            }
-            else if (entity == "rocks")
-            {
-                return "rocks";
-            }
-            else if (entity == "flint")
-            {
-                return "flint";
-            }
-            else if (entity == "axe")
-            {
-                return "axe";
-            }
-            else if (entity == "pickaxe")
-            {
-                return "pickaxe";
-            }
-            else if (entity == "campfire")
-            {
-                return "campfire";
-            }
-            else if (entity == "firepit")
-            {
-                return "firepit";
+                return "pigman";
             }
             else
             {
                 return "";
             }
-
         }
 
-        public Boolean IsFire(string prefab)
+        public bool IsFire(string prefab)
         {
-            return prefab == "campfire" || prefab == "firepit";
+            return prefab.Equals("campfire") || prefab.Equals("firepit");
         }
 
-        public Boolean IsFuel(string guid)
+        public bool IsFuel(string guid)
         {
             string strEntFuel = "IsFuel(" + guid + ")";
             var entFuel = KnowledgeBase.AskProperty((Name)strEntFuel);
             var fuelQ = entFuel.Value.ToString();
-            return fuelQ == "True";
+            return fuelQ.Equals("True");
         }
 
         public int GetEntitiesGUID(string prefab)
         {
-            foreach (ObjectProperties entity in this.Entities)
+            for (int i = 0; i < this.Entities.Count; i++) // (ObjectProperties entity in this.Entities)
             {
-                if (entity.Prefab == prefab)
+                if (this.Entities[i].Prefab.Equals(prefab))
                 {
-                    return entity.GUID;
+                    int guid = this.Entities[i].GUID;
+                    this.Entities.RemoveAt(i);
+                    return guid;
                 }               
             }
             return 0;
@@ -332,52 +320,44 @@ namespace MCTS.DST {
 
         public int GetEquippableGUID(string prefab)
         {
-            foreach (Pair<string,int> item in this.Equipped)
+            int guid = 0;
+            
+            this.Equipped.TryGetValue(prefab, out guid);
+
+            if (guid == 0 && this.Inventory.ContainsKey(prefab))
             {
-                if (item.Item1 == prefab)
-                {
-                    return item.Item2;
-                }
+                guid = this.Inventory[prefab].Item1;
             }
-            foreach (Tuple<string, int, int> item in this.Inventory)
-            {
-                if (item.Item1 == prefab)
-                {
-                    return item.Item2;
-                }
-            }
-            return 0;
+
+            return guid;
         }
 
         public int GetInventoryGUID(string prefab)
         {
-            foreach (Tuple<string, int, int> item in this.Inventory)
+            int guid = 0;
+
+            if (this.Inventory.ContainsKey(prefab))
             {
-                if (item.Item1 == prefab)
-                {
-                    return item.Item2;
-                }
+                guid = this.Inventory[prefab].Item1;
             }
-            return 0;
+
+            return guid;
         }
 
         public int GetEquippedGUID(string prefab)
         {
-            foreach (var item in this.Equipped)
-            {
-                if (item.Item1 == prefab)
-                {
-                    return item.Item2;
-                }
-            }
-            return 0;
+            int guid = 0;
+
+            this.Equipped.TryGetValue(prefab, out guid);
+
+            return guid;
         }
 
-        public Boolean EntityIsPickable(string entity)
+        public bool EntityIsPickable(string entity)
         {
             foreach (ObjectProperties item in this.Entities)
             {
-                if (item.Prefab == entity)
+                if (item.Prefab.Equals(entity))
                 {
                     return item.IsPickable;
                 }
@@ -385,11 +365,11 @@ namespace MCTS.DST {
             return false;
         }
 
-        public Boolean EntityIsCollectable(string entity)
+        public bool EntityIsCollectable(string entity)
         {
             foreach (ObjectProperties item in this.Entities)
             {
-                if (item.Prefab == entity)
+                if (item.Prefab.Equals(entity))
                 {
                     return item.IsCollectable;
                 }
@@ -397,28 +377,21 @@ namespace MCTS.DST {
             return false;
         }
 
-        public Boolean IsEquipped(string item)
+        public bool IsEquipped(string item)
         {
-            foreach (var equip in this.Equipped)
-            {
-                if (equip.Item1 == item)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return this.Equipped.ContainsKey(item);
         }
 
         public string CompleteNextActionInfo(string info)
         {
-            if (info == "berrybush")
+            if (info.Equals("berrybush"))
             {
                 foreach (var entity in this.Entities)
                 {
-                    if (entity.Prefab == "berrybush")
+                    if (entity.Prefab.Equals("berrybush"))
                     {
                         string realprefab = entity.RealPrefab;
-                        if (realprefab == "berrybush" || realprefab == "berrybush2")
+                        if (realprefab.Equals("berrybush") || realprefab.Equals("berrybush2"))
                         {
                             return "";
                         }
