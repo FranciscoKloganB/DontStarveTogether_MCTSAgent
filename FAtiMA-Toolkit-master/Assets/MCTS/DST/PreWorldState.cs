@@ -306,11 +306,13 @@ namespace MCTS.DST {
 
         public int GetEntitiesGUID(string prefab)
         {
-            foreach (ObjectProperties entity in this.Entities)
+            for (int i = 0; i < this.Entities.Count; i++) // (ObjectProperties entity in this.Entities)
             {
-                if (entity.Prefab.Equals(prefab))
+                if (this.Entities[i].Prefab.Equals(prefab))
                 {
-                    return entity.GUID;
+                    int guid = this.Entities[i].GUID;
+                    this.Entities.RemoveAt(i);
+                    return guid;
                 }               
             }
             return 0;
