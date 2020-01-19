@@ -21,6 +21,7 @@ namespace MCTS.DST.Resources.NPCs
             ["spider_warrior"] = SpiderWarrior.Instance,
             ["pigman"] = Pig.Instance,
             ["hound"] = Hound.Instance,
+            ["butterfly"] = Butterfly.Instance,
         };
     }
 
@@ -133,5 +134,20 @@ namespace MCTS.DST.Resources.NPCs
         {
             return new HashSet<string>() { "berries", "meat", "cooked_meat", "monster_meat", "cooked_monster_meat", "morsel", "cooked_morsel" };
         }
+    }
+
+    public sealed class Butterfly : Enemy
+    {
+        private Butterfly(string name) : base(name)
+        {
+            base.HP = 1;
+            base.Damage = 0;
+            base.AttackPeriod = 0;
+            base.AttackRange = 0;
+            base.RunningSpeed = 5;
+            base.InsanityAura = +0;
+        }
+
+        public static NPC Instance { get; } = new Butterfly("butterfly");
     }
 }
