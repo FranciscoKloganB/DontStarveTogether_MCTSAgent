@@ -43,7 +43,7 @@
     <Compile Include="DST\Actions\AddFuel.cs" />
     <Compile Include="DST\Actions\NextAction.cs" />
     <Compile Include="DST\Data\FireData.cs" />
-    <Compile Include="DST\Data\WorldObject.cs" />
+    <Compile Include="DST\Data\WorldObjectData.cs" />
     <Compile Include="DST\Character.cs" />
     <Compile Include="DST\Actions\Eat.cs" />
     <Compile Include="DST\Interfaces\IDiet.cs" />
