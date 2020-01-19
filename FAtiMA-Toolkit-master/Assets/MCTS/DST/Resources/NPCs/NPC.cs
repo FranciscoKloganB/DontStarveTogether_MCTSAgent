@@ -19,7 +19,7 @@ namespace MCTS.DST.Resources.NPCs
         {
             ["spider"] = Spider.Instance,
             ["spider_warrior"] = SpiderWarrior.Instance,
-            ["pig"] = Pig.Instance,
+            ["pigman"] = Pig.Instance,
             ["hound"] = Hound.Instance,
         };
     }
@@ -122,7 +122,7 @@ namespace MCTS.DST.Resources.NPCs
             base.InsanityAura = +25;
         }
 
-        public static NPC Instance { get; } = new Pig("pig");
+        public static NPC Instance { get; } = new Pig("pigman");
         
         public override ActionDST GetAction(WorldModelDST worldModel)
         {
@@ -131,7 +131,7 @@ namespace MCTS.DST.Resources.NPCs
 
         public HashSet<string> GetDiet()
         {
-            return new HashSet<string>() { "meat", "cooked_meat", "monster_meat", "cooked_monster_meat", "morsel", "cooked_morsel" };
+            return new HashSet<string>() { "berries", "meat", "cooked_meat", "monster_meat", "cooked_monster_meat", "morsel", "cooked_morsel" };
         }
     }
 }

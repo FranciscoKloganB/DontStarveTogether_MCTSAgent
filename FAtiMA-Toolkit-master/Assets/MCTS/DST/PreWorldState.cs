@@ -298,6 +298,10 @@ namespace MCTS.DST {
             {
                 return "firepit";
             }
+            else if (entity == "pigman")
+            {
+                return "pigman";
+            }
             else
             {
                 return "";
