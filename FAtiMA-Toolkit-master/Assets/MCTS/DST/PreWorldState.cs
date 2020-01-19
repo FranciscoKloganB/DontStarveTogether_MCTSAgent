@@ -18,7 +18,7 @@ namespace MCTS.DST {
         public Dictionary<string, int> Equipped;
         public Dictionary<string, Pair<int, int>> Inventory;
         public Dictionary<string, Pair<int, int>> Fuel;
-        public List<Tuple<string, int, int>> Fire;
+        public List<FireData> Fire;
         public KB KnowledgeBase;
 
         private static HashSet<string> minableBase = new HashSet<string>()
@@ -98,7 +98,7 @@ namespace MCTS.DST {
             this.Equipped = new Dictionary<string, int>(); // Maps the name and the GUID of each equipped object
             this.Inventory = new Dictionary<string, Pair<int, int>>(); // maps prefab name to Pair<GUID, quantity of an object in the inventory>
             this.Fuel = new Dictionary<string, Pair<int, int>>(); // maps prefab name to Pair<GUID, quantity of an object that can be used as fuel>
-            this.Fire = new List<Tuple<string, int, int>>(); // list of 3-tuples that contain the name and the position of the fires in the world
+            this.Fire = new List<FireData>(); // list of FireData that contain the name and the position of the fires in the world
 
             //Getting Character Stats
 
@@ -196,8 +196,7 @@ namespace MCTS.DST {
                     var POSz = knowledgeBase.AskProperty((Name)strEntPosz);
                     int entPosz = int.Parse(POSz.Value.ToString());
 
-                    Tuple<string, int, int> tuple = new Tuple<string, int, int>(entPrefab, entPosx, entPosz);
-                    this.Fire.Add(tuple);
+                    this.Fire.Add(new FireData(entPrefab, entPosx, entPosz));
                 }
                 else if (realEntPrefab != "" && DistanceCalculator(strEntGuid) > 0)
                 {
