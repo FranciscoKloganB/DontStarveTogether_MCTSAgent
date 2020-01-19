@@ -7,6 +7,7 @@ using System.Linq;
 using MCTS.DST.Resources.Edibles;
 using MCTS.DST.Resources.Materials;
 using MCTS.DST.Resources.Buildables;
+using MCTS.DST.Resources.NPCs;
 
 namespace MCTS.DST.WorldModels
 {
@@ -94,11 +95,12 @@ namespace MCTS.DST.WorldModels
             Dictionary<string, WorldResource> materialBase = MaterialDict.Instance.materialBase;
             Dictionary<string, Food> foodBase = FoodDict.Instance.foodBase;
             Dictionary<string, Buildable> buildableBase = BuildablesDict.Instance.buildableBase;
+            Dictionary<string, NPC> npcBase = NPCDict.Instance.npcBase;
 
             this.AvailableActions = new HashSet<ActionDST>();
             this.AvailableActions.Add(new Wander());
 
-            // Adds actions regarding World items.
+            // Adds actions regarding World items / entities.
             for (int i = 0; i < this.WorldObjects.Count; i++)
             {
                 string objectName = this.WorldObjects[i].ObjectName;
@@ -114,6 +116,26 @@ namespace MCTS.DST.WorldModels
                     if (this.IsNight())
                     {
                         this.AvailableActions.Add(new HoldPosition(objectName));
+                    }
+                }
+                else if (npcBase.ContainsKey(objectName))
+                {
+                    NPC npc = npcBase[objectName];
+                    ActionDST action = npc.GetAction(this);
+                    if (action is Feed feedAction)
+                    {
+                        HashSet<string> diet = feedAction.diet;
+                        IEnumerable<string> possessedDiet = diet.Intersect(PossessedItems.Keys);
+                        if (!possessedDiet.IsEmpty())
+                        {
+                            Console.WriteLine("possessed diet is empty");
+                            feedAction.food = possessedDiet.First();
+                            AddAction(feedAction);
+                        }
+                    }
+                    else
+                    {
+                        AddAction(action);
                     }
                 }
                 else if (foodBase.ContainsKey(objectName))
